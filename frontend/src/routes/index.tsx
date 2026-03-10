@@ -82,7 +82,7 @@ export function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<DashboardPage />} />
-          <Route path="/hr" element={<HrPage />} />
+          <Route path="/hr/*" element={<HrPage />} />
         </Route>
       </Route>
 

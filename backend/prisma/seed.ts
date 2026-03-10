@@ -14,12 +14,14 @@ async function main(): Promise<void> {
       nama_lengkap: 'Administrator Sistem',
       password,
       refresh_token: null,
+      is_active: true,
     },
     create: {
       nomor_induk_karyawan: '02-03827',
       nama_lengkap: 'Administrator Sistem',
       password,
       refresh_token: null,
+      is_active: true,
     },
   });
 }

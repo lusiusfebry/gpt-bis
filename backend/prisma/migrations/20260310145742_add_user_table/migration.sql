@@ -5,6 +5,7 @@ CREATE TABLE "users" (
     "nama_lengkap" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "refresh_token" TEXT,
+    "is_active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

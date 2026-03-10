@@ -38,6 +38,8 @@ export class AuthService {
       throw new UnauthorizedException('Nomor induk karyawan atau password salah');
     }
 
+    this.ensureUserIsActive(user);
+
     const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
 
     if (!isPasswordValid) {
@@ -68,6 +70,11 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token tidak valid');
     }
 
+    if (!user.is_active) {
+      await this.clearRefreshToken(user.id);
+      throw new UnauthorizedException('User tidak aktif');
+    }
+
     const isRefreshTokenValid = await bcrypt.compare(
       refreshTokenDto.refreshToken,
       user.refresh_token,
@@ -93,6 +100,8 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('User tidak ditemukan');
     }
+
+    this.ensureUserIsActive(user);
 
     return this.sanitizeUser(user);
   }
@@ -148,16 +157,34 @@ export class AuthService {
     });
   }
 
+  private async clearRefreshToken(userId: string): Promise<void> {
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        refresh_token: null,
+      },
+    });
+  }
+
   private sanitizeUser(user: User): SanitizedUser {
     const sanitizedUser = {
       id: user.id,
       nomor_induk_karyawan: user.nomor_induk_karyawan,
       nama_lengkap: user.nama_lengkap,
+      is_active: user.is_active,
       created_at: user.created_at,
       updated_at: user.updated_at,
     };
 
     return sanitizedUser;
+  }
+
+  private ensureUserIsActive(user: User): void {
+    if (!user.is_active) {
+      throw new UnauthorizedException('User tidak aktif');
+    }
   }
 
   private async verifyRefreshToken(refreshToken: string): Promise<JwtPayload> {
