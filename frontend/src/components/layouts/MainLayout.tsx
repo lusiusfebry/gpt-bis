@@ -3,11 +3,15 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  TeamOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Layout, Menu, Space, Typography } from "antd";
+import { Avatar, Button, Layout, Menu, Space, Spin, Typography } from "antd";
 import { useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  getModuleIcon,
+  useModules,
+  type ModuleItem,
+} from "../../modules/app/useModules";
 import { useAuth } from "../../modules/auth/AuthContext";
 
 const { Content, Footer, Header, Sider } = Layout;
@@ -28,16 +32,44 @@ function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { activeModules, isLoading } = useModules();
 
   const selectedKeys = useMemo(() => {
-    if (location.pathname.startsWith("/hr")) {
-      return ["/hr"];
+    const activeModule = activeModules.find((module: ModuleItem) =>
+      location.pathname.startsWith(module.path),
+    );
+
+    if (activeModule) {
+      return [activeModule.path];
     }
 
     return ["/"];
-  }, [location.pathname]);
+  }, [activeModules, location.pathname]);
 
-  const initials = useMemo(() => getUserInitials(user?.nama_lengkap ?? "User"), [user?.nama_lengkap]);
+  const initials = useMemo(
+    () => getUserInitials(user?.nama_lengkap ?? "User"),
+    [user?.nama_lengkap],
+  );
+
+  const menuItems = useMemo(
+    () => [
+      {
+        key: "/",
+        icon: <DashboardOutlined />,
+        label: <Link to="/">Beranda</Link>,
+      },
+      ...activeModules.map((module: ModuleItem) => {
+        const Icon = getModuleIcon(module.ikon);
+
+        return {
+          key: module.path,
+          icon: <Icon />,
+          label: <Link to={module.path}>{module.nama}</Link>,
+        };
+      }),
+    ],
+    [activeModules],
+  );
 
   const handleLogout = async () => {
     await logout();
@@ -62,24 +94,19 @@ function MainLayout() {
             </Title>
           </div>
           <div className="flex-1 px-3 py-4">
-            <Menu
-              theme="dark"
-              mode="inline"
-              selectedKeys={selectedKeys}
-              onClick={({ key }) => navigate(key)}
-              items={[
-                {
-                  key: "/",
-                  icon: <DashboardOutlined />,
-                  label: <Link to="/">Beranda</Link>,
-                },
-                {
-                  key: "/hr",
-                  icon: <TeamOutlined />,
-                  label: <Link to="/hr">Human Resources</Link>,
-                },
-              ]}
-            />
+            {isLoading ? (
+              <div className="flex h-24 items-center justify-center">
+                <Spin size="small" />
+              </div>
+            ) : (
+              <Menu
+                theme="dark"
+                mode="inline"
+                selectedKeys={selectedKeys}
+                onClick={({ key }) => navigate(key)}
+                items={menuItems}
+              />
+            )}
           </div>
         </div>
       </Sider>

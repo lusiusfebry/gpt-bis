@@ -19,3 +19,18 @@ model User {
 
   @@map("users")
 }
+
+model AppModule {
+  id         String   @id @default(cuid())
+  kode       String   @unique
+  nama       String
+  deskripsi  String
+  ikon       String
+  path       String
+  is_aktif   Boolean  @default(false)
+  urutan     Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("app_modules")
+}

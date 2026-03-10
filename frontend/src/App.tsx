@@ -1,5 +1,6 @@
 import { App as AntdApp, ConfigProvider, theme } from "antd";
 import idID from "antd/locale/id_ID";
+import { ModulesProvider } from "./modules/app/useModules";
 import { AuthProvider } from "./modules/auth/AuthContext";
 import { AppRoutes } from "./routes";
 
@@ -42,7 +43,9 @@ function App() {
     <ConfigProvider locale={idID} theme={appTheme}>
       <AntdApp>
         <AuthProvider>
-          <AppRoutes />
+          <ModulesProvider>
+            <AppRoutes />
+          </ModulesProvider>
         </AuthProvider>
       </AntdApp>
     </ConfigProvider>
