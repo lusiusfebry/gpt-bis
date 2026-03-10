@@ -1,5 +1,6 @@
 import {
   DashboardOutlined,
+  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   TeamOutlined,
@@ -7,14 +8,26 @@ import {
 import { Avatar, Button, Layout, Menu, Space, Typography } from "antd";
 import { useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../modules/auth/AuthContext";
 
 const { Content, Footer, Header, Sider } = Layout;
-const { Paragraph, Text, Title } = Typography;
+const { Text, Title } = Typography;
+
+function getUserInitials(name: string) {
+  const parts = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2);
+
+  return parts.map((part) => part[0]?.toUpperCase() ?? "").join("") || "U";
+}
 
 function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const selectedKeys = useMemo(() => {
     if (location.pathname.startsWith("/hr")) {
@@ -23,6 +36,13 @@ function MainLayout() {
 
     return ["/"];
   }, [location.pathname]);
+
+  const initials = useMemo(() => getUserInitials(user?.nama_lengkap ?? "User"), [user?.nama_lengkap]);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <Layout className="enterprise-shell min-h-screen">
@@ -73,25 +93,24 @@ function MainLayout() {
               onClick={() => setCollapsed((value) => !value)}
             />
             <div>
-              <Text className="block text-xs uppercase tracking-[0.3em] text-teal-700">
-                Portal Perusahaan
-              </Text>
+              <Text className="block text-xs uppercase tracking-[0.3em] text-teal-700">Portal Perusahaan</Text>
               <Title level={4} className="!mb-0">
                 Bebang Sistem Informasi
               </Title>
             </div>
           </Space>
-          <div className="hidden items-center gap-3 md:flex">
-            <div className="text-right">
-              <Text className="block text-xs uppercase tracking-[0.3em] text-slate-400">
-                User Placeholder
+          <div className="flex items-center gap-3">
+            <div className="hidden text-right md:block">
+              <Text className="block text-xs uppercase tracking-[0.3em] text-slate-400">Pengguna Aktif</Text>
+              <Text strong className="block text-sm text-slate-700">
+                {user?.nama_lengkap ?? "-"}
               </Text>
-              <Text strong className="text-sm text-slate-700">
-                Nama Pengguna
-              </Text>
+              <Text className="text-xs text-slate-500">NIK {user?.nomor_induk_karyawan ?? "-"}</Text>
             </div>
-            <Avatar className="bg-slate-200 !text-slate-600">U</Avatar>
-            <Button type="default">Logout</Button>
+            <Avatar className="bg-teal-100 !font-semibold !text-teal-700">{initials}</Avatar>
+            <Button type="default" icon={<LogoutOutlined />} onClick={() => void handleLogout()}>
+              Logout
+            </Button>
           </div>
         </Header>
         <Content className="p-4 sm:p-6">

@@ -6,6 +6,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { PrismaModule } from './common/prisma.module';
 import configuration from './config/configuration';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Controller()
 class AppController {
@@ -38,6 +39,7 @@ class AppController {
       },
     }),
     PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })

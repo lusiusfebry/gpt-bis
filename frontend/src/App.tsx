@@ -1,5 +1,6 @@
 import { App as AntdApp, ConfigProvider, theme } from "antd";
 import idID from "antd/locale/id_ID";
+import { AuthProvider } from "./modules/auth/AuthContext";
 import { AppRoutes } from "./routes";
 
 const appTheme = {
@@ -40,7 +41,9 @@ function App() {
   return (
     <ConfigProvider locale={idID} theme={appTheme}>
       <AntdApp>
-        <AppRoutes />
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </AntdApp>
     </ConfigProvider>
   );

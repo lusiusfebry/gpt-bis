@@ -8,5 +8,7 @@ export default () => ({
     'postgresql://postgres:123456789@localhost:5432/gpt-bis',
   jwtSecret: process.env.JWT_SECRET ?? 'changeme',
   jwtExpiration: process.env.JWT_EXPIRATION ?? '1d',
+  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET ?? 'changeme-refresh',
+  jwtRefreshExpiration: process.env.JWT_REFRESH_EXPIRATION ?? '7d',
   uploadDir: process.env.UPLOAD_DIR ?? 'uploads',
 });
