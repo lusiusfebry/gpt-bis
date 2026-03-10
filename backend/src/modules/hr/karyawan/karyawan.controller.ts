@@ -52,7 +52,7 @@ export class KaryawanController {
     return this.karyawanService.remove(id);
   }
 
-  @Post(':id/upload-foto')
+  @Post(':id/foto')
   @UseInterceptors(FileInterceptor('foto'))
   uploadFoto(
     @Param('id') id: string,
@@ -78,7 +78,7 @@ export class KaryawanController {
     return this.karyawanService.uploadFoto(id, file);
   }
 
-  @Post(':id/generate-qr-code')
+  @Get(':id/qrcode')
   generateQrCode(@Param('id') id: string) {
     return this.karyawanService.generateQrCode(id);
   }

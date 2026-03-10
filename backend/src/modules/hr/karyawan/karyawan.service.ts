@@ -473,6 +473,8 @@ export class KaryawanService {
 
   private buildEmployeeScalarData(dto: CreateKaryawanDto | UpdateKaryawanDto): EmployeeRecord {
     const family = dto.family;
+    const normalizedPhoneNumber =
+      dto.nomor_handphone !== undefined ? dto.nomor_handphone ?? null : undefined;
 
     return {
       ...(dto.user_id !== undefined ? { user_id: dto.user_id } : {}),
@@ -492,7 +494,12 @@ export class KaryawanService {
       ...(dto.email_perusahaan !== undefined
         ? { email_perusahaan: dto.email_perusahaan }
         : {}),
-      ...(dto.nomor_handphone !== undefined ? { nomor_handphone: dto.nomor_handphone } : {}),
+      ...(normalizedPhoneNumber !== undefined
+        ? {
+            nomor_handphone: normalizedPhoneNumber,
+            nomor_handphone_1: normalizedPhoneNumber,
+          }
+        : {}),
       ...(dto.status_karyawan_id !== undefined
         ? { status_karyawan_id: dto.status_karyawan_id }
         : {}),
@@ -522,9 +529,6 @@ export class KaryawanService {
       ...(dto.alamat_ktp !== undefined ? { alamat_ktp: dto.alamat_ktp } : {}),
       ...(dto.kota_ktp !== undefined ? { kota_ktp: dto.kota_ktp } : {}),
       ...(dto.provinsi_ktp !== undefined ? { provinsi_ktp: dto.provinsi_ktp } : {}),
-      ...(dto.nomor_handphone_1 !== undefined
-        ? { nomor_handphone_1: dto.nomor_handphone_1 }
-        : {}),
       ...(dto.nomor_handphone_2 !== undefined
         ? { nomor_handphone_2: dto.nomor_handphone_2 }
         : {}),
@@ -836,7 +840,6 @@ export class KaryawanService {
       data: {
         ...data,
         qr_code: qrCode,
-        nomor_handphone_1: data.nomor_handphone_1 ?? dto.nomor_handphone ?? null,
         family: familyPayload
           ? {
               create: familyPayload,
@@ -963,16 +966,10 @@ export class KaryawanService {
     const employee = await this.ensureEmployeeExists(id);
     const qrCode = await QRCode.toDataURL(employee.nomor_induk_karyawan as string);
 
-    return this.employeeModel.update({
-      where: { id },
-      data: {
-        qr_code: qrCode,
-      },
-      select: {
-        id: true,
-        nomor_induk_karyawan: true,
-        qr_code: true,
-      },
-    });
+    return {
+      id: employee.id,
+      nomor_induk_karyawan: employee.nomor_induk_karyawan,
+      qr_code: qrCode,
+    };
   }
 }

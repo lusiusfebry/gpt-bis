@@ -1,10 +1,13 @@
 import {
+  ArrayMaxSize,
   IsArray,
+  IsDateString,
   IsEmail,
   IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
   Min,
   ValidateNested,
@@ -28,6 +31,9 @@ export class CreateKaryawanDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
+  @Matches(/^\d{2}-\d{5}$/, {
+    message: 'nomor_induk_karyawan harus berformat xx-xxxxx',
+  })
   nomor_induk_karyawan: string;
 
   @IsString()
@@ -79,7 +85,7 @@ export class CreateKaryawanDto {
   tempat_lahir?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_lahir?: string;
 
   @IsOptional()
@@ -144,10 +150,6 @@ export class CreateKaryawanDto {
 
   @IsOptional()
   @IsString()
-  nomor_handphone_1?: string;
-
-  @IsOptional()
-  @IsString()
   nomor_handphone_2?: string;
 
   @IsOptional()
@@ -167,15 +169,15 @@ export class CreateKaryawanDto {
   nama_pasangan?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_menikah?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_cerai?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_wafat_pasangan?: string;
 
   @IsOptional()
@@ -209,27 +211,27 @@ export class CreateKaryawanDto {
   jenis_hubungan_kerja_id?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_masuk_group?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_masuk?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_permanent?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_kontrak?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_akhir_kontrak?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_berhenti?: string;
 
   @IsOptional()
@@ -301,7 +303,7 @@ export class CreateKaryawanDto {
   lokasi_sebelumnya_id?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_mutasi?: string;
 
   @IsOptional()
@@ -333,6 +335,7 @@ export class CreateKaryawanDto {
 
   @IsOptional()
   @IsArray()
+  @ArrayMaxSize(5, { message: 'siblings maksimal 5 entri' })
   @ValidateNested({ each: true })
   @Type(() => CreateEmployeeSiblingDto)
   siblings?: CreateEmployeeSiblingDto[];

@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsDateString, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateEmployeeFamilyDto {
   @IsOptional()
@@ -6,7 +6,7 @@ export class CreateEmployeeFamilyDto {
   nama_pasangan?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_lahir_pasangan?: string;
 
   @IsOptional()
@@ -41,7 +41,7 @@ export class CreateEmployeeFamilyDto {
   nama_ayah_mertua?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_lahir_ayah_mertua?: string;
 
   @IsOptional()
@@ -57,7 +57,7 @@ export class CreateEmployeeFamilyDto {
   nama_ibu_mertua?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_lahir_ibu_mertua?: string;
 
   @IsOptional()

@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class CreateEmployeeSiblingDto {
   @IsString()
@@ -9,7 +9,7 @@ export class CreateEmployeeSiblingDto {
   jenis_kelamin?: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   tanggal_lahir?: string;
 
   @IsOptional()
