@@ -1,0 +1,9 @@
+export default () => ({
+  nodeEnv: process.env.NODE_ENV ?? 'development',
+  port: Number(process.env.PORT ?? 3000),
+  apiPrefix: process.env.API_PREFIX ?? 'api',
+  frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:5173',
+  databaseUrl:
+    process.env.DATABASE_URL ??
+    'postgresql://root:123456789@localhost:5432/bebang_sistem_informasi?schema=public',
+});
