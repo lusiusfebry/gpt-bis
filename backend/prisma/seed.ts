@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main(): Promise<void> {
   const password = await bcrypt.hash('password123', 10);
 
-  await prisma.user.upsert({
+  const administrator = await prisma.user.upsert({
     where: {
       nomor_induk_karyawan: '02-03827',
     },
@@ -131,6 +131,86 @@ async function main(): Promise<void> {
       urutan: 5,
     },
   });
+
+  const divisi = await prisma.divisi.findFirst({
+    where: {
+      status: 'Aktif',
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  const department = await prisma.department.findFirst({
+    where: {
+      status: 'Aktif',
+      ...(divisi ? { divisi_id: divisi.id } : {}),
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  const posisiJabatan = await prisma.posisiJabatan.findFirst({
+    where: {
+      status: 'Aktif',
+      ...(department ? { department_id: department.id } : {}),
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  const statusKaryawan = await prisma.statusKaryawan.findFirst({
+    where: {
+      status: 'Aktif',
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  const lokasiKerja = await prisma.lokasiKerja.findFirst({
+    where: {
+      status: 'Aktif',
+    },
+    orderBy: {
+      created_at: 'asc',
+    },
+  });
+
+  if (divisi && department && posisiJabatan && statusKaryawan && lokasiKerja) {
+    const qrCode = 'data:image/png;base64,seed-employee';
+
+    await prisma.employee.upsert({
+      where: {
+        nomor_induk_karyawan: '02-03827',
+      },
+      update: {
+        user_id: administrator.id,
+        nama_lengkap: 'Administrator Sistem',
+        divisi_id: divisi.id,
+        department_id: department.id,
+        posisi_jabatan_id: posisiJabatan.id,
+        status_karyawan_id: statusKaryawan.id,
+        lokasi_kerja_id: lokasiKerja.id,
+        qr_code: qrCode,
+        is_deleted: false,
+      },
+      create: {
+        user_id: administrator.id,
+        nomor_induk_karyawan: '02-03827',
+        nama_lengkap: 'Administrator Sistem',
+        divisi_id: divisi.id,
+        department_id: department.id,
+        posisi_jabatan_id: posisiJabatan.id,
+        status_karyawan_id: statusKaryawan.id,
+        lokasi_kerja_id: lokasiKerja.id,
+        qr_code: qrCode,
+        is_deleted: false,
+      },
+    });
+  }
 }
 
 main()
