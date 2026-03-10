@@ -3,6 +3,7 @@ import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
+  HR_IMPORT_MENU_KEY,
   HR_KARYAWAN_MENU_KEY,
   HR_KARYAWAN_MENU_PATHS,
   HR_MASTER_DATA_MENU_ITEMS,
@@ -27,6 +28,10 @@ function HrLayout() {
 
     if (isKaryawanPath) {
       return [HR_KARYAWAN_MENU_KEY];
+    }
+
+    if (location.pathname === HR_IMPORT_MENU_KEY || location.pathname.startsWith(`${HR_IMPORT_MENU_KEY}/`)) {
+      return [HR_IMPORT_MENU_KEY];
     }
 
     const match = [...HR_MASTER_DATA_MENU_ITEMS]
@@ -60,6 +65,11 @@ function HrLayout() {
         key: HR_KARYAWAN_MENU_KEY,
         icon: HR_MASTER_MENU_ITEMS[1].icon,
         label: HR_MASTER_MENU_ITEMS[1].label,
+      },
+      {
+        key: HR_IMPORT_MENU_KEY,
+        icon: HR_MASTER_MENU_ITEMS[2].icon,
+        label: HR_MASTER_MENU_ITEMS[2].label,
       },
     ],
     [],

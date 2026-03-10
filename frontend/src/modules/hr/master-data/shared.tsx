@@ -1,6 +1,7 @@
 import {
   ApartmentOutlined,
   EnvironmentOutlined,
+  ImportOutlined,
   NodeIndexOutlined,
   TagOutlined,
   TeamOutlined,
@@ -502,6 +503,7 @@ export const LOKASI_KERJA_FIELDS: MasterDataFormField[] = [
 
 export const HR_MASTER_MENU_PARENT_KEY = "hr-master-data";
 export const HR_KARYAWAN_MENU_KEY = "/hr/karyawan";
+export const HR_IMPORT_MENU_KEY = "/hr/import";
 export const HR_KARYAWAN_MENU_PATHS = [HR_KARYAWAN_MENU_KEY, `${HR_KARYAWAN_MENU_KEY}/tambah`] as const;
 
 export const HR_MASTER_DATA_MENU_ITEMS = [
@@ -532,6 +534,11 @@ export const HR_MASTER_MENU_ITEMS = [
     key: HR_KARYAWAN_MENU_KEY,
     label: "Manajemen Karyawan",
     icon: <TeamOutlined />,
+  },
+  {
+    key: HR_IMPORT_MENU_KEY,
+    label: "Import Karyawan",
+    icon: <ImportOutlined />,
   },
 ] as const;
 

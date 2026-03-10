@@ -6,6 +6,7 @@ import { useAuth } from "../modules/auth/AuthContext";
 import LoginPage from "../modules/auth/LoginPage";
 import HrDashboardPage from "../modules/hr/HrDashboardPage";
 import HrLayout from "../modules/hr/HrLayout";
+import ImportPage from "../modules/hr/import/ImportPage";
 import KaryawanCreatePage from "../modules/hr/karyawan/KaryawanCreatePage";
 import KaryawanDetailPage from "../modules/hr/karyawan/KaryawanDetailPage";
 import KaryawanListPage from "../modules/hr/karyawan/KaryawanListPage";
@@ -47,6 +48,7 @@ export function AppRoutes() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/hr" element={<HrLayout />}>
             <Route index element={<HrDashboardPage />} />
+            <Route path="import" element={<ImportPage />} />
             <Route path="karyawan" element={<KaryawanListPage />} />
             <Route path="karyawan/tambah" element={<KaryawanCreatePage />} />
             <Route path="karyawan/:id" element={<KaryawanDetailPage />} />
