@@ -34,3 +34,134 @@ model AppModule {
 
   @@map("app_modules")
 }
+
+model Divisi {
+  id          String        @id @default(cuid())
+  code        String        @unique
+  nama        String
+  keterangan  String?
+  status      String        @default("Aktif")
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  departments Department[]
+
+  @@map("divisi")
+}
+
+model Department {
+  id             String          @id @default(cuid())
+  code           String          @unique
+  nama           String
+  manager_id     String?
+  divisi_id      String
+  keterangan     String?
+  status         String          @default("Aktif")
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
+  divisi         Divisi          @relation(fields: [divisi_id], references: [id])
+  posisi_jabatan PosisiJabatan[]
+
+  @@index([divisi_id])
+  @@map("departments")
+}
+
+model PosisiJabatan {
+  id            String     @id @default(cuid())
+  code          String     @unique
+  nama          String
+  department_id String
+  keterangan    String?
+  status        String     @default("Aktif")
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  department    Department @relation(fields: [department_id], references: [id])
+
+  @@index([department_id])
+  @@map("posisi_jabatan")
+}
+
+model KategoriPangkat {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("kategori_pangkat")
+}
+
+model Golongan {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("golongan")
+}
+
+model SubGolongan {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("sub_golongan")
+}
+
+model JenisHubunganKerja {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("jenis_hubungan_kerja")
+}
+
+model Tag {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  warna_tag  String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("tags")
+}
+
+model LokasiKerja {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  alamat     String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("lokasi_kerja")
+}
+
+model StatusKaryawan {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  nama       String
+  keterangan String?
+  status     String   @default("Aktif")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("status_karyawan")
+}

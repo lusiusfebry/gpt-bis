@@ -8,6 +8,7 @@ import { PrismaModule } from './common/prisma.module';
 import configuration from './config/configuration';
 import { AppModuleModule } from './modules/app-module/app-module.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { HrModule } from './modules/hr/hr.module';
 
 @Controller()
 class AppController {
@@ -34,7 +35,7 @@ class AppController {
         return [
           {
             rootPath: join(process.cwd(), uploadDir),
-            serveRoot: `/${uploadDir}`,
+            serveRoot: "/" + uploadDir,
           },
         ];
       },
@@ -42,6 +43,7 @@ class AppController {
     PrismaModule,
     AuthModule,
     AppModuleModule,
+    HrModule,
   ],
   controllers: [AppController],
 })
