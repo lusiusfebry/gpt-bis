@@ -29,6 +29,54 @@ export type KaryawanListItem = {
   lokasi_kerja?: KaryawanRelation | null;
 };
 
+export type EmployeeFamilyData = {
+  id?: string;
+  nama_pasangan?: string | null;
+  tanggal_lahir_pasangan?: string | null;
+  pendidikan_terakhir_pasangan?: string | null;
+  pekerjaan_pasangan?: string | null;
+  jumlah_anak?: number | null;
+  keterangan_pasangan?: string | null;
+  anak_ke?: number | null;
+  jumlah_saudara_kandung?: number | null;
+  nama_ayah_mertua?: string | null;
+  tanggal_lahir_ayah_mertua?: string | null;
+  pendidikan_terakhir_ayah_mertua?: string | null;
+  keterangan_ayah_mertua?: string | null;
+  nama_ibu_mertua?: string | null;
+  tanggal_lahir_ibu_mertua?: string | null;
+  pendidikan_terakhir_ibu_mertua?: string | null;
+  keterangan_ibu_mertua?: string | null;
+};
+
+export type EmployeeChildData = {
+  id?: string;
+  nama_anak: string;
+  jenis_kelamin?: string | null;
+  tanggal_lahir?: string | null;
+  keterangan?: string | null;
+};
+
+export type EmployeeSiblingData = {
+  id?: string;
+  nama_saudara_kandung: string;
+  jenis_kelamin?: string | null;
+  tanggal_lahir?: string | null;
+  pendidikan_terakhir?: string | null;
+  pekerjaan?: string | null;
+  keterangan?: string | null;
+};
+
+export type EmployeeEducationData = {
+  id?: string;
+  tingkat_pendidikan?: string | null;
+  bidang_studi?: string | null;
+  nama_sekolah?: string | null;
+  kota_sekolah?: string | null;
+  status_kelulusan?: string | null;
+  keterangan?: string | null;
+};
+
 export type KaryawanDetail = KaryawanListItem & {
   manager_id?: string | null;
   atasan_langsung_id?: string | null;
@@ -38,12 +86,89 @@ export type KaryawanDetail = KaryawanListItem & {
   status_karyawan_id?: string | null;
   lokasi_kerja_id?: string | null;
   tag_id?: string | null;
+  jenis_hubungan_kerja_id?: string | null;
+  kategori_pangkat_id?: string | null;
+  golongan_id?: string | null;
+  sub_golongan_id?: string | null;
+  lokasi_sebelumnya_id?: string | null;
   email_perusahaan?: string | null;
   nomor_handphone?: string | null;
   qr_code?: string | null;
+  jenis_kelamin?: string | null;
+  tempat_lahir?: string | null;
+  tanggal_lahir?: string | null;
+  email_pribadi?: string | null;
+  agama?: string | null;
+  golongan_darah?: string | null;
+  nomor_kartu_keluarga?: string | null;
+  nomor_ktp?: string | null;
+  nomor_npwp?: string | null;
+  nomor_bpjs?: string | null;
+  no_nik_kk?: string | null;
+  status_pajak?: string | null;
+  alamat_domisili?: string | null;
+  kota_domisili?: string | null;
+  provinsi_domisili?: string | null;
+  alamat_ktp?: string | null;
+  kota_ktp?: string | null;
+  provinsi_ktp?: string | null;
+  nomor_handphone_2?: string | null;
+  nomor_telepon_rumah_1?: string | null;
+  nomor_telepon_rumah_2?: string | null;
+  status_pernikahan?: string | null;
+  nama_pasangan?: string | null;
+  tanggal_menikah?: string | null;
+  tanggal_cerai?: string | null;
+  tanggal_wafat_pasangan?: string | null;
+  pekerjaan_pasangan?: string | null;
+  jumlah_anak?: number | null;
+  nomor_rekening?: string | null;
+  nama_pemegang_rekening?: string | null;
+  nama_bank?: string | null;
+  cabang_bank?: string | null;
+  tanggal_masuk_group?: string | null;
+  tanggal_masuk?: string | null;
+  tanggal_permanent?: string | null;
+  tanggal_kontrak?: string | null;
+  tanggal_akhir_kontrak?: string | null;
+  tanggal_berhenti?: string | null;
+  no_dana_pensiun?: string | null;
+  nama_kontak_darurat_1?: string | null;
+  nomor_telepon_kontak_darurat_1?: string | null;
+  hubungan_kontak_darurat_1?: string | null;
+  alamat_kontak_darurat_1?: string | null;
+  nama_kontak_darurat_2?: string | null;
+  nomor_telepon_kontak_darurat_2?: string | null;
+  hubungan_kontak_darurat_2?: string | null;
+  alamat_kontak_darurat_2?: string | null;
+  point_of_original?: string | null;
+  point_of_hire?: string | null;
+  ukuran_seragam_kerja?: string | null;
+  ukuran_sepatu_kerja?: string | null;
+  tanggal_mutasi?: string | null;
+  siklus_pembayaran_gaji?: string | null;
+  costing?: string | null;
+  assign?: string | null;
+  actual?: string | null;
+  pendidikan_terakhir_pasangan?: string | null;
+  keterangan_pasangan?: string | null;
+  anak_ke?: number | null;
+  jumlah_saudara_kandung?: number | null;
+  nama_ayah_mertua?: string | null;
+  tanggal_lahir_ayah_mertua?: string | null;
+  pendidikan_terakhir_ayah_mertua?: string | null;
+  keterangan_ayah_mertua?: string | null;
+  nama_ibu_mertua?: string | null;
+  tanggal_lahir_ibu_mertua?: string | null;
+  pendidikan_terakhir_ibu_mertua?: string | null;
+  keterangan_ibu_mertua?: string | null;
   manager?: KaryawanRelation | null;
   atasan_langsung?: KaryawanRelation | null;
   tag?: KaryawanRelation | null;
+  family?: EmployeeFamilyData | null;
+  children?: EmployeeChildData[];
+  siblings?: EmployeeSiblingData[];
+  educations?: EmployeeEducationData[];
 };
 
 export type KaryawanQuery = {
@@ -102,6 +227,21 @@ type DatasetState = {
   available: boolean;
 };
 
+type MasterDataDropdownLoadingState = {
+  divisi: DatasetState;
+  department: DatasetState;
+  posisiJabatan: DatasetState;
+  statusKaryawan: DatasetState;
+  lokasiKerja: DatasetState;
+  tag: DatasetState;
+  manager: DatasetState;
+  atasanLangsung: DatasetState;
+  jenisHubunganKerja: DatasetState;
+  kategoriPangkat: DatasetState;
+  golongan: DatasetState;
+  subGolongan: DatasetState;
+};
+
 type MasterDataDropdownsResult = {
   divisiOptions: SelectOption[];
   departmentOptions: SelectOption[];
@@ -111,16 +251,11 @@ type MasterDataDropdownsResult = {
   tagOptions: SelectOption[];
   managerOptions: SelectOption[];
   atasanLangsungOptions: SelectOption[];
-  loadingState: {
-    divisi: DatasetState;
-    department: DatasetState;
-    posisiJabatan: DatasetState;
-    statusKaryawan: DatasetState;
-    lokasiKerja: DatasetState;
-    tag: DatasetState;
-    manager: DatasetState;
-    atasanLangsung: DatasetState;
-  };
+  jenisHubunganKerjaOptions: SelectOption[];
+  kategoriPangkatOptions: SelectOption[];
+  golonganOptions: SelectOption[];
+  subGolonganOptions: SelectOption[];
+  loadingState: MasterDataDropdownLoadingState;
   isAnyLoading: boolean;
   reload: () => Promise<void>;
 };
@@ -140,6 +275,21 @@ const DEFAULT_QUERY: KaryawanQuery = {
   department_id: undefined,
   status_karyawan_id: undefined,
   lokasi_kerja_id: undefined,
+};
+
+const DEFAULT_LOADING_STATE: MasterDataDropdownLoadingState = {
+  divisi: { loading: true, available: false },
+  department: { loading: true, available: false },
+  posisiJabatan: { loading: true, available: false },
+  statusKaryawan: { loading: true, available: false },
+  lokasiKerja: { loading: true, available: false },
+  tag: { loading: true, available: false },
+  manager: { loading: true, available: false },
+  atasanLangsung: { loading: true, available: false },
+  jenisHubunganKerja: { loading: true, available: false },
+  kategoriPangkat: { loading: true, available: false },
+  golongan: { loading: true, available: false },
+  subGolongan: { loading: true, available: false },
 };
 
 function toMasterDataOptionLabel(item: MasterDataActiveOption) {
@@ -371,28 +521,14 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
   const [tagOptions, setTagOptions] = useState<SelectOption[]>([]);
   const [managerOptions, setManagerOptions] = useState<SelectOption[]>([]);
   const [atasanLangsungOptions, setAtasanLangsungOptions] = useState<SelectOption[]>([]);
-  const [loadingState, setLoadingState] = useState({
-    divisi: { loading: true, available: false },
-    department: { loading: true, available: false },
-    posisiJabatan: { loading: true, available: false },
-    statusKaryawan: { loading: true, available: false },
-    lokasiKerja: { loading: true, available: false },
-    tag: { loading: true, available: false },
-    manager: { loading: true, available: false },
-    atasanLangsung: { loading: true, available: false },
-  });
+  const [jenisHubunganKerjaOptions, setJenisHubunganKerjaOptions] = useState<SelectOption[]>([]);
+  const [kategoriPangkatOptions, setKategoriPangkatOptions] = useState<SelectOption[]>([]);
+  const [golonganOptions, setGolonganOptions] = useState<SelectOption[]>([]);
+  const [subGolonganOptions, setSubGolonganOptions] = useState<SelectOption[]>([]);
+  const [loadingState, setLoadingState] = useState<MasterDataDropdownLoadingState>(DEFAULT_LOADING_STATE);
 
   const loadDropdowns = useCallback(async () => {
-    setLoadingState({
-      divisi: { loading: true, available: false },
-      department: { loading: true, available: false },
-      posisiJabatan: { loading: true, available: false },
-      statusKaryawan: { loading: true, available: false },
-      lokasiKerja: { loading: true, available: false },
-      tag: { loading: true, available: false },
-      manager: { loading: true, available: false },
-      atasanLangsung: { loading: true, available: false },
-    });
+    setLoadingState(DEFAULT_LOADING_STATE);
 
     const results = await Promise.allSettled([
       fetchMasterDataOptions("/hr/master-data/divisi"),
@@ -402,6 +538,10 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
       fetchMasterDataOptions("/hr/master-data/lokasi-kerja"),
       fetchMasterDataOptions("/hr/master-data/tag"),
       fetchEmployeeOptions(),
+      fetchMasterDataOptions("/hr/master-data/jenis-hubungan-kerja"),
+      fetchMasterDataOptions("/hr/master-data/kategori-pangkat"),
+      fetchMasterDataOptions("/hr/master-data/golongan"),
+      fetchMasterDataOptions("/hr/master-data/sub-golongan"),
     ]);
 
     const [
@@ -412,6 +552,10 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
       lokasiKerjaResult,
       tagResult,
       employeeResult,
+      jenisHubunganKerjaResult,
+      kategoriPangkatResult,
+      golonganResult,
+      subGolonganResult,
     ] = results;
 
     const employeeOptions = employeeResult.status === "fulfilled" ? employeeResult.value : [];
@@ -432,6 +576,20 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
     setTagOptions(tagResult.status === "fulfilled" ? mapMasterOptions(tagResult.value) : []);
     setManagerOptions(mapEmployeeOptions(employeeOptions.filter(isHeadEmployee)));
     setAtasanLangsungOptions(mapEmployeeOptions(employeeOptions.filter(isEmployeeActive)));
+    setJenisHubunganKerjaOptions(
+      jenisHubunganKerjaResult.status === "fulfilled"
+        ? mapMasterOptions(jenisHubunganKerjaResult.value)
+        : [],
+    );
+    setKategoriPangkatOptions(
+      kategoriPangkatResult.status === "fulfilled" ? mapMasterOptions(kategoriPangkatResult.value) : [],
+    );
+    setGolonganOptions(
+      golonganResult.status === "fulfilled" ? mapMasterOptions(golonganResult.value) : [],
+    );
+    setSubGolonganOptions(
+      subGolonganResult.status === "fulfilled" ? mapMasterOptions(subGolonganResult.value) : [],
+    );
 
     setLoadingState({
       divisi: { loading: false, available: divisiResult.status === "fulfilled" },
@@ -442,6 +600,16 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
       tag: { loading: false, available: tagResult.status === "fulfilled" },
       manager: { loading: false, available: employeeResult.status === "fulfilled" },
       atasanLangsung: { loading: false, available: employeeResult.status === "fulfilled" },
+      jenisHubunganKerja: {
+        loading: false,
+        available: jenisHubunganKerjaResult.status === "fulfilled",
+      },
+      kategoriPangkat: {
+        loading: false,
+        available: kategoriPangkatResult.status === "fulfilled",
+      },
+      golongan: { loading: false, available: golonganResult.status === "fulfilled" },
+      subGolongan: { loading: false, available: subGolonganResult.status === "fulfilled" },
     });
   }, []);
 
@@ -463,6 +631,10 @@ export function useMasterDataDropdowns(): MasterDataDropdownsResult {
     tagOptions,
     managerOptions,
     atasanLangsungOptions,
+    jenisHubunganKerjaOptions,
+    kategoriPangkatOptions,
+    golonganOptions,
+    subGolonganOptions,
     loadingState,
     isAnyLoading,
     reload: loadDropdowns,

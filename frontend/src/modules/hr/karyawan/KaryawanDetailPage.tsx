@@ -28,6 +28,9 @@ import {
   useMasterDataDropdowns,
   type KaryawanDetail,
 } from "../hooks/useKaryawan";
+import FamilyInfoTab from "./tabs/FamilyInfoTab";
+import HrInfoTab from "./tabs/HrInfoTab";
+import PersonalInfoTab from "./tabs/PersonalInfoTab";
 
 const { Text, Title } = Typography;
 
@@ -182,11 +185,7 @@ function KaryawanDetailPage() {
       <Card className="rounded-3xl shadow-panel">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <Space size={20} align="start">
-            <Avatar
-              size={96}
-              src={buildFotoKaryawanUrl(data?.foto_karyawan)}
-              className="bg-slate-900"
-            >
+            <Avatar size={96} src={buildFotoKaryawanUrl(data?.foto_karyawan)} className="bg-slate-900">
               {getInitials(data?.nama_lengkap ?? "Karyawan")}
             </Avatar>
             <Space direction="vertical" size={6}>
@@ -342,25 +341,29 @@ function KaryawanDetailPage() {
       </Card>
 
       <Card className="rounded-3xl shadow-panel">
-        <Tabs
-          items={[
-            {
-              key: "personal-information",
-              label: "Personal Information",
-              children: <Empty description="Akan segera tersedia" />,
-            },
-            {
-              key: "informasi-hr",
-              label: "Informasi HR",
-              children: <Empty description="Akan segera tersedia" />,
-            },
-            {
-              key: "informasi-keluarga",
-              label: "Informasi Keluarga",
-              children: <Empty description="Akan segera tersedia" />,
-            },
-          ]}
-        />
+        {data ? (
+          <Tabs
+            items={[
+              {
+                key: "personal-information",
+                label: "Personal Information",
+                children: <PersonalInfoTab data={data!} employeeId={id!} onSave={reload} />,
+              },
+              {
+                key: "informasi-hr",
+                label: "Informasi HR",
+                children: <HrInfoTab data={data!} dropdowns={dropdowns} employeeId={id!} onSave={reload} />,
+              },
+              {
+                key: "informasi-keluarga",
+                label: "Informasi Keluarga",
+                children: <FamilyInfoTab data={data!} employeeId={id!} onSave={reload} />,
+              },
+            ]}
+          />
+        ) : (
+          <Empty description="Data karyawan tidak ditemukan" />
+        )}
       </Card>
 
       <Modal

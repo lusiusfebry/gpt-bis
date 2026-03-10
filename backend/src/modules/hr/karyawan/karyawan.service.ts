@@ -317,6 +317,29 @@ export class KaryawanService {
     return normalizedDate;
   }
 
+  private normalizeOptionalText(value?: string | null): string | undefined {
+    const trimmedValue = value?.trim();
+    return trimmedValue ? trimmedValue : undefined;
+  }
+
+  private isEducationPayloadEmpty(education: {
+    tingkat_pendidikan?: string | null;
+    bidang_studi?: string | null;
+    nama_sekolah?: string | null;
+    kota_sekolah?: string | null;
+    status_kelulusan?: string | null;
+    keterangan?: string | null;
+  }): boolean {
+    return ![
+      education.tingkat_pendidikan,
+      education.bidang_studi,
+      education.nama_sekolah,
+      education.kota_sekolah,
+      education.status_kelulusan,
+      education.keterangan,
+    ].some((value) => this.normalizeOptionalText(value) !== undefined);
+  }
+
   private async validateActiveMasterData<T extends ActiveMasterData>(
     label: string,
     finder: () => Promise<T | null>,
@@ -822,14 +845,18 @@ export class KaryawanService {
   private buildEducationsPayload(
     dto: CreateKaryawanDto | UpdateKaryawanDto,
   ): EmployeeRecord[] | undefined {
-    return dto.educations?.map((education) => ({
-      tingkat_pendidikan: education.tingkat_pendidikan,
-      bidang_studi: education.bidang_studi,
-      nama_sekolah: education.nama_sekolah,
-      kota_sekolah: education.kota_sekolah,
-      status_kelulusan: education.status_kelulusan,
-      keterangan: education.keterangan,
+    const educationsPayload = dto.educations?.map((education) => ({
+      tingkat_pendidikan: this.normalizeOptionalText(education.tingkat_pendidikan),
+      bidang_studi: this.normalizeOptionalText(education.bidang_studi),
+      nama_sekolah: this.normalizeOptionalText(education.nama_sekolah),
+      kota_sekolah: this.normalizeOptionalText(education.kota_sekolah),
+      status_kelulusan: this.normalizeOptionalText(education.status_kelulusan),
+      keterangan: this.normalizeOptionalText(education.keterangan),
     }));
+
+    return educationsPayload?.filter(
+      (education) => !this.isEducationPayloadEmpty(education),
+    );
   }
 
   private async ensureEmployeeExists(id: string): Promise<EmployeeRecord> {
@@ -989,6 +1016,9 @@ export class KaryawanService {
     const childrenPayload = this.buildChildrenPayload(dto);
     const siblingsPayload = this.buildSiblingsPayload(dto);
     const educationsPayload = this.buildEducationsPayload(dto);
+    const shouldReplaceEducations =
+      dto.educations !== undefined &&
+      (dto.educations.length === 0 || (educationsPayload?.length ?? 0) > 0);
 
     return this.employeeModel.update({
       where: { id },
@@ -1014,7 +1044,7 @@ export class KaryawanService {
               create: siblingsPayload ?? [],
             }
           : undefined,
-        educations: dto.educations
+        educations: shouldReplaceEducations
           ? {
               deleteMany: {},
               create: educationsPayload ?? [],
