@@ -21,6 +21,14 @@ export class DepartmentService extends BaseMasterDataService<
         status: true,
       },
     },
+    manager: {
+      select: {
+        id: true,
+        nomor_induk_karyawan: true,
+        nama_lengkap: true,
+        foto_karyawan: true,
+      },
+    },
   };
 
   constructor(prisma: PrismaService) {
@@ -38,6 +46,23 @@ export class DepartmentService extends BaseMasterDataService<
 
     if (divisi.status !== 'Aktif') {
       throw new BadRequestException('Divisi harus berstatus Aktif');
+    }
+  }
+
+  private async validateManager(managerId?: string | null): Promise<void> {
+    if (!managerId) {
+      return;
+    }
+
+    const manager = await this.prisma.employee.findFirst({
+      where: {
+        id: managerId,
+        is_deleted: false,
+      },
+    });
+
+    if (!manager) {
+      throw new NotFoundException('Manager tidak ditemukan');
     }
   }
 
@@ -77,12 +102,18 @@ export class DepartmentService extends BaseMasterDataService<
 
   async create(dto: CreateDepartmentDto) {
     await this.validateDivisi(dto.divisi_id);
+    await this.validateManager(dto.manager_id);
+
     return super.create(dto);
   }
 
   async update(id: string, dto: UpdateDepartmentDto) {
     if (dto.divisi_id) {
       await this.validateDivisi(dto.divisi_id);
+    }
+
+    if (dto.manager_id !== undefined) {
+      await this.validateManager(dto.manager_id);
     }
 
     return super.update(id, dto);

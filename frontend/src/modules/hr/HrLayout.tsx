@@ -1,7 +1,10 @@
 import { Layout, Menu, Typography } from "antd";
+import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
+  HR_KARYAWAN_MENU_KEY,
+  HR_KARYAWAN_MENU_PATHS,
   HR_MASTER_DATA_MENU_ITEMS,
   HR_MASTER_MENU_ITEMS,
   HR_MASTER_MENU_PARENT_KEY,
@@ -15,6 +18,17 @@ function HrLayout() {
   const navigate = useNavigate();
 
   const selectedKeys = useMemo(() => {
+    const isKaryawanPath =
+      HR_KARYAWAN_MENU_PATHS.some(
+        (path) => location.pathname === path || location.pathname.startsWith(`${path}/`),
+      ) ||
+      location.pathname === HR_KARYAWAN_MENU_KEY ||
+      location.pathname.startsWith(`${HR_KARYAWAN_MENU_KEY}/`);
+
+    if (isKaryawanPath) {
+      return [HR_KARYAWAN_MENU_KEY];
+    }
+
     const match = [...HR_MASTER_DATA_MENU_ITEMS]
       .sort((a, b) => b.key.length - a.key.length)
       .find((item) => location.pathname === item.key || location.pathname.startsWith(`${item.key}/`));
@@ -23,12 +37,33 @@ function HrLayout() {
   }, [location.pathname]);
 
   const openKeys = useMemo(() => {
-    if (selectedKeys.length > 0) {
+    if (selectedKeys.some((key) => key.startsWith("/hr/master-data/"))) {
       return [HR_MASTER_MENU_PARENT_KEY];
     }
 
     return [];
   }, [selectedKeys]);
+
+  const menuItems = useMemo<ItemType<MenuItemType>[]>(
+    () => [
+      {
+        key: HR_MASTER_MENU_PARENT_KEY,
+        icon: HR_MASTER_MENU_ITEMS[0].icon,
+        label: HR_MASTER_MENU_ITEMS[0].label,
+        children: HR_MASTER_DATA_MENU_ITEMS.map((child) => ({
+          key: child.key,
+          icon: child.icon,
+          label: child.label,
+        })),
+      },
+      {
+        key: HR_KARYAWAN_MENU_KEY,
+        icon: HR_MASTER_MENU_ITEMS[1].icon,
+        label: HR_MASTER_MENU_ITEMS[1].label,
+      },
+    ],
+    [],
+  );
 
   return (
     <Layout className="min-h-[calc(100vh-13rem)] rounded-[2rem] bg-transparent">
@@ -50,17 +85,7 @@ function HrLayout() {
           selectedKeys={selectedKeys}
           defaultOpenKeys={[HR_MASTER_MENU_PARENT_KEY]}
           openKeys={openKeys}
-          items={HR_MASTER_MENU_ITEMS.map((item) => ({
-            key: item.key,
-            icon: item.icon,
-            label: item.label,
-            disabled: "disabled" in item ? item.disabled : undefined,
-            children: "children" in item ? item.children.map((child) => ({
-              key: child.key,
-              icon: child.icon,
-              label: child.label,
-            })) : undefined,
-          }))}
+          items={menuItems}
           onClick={({ key }) => navigate(key)}
           className="border-0 px-3 py-4"
         />

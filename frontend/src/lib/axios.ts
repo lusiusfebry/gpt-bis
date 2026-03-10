@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import Axios, {
   AxiosError,
   type InternalAxiosRequestConfig,
@@ -20,13 +22,40 @@ type RefreshResponse = {
 
 const ACCESS_TOKEN_KEY = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
+const DEFAULT_BACKEND_ORIGIN = "http://localhost:3000";
+const API_BASE_PATH = "/api";
+const BACKEND_ORIGIN = (import.meta.env.VITE_BACKEND_ORIGIN as string | undefined)?.trim();
+
+function trimTrailingSlash(value: string) {
+  return value.replace(/\/+$/, "");
+}
+
+export function getBackendOrigin() {
+  if (BACKEND_ORIGIN) {
+    return trimTrailingSlash(BACKEND_ORIGIN);
+  }
+
+  if (typeof window === "undefined") {
+    return DEFAULT_BACKEND_ORIGIN;
+  }
+
+  return import.meta.env.DEV ? DEFAULT_BACKEND_ORIGIN : window.location.origin;
+}
+
+export function getApiBaseUrl() {
+  return `${getBackendOrigin()}${API_BASE_PATH}`;
+}
+
+export function getBackendBaseUrl() {
+  return getBackendOrigin();
+}
 
 const api = Axios.create({
-  baseURL: "/api",
+  baseURL: getApiBaseUrl(),
 });
 
 const refreshClient = Axios.create({
-  baseURL: "/api",
+  baseURL: getApiBaseUrl(),
 });
 
 let isRefreshing = false;

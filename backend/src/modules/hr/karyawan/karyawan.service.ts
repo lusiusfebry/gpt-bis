@@ -20,6 +20,19 @@ type ActiveMasterData = {
 };
 
 type EmployeeRecord = Record<string, unknown>;
+type EmployeeReferenceValidation = {
+  id: string;
+  nama_lengkap: string;
+  is_deleted: boolean;
+  posisi_jabatan?: {
+    nama: string;
+    status: string;
+  } | null;
+  status_karyawan?: {
+    nama: string;
+    status: string;
+  } | null;
+};
 type PrismaModelDelegate = {
   count(args?: Record<string, unknown>): Promise<number>;
   create(args: Record<string, unknown>): Promise<EmployeeRecord>;
@@ -32,6 +45,20 @@ type PrismaModelDelegate = {
 type UploadFile = {
   originalname: string;
   buffer: Buffer;
+};
+
+type EmployeeOptionRecord = {
+  id: string;
+  nama_lengkap: string;
+  nomor_induk_karyawan: string;
+  status_karyawan: {
+    nama: string;
+    status: string;
+  } | null;
+  posisi_jabatan: {
+    nama: string;
+    status: string;
+  } | null;
 };
 
 @Injectable()
@@ -323,23 +350,50 @@ export class KaryawanService {
     return user;
   }
 
+  private isEmployeeActive(employee: EmployeeReferenceValidation): boolean {
+    return (
+      employee.status_karyawan?.status === 'Aktif' &&
+      employee.status_karyawan.nama.toLowerCase() === 'aktif'
+    );
+  }
+
+  private isHeadEmployee(employee: EmployeeReferenceValidation): boolean {
+    return (
+      this.isEmployeeActive(employee) &&
+      employee.posisi_jabatan?.status === 'Aktif' &&
+      employee.posisi_jabatan.nama.toLowerCase().includes('head')
+    );
+  }
+
   private async validateEmployeeReference(
     employeeId: string,
     label: string,
     currentEmployeeId?: string,
-  ): Promise<EmployeeRecord> {
+  ): Promise<EmployeeReferenceValidation> {
     if (currentEmployeeId && employeeId === currentEmployeeId) {
       throw new BadRequestException(`${label} tidak boleh sama dengan karyawan`);
     }
 
-    const employee = await this.employeeModel.findUnique({
+    const employee = (await this.employeeModel.findUnique({
       where: { id: employeeId },
       select: {
         id: true,
         nama_lengkap: true,
         is_deleted: true,
+        posisi_jabatan: {
+          select: {
+            nama: true,
+            status: true,
+          },
+        },
+        status_karyawan: {
+          select: {
+            nama: true,
+            status: true,
+          },
+        },
       },
-    });
+    })) as EmployeeReferenceValidation | null;
 
     if (!employee || employee.is_deleted) {
       throw new NotFoundException(`${label} tidak ditemukan`);
@@ -459,15 +513,27 @@ export class KaryawanService {
     }
 
     if (dto.manager_id) {
-      await this.validateEmployeeReference(dto.manager_id, 'Manager', currentEmployeeId);
+      const manager = await this.validateEmployeeReference(
+        dto.manager_id,
+        'Manager',
+        currentEmployeeId,
+      );
+
+      if (!this.isHeadEmployee(manager)) {
+        throw new BadRequestException('Manager harus karyawan aktif dengan posisi head');
+      }
     }
 
     if (dto.atasan_langsung_id) {
-      await this.validateEmployeeReference(
+      const atasanLangsung = await this.validateEmployeeReference(
         dto.atasan_langsung_id,
         'Atasan langsung',
         currentEmployeeId,
       );
+
+      if (!this.isEmployeeActive(atasanLangsung)) {
+        throw new BadRequestException('Atasan langsung harus karyawan aktif');
+      }
     }
   }
 
@@ -795,6 +861,39 @@ export class KaryawanService {
     ]);
 
     return new PaginatedResponseDto(data, page, limit, total);
+  }
+
+  async findOptions(): Promise<EmployeeOptionRecord[]> {
+    return (await this.employeeModel.findMany({
+      where: {
+        is_deleted: false,
+      },
+      select: {
+        id: true,
+        nama_lengkap: true,
+        nomor_induk_karyawan: true,
+        status_karyawan: {
+          select: {
+            nama: true,
+            status: true,
+          },
+        },
+        posisi_jabatan: {
+          select: {
+            nama: true,
+            status: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          nama_lengkap: 'asc',
+        },
+        {
+          nomor_induk_karyawan: 'asc',
+        },
+      ],
+    })) as EmployeeOptionRecord[];
   }
 
   async findOne(id: string): Promise<EmployeeRecord> {

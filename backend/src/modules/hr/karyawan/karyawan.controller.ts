@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   MaxFileSizeValidator,
   Param,
@@ -12,7 +13,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  FileTypeValidator,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -30,6 +30,11 @@ export class KaryawanController {
   @Get()
   findAll(@Query() query: KaryawanQueryDto) {
     return this.karyawanService.findAll(query);
+  }
+
+  @Get('options')
+  findOptions() {
+    return this.karyawanService.findOptions();
   }
 
   @Get(':id')

@@ -3,6 +3,7 @@ import {
   EnvironmentOutlined,
   NodeIndexOutlined,
   TagOutlined,
+  TeamOutlined,
   TrophyOutlined,
   UserSwitchOutlined,
 } from "@ant-design/icons";
@@ -500,6 +501,8 @@ export const LOKASI_KERJA_FIELDS: MasterDataFormField[] = [
 ];
 
 export const HR_MASTER_MENU_PARENT_KEY = "hr-master-data";
+export const HR_KARYAWAN_MENU_KEY = "/hr/karyawan";
+export const HR_KARYAWAN_MENU_PATHS = [HR_KARYAWAN_MENU_KEY, `${HR_KARYAWAN_MENU_KEY}/tambah`] as const;
 
 export const HR_MASTER_DATA_MENU_ITEMS = [
   { key: "/hr/master-data/divisi", label: "Divisi", icon: <ApartmentOutlined /> },
@@ -526,10 +529,9 @@ export const HR_MASTER_MENU_ITEMS = [
     children: HR_MASTER_DATA_MENU_ITEMS,
   },
   {
-    key: "/hr/manajemen-karyawan",
+    key: HR_KARYAWAN_MENU_KEY,
     label: "Manajemen Karyawan",
-    icon: <UserSwitchOutlined />,
-    disabled: true,
+    icon: <TeamOutlined />,
   },
 ] as const;
 
