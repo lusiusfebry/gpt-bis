@@ -5,8 +5,16 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Request, Response } from 'express';
+
+interface ErrorResponseBody {
+  statusCode: number;
+  message: string | string[];
+  error: string;
+  timestamp: string;
+  path: string;
+}
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -17,49 +25,62 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const timestamp = new Date().toISOString();
 
     if (exception instanceof HttpException) {
-      const status = exception.getStatus();
-      const error = exception.getResponse();
+      const statusCode = exception.getStatus();
+      const exceptionResponse = exception.getResponse();
+      let message: string | string[] = exception.message;
+      let error = exception.name;
 
-      response.status(status).json({
-        statusCode: status,
+      if (typeof exceptionResponse === 'string') {
+        message = exceptionResponse;
+        error = exception.name;
+      } else if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+        const responseBody = exceptionResponse as Record<string, unknown>;
+
+        message =
+          (responseBody.message as string | string[] | undefined) ?? exception.message;
+        error = (responseBody.error as string | undefined) ?? exception.name;
+      }
+
+      response.status(statusCode).json({
+        statusCode,
+        message,
+        error,
         timestamp,
         path: request.url,
-        error,
-      });
+      } satisfies ErrorResponseBody);
       return;
     }
 
-    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      const prismaError = exception as Prisma.PrismaClientKnownRequestError;
-
-      if (prismaError.code === 'P2002') {
+    if (exception instanceof PrismaClientKnownRequestError) {
+      if (exception.code === 'P2002') {
         response.status(HttpStatus.CONFLICT).json({
           statusCode: HttpStatus.CONFLICT,
+          message: 'Data duplikat terdeteksi.',
+          error: 'Conflict',
           timestamp,
           path: request.url,
-          message: 'Data duplikat terdeteksi.',
-          code: prismaError.code,
-        });
+        } satisfies ErrorResponseBody);
         return;
       }
 
-      if (prismaError.code === 'P2025') {
+      if (exception.code === 'P2025') {
         response.status(HttpStatus.NOT_FOUND).json({
           statusCode: HttpStatus.NOT_FOUND,
+          message: 'Data yang diminta tidak ditemukan.',
+          error: 'Not Found',
           timestamp,
           path: request.url,
-          message: 'Data yang diminta tidak ditemukan.',
-          code: prismaError.code,
-        });
+        } satisfies ErrorResponseBody);
         return;
       }
     }
 
     response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: 'Terjadi kesalahan pada server.',
+      error: 'Internal Server Error',
       timestamp,
       path: request.url,
-      message: 'Terjadi kesalahan pada server.',
-    });
+    } satisfies ErrorResponseBody);
   }
 }

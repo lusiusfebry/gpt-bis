@@ -1,20 +1,23 @@
-import { join } from 'path';
-
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const frontendUrl = configService.get<string>('frontendUrl', 'http://localhost:5173');
+  const apiPrefix = configService.get<string>('apiPrefix', 'api');
+  const port = configService.get<number>('port', 3000);
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: frontendUrl,
     credentials: true,
   });
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix(apiPrefix);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -23,11 +26,6 @@ async function bootstrap(): Promise<void> {
     }),
   );
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/uploads/',
-  });
-
-  const port = Number(process.env.PORT ?? 3000);
   await app.listen(port);
 }
 

@@ -1,7 +1,7 @@
 import { join } from 'path';
 
 import { Controller, Get, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { PrismaModule } from './common/prisma.module';
@@ -24,9 +24,18 @@ class AppController {
       envFilePath: '.env',
       load: [configuration],
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'),
-      serveRoot: '/uploads',
+    ServeStaticModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const uploadDir = configService.get<string>('uploadDir', 'uploads');
+
+        return [
+          {
+            rootPath: join(process.cwd(), uploadDir),
+            serveRoot: `/${uploadDir}`,
+          },
+        ];
+      },
     }),
     PrismaModule,
   ],

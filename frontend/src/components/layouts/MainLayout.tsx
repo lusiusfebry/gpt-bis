@@ -4,7 +4,7 @@ import {
   MenuUnfoldOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, Space, Typography } from "antd";
+import { Avatar, Button, Layout, Menu, Space, Typography } from "antd";
 import { useMemo, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -81,9 +81,18 @@ function MainLayout() {
               </Title>
             </div>
           </Space>
-          <Paragraph className="!mb-0 hidden text-right text-slate-500 md:block">
-            Antarmuka enterprise siap untuk pengembangan modul operasional dan SDM.
-          </Paragraph>
+          <div className="hidden items-center gap-3 md:flex">
+            <div className="text-right">
+              <Text className="block text-xs uppercase tracking-[0.3em] text-slate-400">
+                User Placeholder
+              </Text>
+              <Text strong className="text-sm text-slate-700">
+                Nama Pengguna
+              </Text>
+            </div>
+            <Avatar className="bg-slate-200 !text-slate-600">U</Avatar>
+            <Button type="default">Logout</Button>
+          </div>
         </Header>
         <Content className="p-4 sm:p-6">
           <div className="min-h-[calc(100vh-13rem)] rounded-[2rem] border border-white/60 bg-white/70 p-4 shadow-panel sm:p-6">

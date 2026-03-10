@@ -5,5 +5,8 @@ export default () => ({
   frontendUrl: process.env.FRONTEND_URL ?? 'http://localhost:5173',
   databaseUrl:
     process.env.DATABASE_URL ??
-    'postgresql://root:123456789@localhost:5432/bebang_sistem_informasi?schema=public',
+    'postgresql://postgres:123456789@localhost:5432/gpt-bis',
+  jwtSecret: process.env.JWT_SECRET ?? 'changeme',
+  jwtExpiration: process.env.JWT_EXPIRATION ?? '1d',
+  uploadDir: process.env.UPLOAD_DIR ?? 'uploads',
 });
