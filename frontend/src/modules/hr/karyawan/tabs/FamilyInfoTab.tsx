@@ -90,7 +90,7 @@ function mapFamilyValues(data: KaryawanDetail): FamilyInfoFormValues {
 
   return {
     family: {
-      nama_pasangan: family?.nama_pasangan ?? data.nama_pasangan ?? undefined,
+      nama_pasangan: data.nama_pasangan ?? undefined,
       tanggal_lahir_pasangan: toDayjs(family?.tanggal_lahir_pasangan),
       pendidikan_terakhir_pasangan: family?.pendidikan_terakhir_pasangan ?? undefined,
       pekerjaan_pasangan: family?.pekerjaan_pasangan ?? data.pekerjaan_pasangan ?? undefined,

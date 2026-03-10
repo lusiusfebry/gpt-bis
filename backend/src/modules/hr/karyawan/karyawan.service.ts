@@ -735,7 +735,6 @@ export class KaryawanService {
       ...(dto.costing !== undefined ? { costing: dto.costing } : {}),
       ...(dto.assign !== undefined ? { assign: dto.assign } : {}),
       ...(dto.actual !== undefined ? { actual: dto.actual } : {}),
-      ...(family?.nama_pasangan !== undefined ? { nama_pasangan: family.nama_pasangan } : {}),
       ...(family?.tanggal_lahir_pasangan !== undefined
         ? {
             tanggal_lahir_pasangan:
@@ -796,29 +795,70 @@ export class KaryawanService {
   }
 
   private buildFamilyPayload(dto: CreateKaryawanDto | UpdateKaryawanDto): EmployeeRecord | undefined {
-    if (!dto.family) {
+    const family = dto.family;
+
+    if (!family && dto.nama_pasangan === undefined) {
       return undefined;
     }
 
     return {
-      nama_pasangan: dto.family.nama_pasangan,
-      tanggal_lahir_pasangan: this.normalizeDate(dto.family.tanggal_lahir_pasangan) ?? null,
-      pendidikan_terakhir_pasangan: dto.family.pendidikan_terakhir_pasangan,
-      pekerjaan_pasangan: dto.family.pekerjaan_pasangan,
-      jumlah_anak: dto.family.jumlah_anak,
-      keterangan_pasangan: dto.family.keterangan_pasangan,
-      anak_ke: dto.family.anak_ke,
-      jumlah_saudara_kandung: dto.family.jumlah_saudara_kandung,
-      nama_ayah_mertua: dto.family.nama_ayah_mertua,
-      tanggal_lahir_ayah_mertua:
-        this.normalizeDate(dto.family.tanggal_lahir_ayah_mertua) ?? null,
-      pendidikan_terakhir_ayah_mertua: dto.family.pendidikan_terakhir_ayah_mertua,
-      keterangan_ayah_mertua: dto.family.keterangan_ayah_mertua,
-      nama_ibu_mertua: dto.family.nama_ibu_mertua,
-      tanggal_lahir_ibu_mertua:
-        this.normalizeDate(dto.family.tanggal_lahir_ibu_mertua) ?? null,
-      pendidikan_terakhir_ibu_mertua: dto.family.pendidikan_terakhir_ibu_mertua,
-      keterangan_ibu_mertua: dto.family.keterangan_ibu_mertua,
+      ...(dto.nama_pasangan !== undefined ? { nama_pasangan: dto.nama_pasangan } : {}),
+      ...(family?.tanggal_lahir_pasangan !== undefined
+        ? {
+            tanggal_lahir_pasangan:
+              this.normalizeDate(family.tanggal_lahir_pasangan) ?? null,
+          }
+        : {}),
+      ...(family?.pendidikan_terakhir_pasangan !== undefined
+        ? {
+            pendidikan_terakhir_pasangan: family.pendidikan_terakhir_pasangan,
+          }
+        : {}),
+      ...(family?.pekerjaan_pasangan !== undefined
+        ? { pekerjaan_pasangan: family.pekerjaan_pasangan }
+        : {}),
+      ...(family?.jumlah_anak !== undefined ? { jumlah_anak: family.jumlah_anak } : {}),
+      ...(family?.keterangan_pasangan !== undefined
+        ? { keterangan_pasangan: family.keterangan_pasangan }
+        : {}),
+      ...(family?.anak_ke !== undefined ? { anak_ke: family.anak_ke } : {}),
+      ...(family?.jumlah_saudara_kandung !== undefined
+        ? { jumlah_saudara_kandung: family.jumlah_saudara_kandung }
+        : {}),
+      ...(family?.nama_ayah_mertua !== undefined
+        ? { nama_ayah_mertua: family.nama_ayah_mertua }
+        : {}),
+      ...(family?.tanggal_lahir_ayah_mertua !== undefined
+        ? {
+            tanggal_lahir_ayah_mertua:
+              this.normalizeDate(family.tanggal_lahir_ayah_mertua) ?? null,
+          }
+        : {}),
+      ...(family?.pendidikan_terakhir_ayah_mertua !== undefined
+        ? {
+            pendidikan_terakhir_ayah_mertua: family.pendidikan_terakhir_ayah_mertua,
+          }
+        : {}),
+      ...(family?.keterangan_ayah_mertua !== undefined
+        ? { keterangan_ayah_mertua: family.keterangan_ayah_mertua }
+        : {}),
+      ...(family?.nama_ibu_mertua !== undefined
+        ? { nama_ibu_mertua: family.nama_ibu_mertua }
+        : {}),
+      ...(family?.tanggal_lahir_ibu_mertua !== undefined
+        ? {
+            tanggal_lahir_ibu_mertua:
+              this.normalizeDate(family.tanggal_lahir_ibu_mertua) ?? null,
+          }
+        : {}),
+      ...(family?.pendidikan_terakhir_ibu_mertua !== undefined
+        ? {
+            pendidikan_terakhir_ibu_mertua: family.pendidikan_terakhir_ibu_mertua,
+          }
+        : {}),
+      ...(family?.keterangan_ibu_mertua !== undefined
+        ? { keterangan_ibu_mertua: family.keterangan_ibu_mertua }
+        : {}),
     };
   }
 
