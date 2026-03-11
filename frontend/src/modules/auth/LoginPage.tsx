@@ -1,5 +1,4 @@
-import { CustomerServiceOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Alert, App, Button, Checkbox, Form, Input } from "antd";
+import { App, Button, Checkbox, Form, Input, Alert } from "antd";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -21,7 +20,9 @@ function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const redirectTo = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? "/";
+  const redirectTo =
+    (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? "/";
+  const destinationAfterLogin = redirectTo === "/login" ? "/" : redirectTo;
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -40,11 +41,11 @@ function LoginPage() {
 
       notification.success({
         message: "Autentikasi berhasil",
-        description: "Anda akan diarahkan ke dashboard utama.",
+        description: "Anda akan diarahkan ke welcome page.",
         placement: "topRight",
       });
 
-      navigate(redirectTo, { replace: true });
+      navigate(destinationAfterLogin, { replace: true });
     } catch (error) {
       const message =
         isAxiosError<{ message?: string | string[] }>(error) && error.response?.data?.message
@@ -61,10 +62,10 @@ function LoginPage() {
 
   return (
     <div>
-      <div className="mb-10">
-        <h2 className="mb-2 text-3xl font-black text-slate-900">Welcome Back</h2>
+      <header className="mb-10">
+        <h2 className="text-3xl font-black text-slate-900 mb-2">Welcome Back</h2>
         <p className="text-slate-500">Please enter your credentials to access the system.</p>
-      </div>
+      </header>
 
       {errorMessage ? (
         <Alert
@@ -72,7 +73,7 @@ function LoginPage() {
           showIcon
           message="Autentikasi gagal"
           description={errorMessage}
-          className="rounded-lg"
+          className="rounded-lg mb-6"
         />
       ) : null}
 
@@ -83,42 +84,45 @@ function LoginPage() {
         onFinish={handleSubmit}
         autoComplete="off"
         initialValues={{ rememberMe: true }}
-        className="w-full"
+        className="space-y-6"
       >
         <Form.Item
-          label="NIK (Nomor Induk Karyawan)"
+          label={<span className="text-sm font-bold text-slate-700">NIK (Nomor Induk Karyawan)</span>}
           name="nomor_induk_karyawan"
           rules={[
             { required: true, message: "Nomor induk karyawan wajib diisi" },
             { pattern: nikPattern, message: "Format NIK harus 99-99999" },
           ]}
+          className="mb-0"
         >
           <Input
-            prefix={<UserOutlined className="text-slate-400" />}
             placeholder="XX-XXXXX"
             inputMode="numeric"
-            className="rounded-lg border-slate-200 bg-slate-50 px-4 py-4 focus:border-primary focus:ring-primary"
+            className="w-full rounded-lg border-slate-200 bg-slate-50 py-4 px-4 text-slate-900 focus:ring-primary focus:border-primary"
+            classNames={{ input: "bg-transparent border-transparent focus:bg-transparent" }}
           />
         </Form.Item>
 
-        <Form.Item label="Password" name="password" rules={[{ required: true, message: "Password wajib diisi" }]}>
+        <Form.Item
+          label={<span className="text-sm font-bold text-slate-700">Password</span>}
+          name="password"
+          rules={[{ required: true, message: "Password wajib diisi" }]}
+          className="mb-0"
+        >
           <Input.Password
-            prefix={<LockOutlined className="text-slate-400" />}
             placeholder="Enter your password"
-            className="rounded-lg border-slate-200 bg-slate-50 px-4 py-4 focus:border-primary focus:ring-primary"
+            className="w-full rounded-lg border-slate-200 bg-slate-50 py-4 px-4 text-slate-900 focus:ring-primary focus:border-primary"
+            classNames={{ input: "bg-transparent border-transparent focus:bg-transparent" }}
           />
         </Form.Item>
 
-        <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between">
           <Form.Item name="rememberMe" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Remember me</Checkbox>
           </Form.Item>
-          <span
-            aria-disabled="true"
-            className="cursor-not-allowed text-sm font-bold text-slate-400 decoration-2 underline-offset-4"
-          >
+          <a href="#" className="text-sm font-bold text-slate-900 hover:underline decoration-2 underline-offset-4">
             Forgot Password?
-          </span>
+          </a>
         </div>
 
         <Button
@@ -126,16 +130,18 @@ function LoginPage() {
           htmlType="submit"
           block
           loading={isSubmitting}
-          className="mt-2 h-14 rounded-lg text-sm font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+          className="w-full bg-primary text-slate-900 font-black py-4 h-auto rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all transform active:scale-[0.98] uppercase tracking-widest text-sm border-0"
         >
           LOGIN TO SYSTEM
         </Button>
       </Form>
 
-      <div className="mt-12 rounded-xl border border-slate-100 bg-slate-50 p-4">
-        <div className="flex items-center gap-3 text-sm text-slate-600">
-          <CustomerServiceOutlined className="text-base text-primary" />
-          <span>Need technical assistance? Contact IT Site Taliabu Support at ext. 404</span>
+      <div className="mt-12 p-4 bg-slate-50 rounded-xl border border-slate-100">
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined text-slate-400">support_agent</span>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Need technical assistance? Contact <span className="font-bold text-slate-700">IT Site Taliabu Support</span> at <span className="text-primary font-bold">ext. 404</span>
+          </p>
         </div>
       </div>
     </div>

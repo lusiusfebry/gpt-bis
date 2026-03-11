@@ -20,6 +20,7 @@ import PosisiJabatanPage from "../modules/hr/master-data/PosisiJabatanPage";
 import StatusKaryawanPage from "../modules/hr/master-data/StatusKaryawanPage";
 import SubGolonganPage from "../modules/hr/master-data/SubGolonganPage";
 import TagPage from "../modules/hr/master-data/TagPage";
+import WelcomePage from "../modules/welcome/WelcomePage";
 
 function LoginRoute() {
   const { isAuthenticated, isInitializing } = useAuth();
@@ -44,7 +45,8 @@ export function AppRoutes() {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Navigate to="/hr" replace />} />
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/welcome" element={<Navigate to="/" replace />} />
           <Route path="/hr" element={<HrLayout />}>
             <Route index element={<HrDashboardPage />} />
             <Route path="import" element={<ImportPage />} />

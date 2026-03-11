@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-labelledby="title desc">
+  <title id="title">Bebang PWA Icon 192</title>
+  <desc id="desc">Ikon aplikasi Bebang dengan monogram huruf B berwarna emas di atas latar biru gelap.</desc>
+  <rect width="192" height="192" rx="42" fill="#0f172a" />
+  <rect x="16" y="16" width="160" height="160" rx="34" fill="#111c34" stroke="#f2c40d" stroke-width="4" />
+  <path d="M62 46h39.5c23.472 0 38.5 12.066 38.5 30.5 0 11.465-6.447 19.467-16.5 24 14.353 4.337 22.5 14.836 22.5 29 0 20.353-16.736 34.5-41.5 34.5H62V46Zm24 20v26h15.5c9.655 0 15.5-4.806 15.5-12.75 0-8.078-5.962-13.25-15.5-13.25H86Zm0 45v33h18.5c11.755 0 18.5-5.905 18.5-15.75 0-10.056-6.887-17.25-18.5-17.25H86Z" fill="#f2c40d" />
+</svg>

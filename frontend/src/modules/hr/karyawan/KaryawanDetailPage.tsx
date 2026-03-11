@@ -208,176 +208,102 @@ function KaryawanDetailPage() {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+    <div className="flex w-full flex-col gap-6 max-w-7xl mx-auto">
+      <div className="flex items-center gap-2 text-sm text-slate-500">
         <button
           type="button"
           onClick={() => navigate("/hr")}
-          className="transition hover:text-slate-900"
-        >
-          HR
-        </button>
-        <span>/</span>
-        <button
-          type="button"
-          onClick={() => navigate("/hr/karyawan")}
-          className="transition hover:text-slate-900"
+          className="hover:text-primary transition-colors"
         >
           Karyawan
         </button>
-        <span>/</span>
-        <span className="font-medium text-slate-900">{data?.nama_lengkap ?? "Detail Karyawan"}</span>
+        <span className="material-symbols-outlined text-xs">chevron_right</span>
+        <button
+          type="button"
+          onClick={() => navigate("/hr/karyawan")}
+          className="hover:text-primary transition-colors"
+        >
+          Daftar Karyawan
+        </button>
+        <span className="material-symbols-outlined text-xs">chevron_right</span>
+        <span className="font-medium text-slate-900">{data?.nama_lengkap ?? "Profil Karyawan"}</span>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
-        <div className="flex flex-col items-start gap-8 xl:flex-row">
-          <div className="flex min-w-0 flex-1 flex-col gap-8 lg:flex-row">
-            <div className="relative h-32 w-32 shrink-0">
+      <div className="flex w-full flex-col lg:flex-row lg:justify-between lg:items-center bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm mb-2 gap-6">
+        <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start lg:items-center">
+          <div className="relative shrink-0">
+            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/20 bg-slate-100 shadow-sm">
               {photoUrl ? (
                 <img
                   src={photoUrl}
                   alt={data?.nama_lengkap ?? "Foto karyawan"}
-                  className="h-full w-full rounded-xl object-cover ring-1 ring-slate-200"
+                  className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-900 text-3xl font-semibold text-white ring-1 ring-slate-200">
+                <div className="flex h-full w-full items-center justify-center text-4xl font-semibold text-slate-300">
                   {getInitials(data?.nama_lengkap ?? "Karyawan")}
                 </div>
               )}
-              <Upload {...uploadProps}>
-                <button
-                  type="button"
-                  className="absolute bottom-2 right-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-white/95 text-slate-700 shadow-lg transition hover:bg-slate-50"
-                  aria-label="Upload foto karyawan"
-                >
-                  <CameraOutlined />
-                </button>
-              </Upload>
             </div>
-
-            <div className="min-w-0 flex-1 space-y-5">
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
-                    {data?.nama_lengkap ?? "Detail Karyawan"}
-                  </h1>
-                  <span
-                    className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-                      isActiveStatus
-                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200"
-                        : "bg-slate-100 text-slate-600 ring-1 ring-slate-200"
-                    }`}
-                  >
-                    {statusLabel}
-                  </span>
-                </div>
-                <div className="space-y-1 text-sm text-slate-500">
-                  <p>
-                    NIK <span className="font-medium text-slate-900">{data?.nomor_induk_karyawan ?? "-"}</span>
-                  </p>
-                  <p>{data?.posisi_jabatan?.nama ?? "Posisi jabatan belum diatur"}</p>
-                </div>
+            <Upload {...uploadProps}>
+              <button
+                type="button"
+                className="absolute bottom-0 right-0 bg-primary text-slate-900 rounded-full p-2 border-2 border-white shadow-md hover:brightness-95 transition-all flex items-center justify-center cursor-pointer"
+                aria-label="Upload foto karyawan"
+              >
+                <CameraOutlined className="text-sm" />
+              </button>
+            </Upload>
+          </div>
+          <div className="flex flex-col flex-1 text-center sm:text-left">
+            <h2 className="text-slate-900 text-2xl md:text-3xl font-extrabold leading-tight">
+              {data?.nama_lengkap ?? "Profil Karyawan"}
+            </h2>
+            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-2 mt-2">
+              <span className="bg-primary/20 text-yellow-700 font-bold text-xs px-2.5 py-0.5 rounded border border-primary/30 uppercase tracking-wide">
+                {data?.posisi_jabatan?.nama ?? "Posisi belum diatur"}
+              </span>
+              <span className="text-slate-300 text-sm hidden sm:inline">•</span>
+              <span className="text-slate-500 text-sm font-medium">
+                {data?.department?.nama ?? "Departemen belum diatur"}
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap justify-center sm:justify-start items-center gap-3 text-sm text-slate-500">
+              <div className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px]">badge</span>
+                <span className="font-medium text-slate-700">NIK: {data?.nomor_induk_karyawan ?? "-"}</span>
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  icon={<FilePdfOutlined />}
-                  className="!inline-flex !items-center !rounded-lg !border-slate-200 !px-4 !font-medium !text-slate-700 !shadow-none hover:!border-slate-300 hover:!text-slate-900"
-                >
-                  Export PDF
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={handleScrollToForm}
-                  className="!inline-flex !items-center !rounded-lg !border !border-primary !bg-primary !px-4 !font-semibold !text-white !shadow-none hover:!border-primary hover:!bg-primary/90 hover:!text-white"
-                >
-                  Edit Profile
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <TeamOutlined />
-                    Division / Dept
-                  </div>
-                  <p className="text-sm font-medium text-slate-900">
-                    {data?.divisi?.nama ?? "-"} / {data?.department?.nama ?? "-"}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <UserOutlined />
-                    Manager / Supervisor
-                  </div>
-                  <p className="text-sm font-medium text-slate-900">
-                    {data?.manager?.nama_lengkap ?? "-"} / {data?.atasan_langsung?.nama_lengkap ?? "-"}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <MailOutlined />
-                    Email
-                  </div>
-                  <p className="truncate text-sm font-medium text-slate-900">{data?.email_perusahaan ?? "-"}</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <PhoneOutlined />
-                    Phone
-                  </div>
-                  <p className="text-sm font-medium text-slate-900">{data?.nomor_handphone ?? "-"}</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <EnvironmentOutlined />
-                    Lokasi Kerja
-                  </div>
-                  <p className="text-sm font-medium text-slate-900">{data?.lokasi_kerja?.nama ?? "-"}</p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    <TagOutlined />
-                    Tag
-                  </div>
-                  {data?.tag?.nama ? (
-                    <span className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
-                      {data.tag.nama}
-                    </span>
-                  ) : (
-                    <p className="text-sm font-medium text-slate-900">-</p>
-                  )}
-                </div>
-              </div>
+              <span className="text-slate-300">|</span>
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                  isActiveStatus
+                    ? "bg-green-100 text-green-700 border border-green-200"
+                    : "bg-slate-100 text-slate-500 border border-slate-200"
+                }`}
+              >
+                {statusLabel}
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="w-full max-w-xs shrink-0 rounded-xl border border-slate-200 bg-slate-50/70 p-5">
-            <button
-              type="button"
-              onClick={handleOpenQrModal}
-              className="flex w-full flex-col items-center gap-4 text-center"
-            >
-              <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-300 bg-white shadow-sm">
-                {qrCode ? (
-                  <img src={qrCode} alt="Employee QR" className="h-full w-full object-contain p-3" />
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-slate-400">
-                    <QrcodeOutlined className="text-3xl" />
-                    <span className="text-xs font-medium">QR belum tersedia</span>
-                  </div>
-                )}
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Employee QR ({data?.nomor_induk_karyawan ?? "-"})</p>
-                <p className="text-sm text-slate-600">Klik preview untuk membuka modal QR karyawan.</p>
-                <p className="inline-flex items-center gap-2 text-xs font-medium text-slate-500">
-                  <UploadOutlined />
-                  Foto dapat diperbarui langsung dari kartu profil.
-                </p>
-              </div>
-            </button>
-          </div>
+        <div className="flex flex-wrap justify-center lg:justify-end gap-3 w-full lg:w-auto mt-2 lg:mt-0 lg:shrink-0">
+          <button
+            type="button"
+            onClick={handleScrollToForm}
+            className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-sm transition-all border border-slate-200 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">edit</span>
+            Edit Data
+          </button>
+          <button
+            type="button"
+            onClick={handleOpenQrModal}
+            className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold rounded-lg text-sm shadow-sm transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">qr_code_2</span>
+            Cetak QR
+          </button>
         </div>
       </div>
 
@@ -522,15 +448,21 @@ function KaryawanDetailPage() {
         </Form>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-transparent mb-6">
         {data ? (
           <>
-            <div className="mb-6 border-b border-slate-200">
-              <div className="flex flex-wrap gap-6" role="tablist" aria-label="Detail informasi karyawan">
+            <div className="border-b border-slate-200 mb-6 px-1">
+              <div className="flex gap-8 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="Detail informasi karyawan">
                 {tabs.map((tab) => {
                   const isActive = activeTab === tab.key;
                   const tabId = `${tab.key}-tab`;
                   const panelId = `${tab.key}-panel`;
+
+                  // Tentukan icon berdasarkan key tab
+                  let icon = "info";
+                  if (tab.key === "personal-information") icon = "person";
+                  if (tab.key === "informasi-hr") icon = "work";
+                  if (tab.key === "informasi-keluarga") icon = "family_restroom";
 
                   return (
                     <button
@@ -541,12 +473,15 @@ function KaryawanDetailPage() {
                       aria-selected={isActive}
                       aria-controls={panelId}
                       onClick={() => setActiveTab(tab.key)}
-                      className={
+                      className={`flex items-center gap-2 pb-3 px-1 text-sm font-bold border-b-2 transition-colors cursor-pointer ${
                         isActive
-                          ? "pb-3 px-1 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap"
-                          : "pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 whitespace-nowrap"
-                      }
+                          ? "border-primary text-slate-900"
+                          : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                      }`}
                     >
+                      <span className={`material-symbols-outlined text-lg ${isActive ? 'text-primary' : 'text-slate-400'}`} style={isActive ? {fontVariationSettings: "'FILL' 1"} : {}}>
+                        {icon}
+                      </span>
                       {tab.label}
                     </button>
                   );

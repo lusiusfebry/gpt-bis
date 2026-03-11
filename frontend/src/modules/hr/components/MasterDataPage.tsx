@@ -95,8 +95,8 @@ const STATUS_OPTIONS: Array<{ label: string; value: MasterDataStatus }> = [
 type HexColorValue =
   | string
   | {
-      toHexString: () => string;
-    }
+    toHexString: () => string;
+  }
   | null
   | undefined;
 
@@ -187,21 +187,21 @@ function MasterDataPage<
     key: "actions",
     width: 260,
     render: (_, record) => (
-      <div className="flex flex-wrap justify-end gap-2">
+      <div className="flex justify-end items-center gap-2">
         <button
           type="button"
           onClick={() => onEdit(record)}
-          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 text-slate-600 text-xs font-bold hover:bg-slate-200 transition-colors"
         >
-          <EyeOutlined className="text-[13px]" />
+          <span className="material-symbols-outlined text-[16px]">visibility</span>
           View
         </button>
         <button
           type="button"
           onClick={() => onEdit(record)}
-          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-slate-900"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 border border-primary/20 hover:bg-primary transition-all font-bold text-xs"
         >
-          <EditOutlined className="text-[13px]" />
+          <span className="material-symbols-outlined text-[16px]">edit</span>
           Edit
         </button>
       </div>
@@ -221,14 +221,14 @@ function MasterDataPage<
         return (
           <span
             className={[
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-tight",
-              isActive ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600",
+              "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase",
+              isActive ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500",
             ].join(" ")}
           >
             <span
               className={[
-                "h-2 w-2 rounded-full",
-                isActive ? "bg-emerald-500" : "bg-slate-400",
+                "h-1.5 w-1.5 rounded-full",
+                isActive ? "bg-green-500" : "bg-slate-400",
               ].join(" ")}
             />
             {isActive ? "Active" : "Inactive"}
@@ -244,32 +244,27 @@ function MasterDataPage<
   return (
     <Space direction="vertical" size={24} className="flex w-full">
       <div className="flex flex-col gap-6">
-        <div>
-          <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <span>Human Resources</span>
-            <span className="text-slate-300">›</span>
-            <span>Master Data</span>
-            <span className="text-slate-300">›</span>
-            <span className="text-primary">{entityName}</span>
-          </div>
-
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-1">
-              <Title level={2} className="!mb-0 !text-3xl !font-black !tracking-tight !text-slate-900">
-                {title}
-              </Title>
-              <Paragraph className="!mb-0 !text-sm !text-slate-500">{description}</Paragraph>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">
+              <span>Human Resources</span>
+              <span className="material-symbols-outlined text-xs">chevron_right</span>
+              <span>Master Data</span>
+              <span className="material-symbols-outlined text-xs">chevron_right</span>
+              <span className="text-primary">{entityName}</span>
             </div>
-
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={onCreate}
-              className="!inline-flex !h-auto !items-center !gap-2 !rounded-xl !border-0 !bg-primary !px-6 !py-2.5 !font-bold !text-slate-900 shadow-lg shadow-primary/20 hover:!bg-primary/90"
-            >
-              Tambah {entityName}
-            </Button>
+            <h2 className="text-3xl font-black tracking-tight text-slate-900">{title}</h2>
+            <p className="text-slate-500">{description}</p>
           </div>
+
+          <button
+            type="button"
+            onClick={onCreate}
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-slate-900 font-bold rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all"
+          >
+            <span className="material-symbols-outlined">add</span>
+            Tambah {entityName}
+          </button>
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -303,7 +298,7 @@ function MasterDataPage<
             columns={mergedColumns}
             dataSource={items}
             scroll={{ x: 960 }}
-            className="master-data-table [&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-[0.14em] [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:align-top"
+            className="master-data-table [&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!border-b [&_.ant-table-thead>tr>th]:!border-slate-200 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-wider [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-6 [&_.ant-table-tbody>tr>td]:!font-semibold [&_.ant-table-tbody>tr>td]:!text-slate-900 [&_.ant-table-tbody>tr>td]:!border-b [&_.ant-table-tbody>tr>td]:!border-slate-100 [&_.ant-table-tbody>tr:hover>td]:!bg-slate-50 transition-colors"
             pagination={{
               current: meta.page,
               pageSize: meta.limit,
@@ -324,6 +319,7 @@ function MasterDataPage<
         okText={editingItem ? "Simpan Perubahan" : "Simpan"}
         cancelText="Batal"
         confirmLoading={isSubmitting}
+        forceRender
         okButtonProps={{
           className:
             "!inline-flex !h-11 !items-center !justify-center !rounded-xl !border !border-[#d4a63a] !bg-[#f2c94c] !px-5 !font-bold !text-slate-900 !shadow-none hover:!border-[#c79824] hover:!bg-[#e6bc38] focus:!border-[#c79824] focus:!bg-[#e6bc38]",

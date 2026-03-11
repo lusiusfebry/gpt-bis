@@ -86,7 +86,8 @@ function KaryawanListPage() {
       {
         title: "Status Karyawan",
         key: "status_karyawan",
-        width: 180,
+        width: 150,
+        align: "center",
         render: (_, record) => {
           const statusLabel = record.status_karyawan?.nama ?? "-";
           const isActive =
@@ -96,16 +97,10 @@ function KaryawanListPage() {
           return (
             <span
               className={[
-                "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-tight",
-                isActive ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600",
+                "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold",
+                isActive ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500",
               ].join(" ")}
             >
-              <span
-                className={[
-                  "h-2 w-2 rounded-full",
-                  isActive ? "bg-emerald-500" : "bg-slate-400",
-                ].join(" ")}
-              />
               {statusLabel}
             </span>
           );
@@ -125,28 +120,28 @@ function KaryawanListPage() {
         width: 120,
         align: "right",
         render: (_, record) => (
-          <div className="flex items-center justify-end gap-2">
+          <div className="flex justify-end gap-2">
             <button
               type="button"
-              aria-label={`Lihat ${record.nama_lengkap}`}
+              title="View details"
               onClick={(event) => {
                 event.stopPropagation();
                 navigate(`/hr/karyawan/${record.id}`);
               }}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+              className="p-2 text-slate-400 hover:text-primary transition-colors cursor-pointer"
             >
-              <EyeOutlined className="text-[14px]" />
+              <span className="material-symbols-outlined text-[20px]">visibility</span>
             </button>
             <button
               type="button"
-              aria-label={`Edit ${record.nama_lengkap}`}
+              title="Edit employee"
               onClick={(event) => {
                 event.stopPropagation();
                 navigate(`/hr/karyawan/${record.id}`);
               }}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-slate-900"
+              className="p-2 text-slate-400 hover:text-blue-500 transition-colors cursor-pointer"
             >
-              <EditOutlined className="text-[14px]" />
+              <span className="material-symbols-outlined text-[20px]">edit_square</span>
             </button>
           </div>
         ),
@@ -157,33 +152,18 @@ function KaryawanListPage() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <div>
-        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-          <span>Human Resources</span>
-          <span className="text-slate-300">›</span>
-          <span className="text-primary">Karyawan</span>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+        <div>
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Direktori Karyawan</h2>
+          <p className="text-slate-500 mt-1">Mengelola dan memantau data seluruh karyawan perusahaan.</p>
         </div>
-
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-1">
-            <Title level={2} className="!mb-0 !text-3xl !font-black !tracking-tight !text-slate-900">
-              Direktori Karyawan
-            </Title>
-            <Paragraph className="!mb-0 !max-w-3xl !text-sm !text-slate-500">
-              Kelola data karyawan dengan pencarian cepat, filter server-side, dan navigasi langsung ke
-              detail profil karyawan.
-            </Paragraph>
-          </div>
-
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => navigate("/hr/karyawan/tambah")}
-            className="!inline-flex !h-auto !items-center !gap-2 !rounded-xl !border-0 !bg-primary !px-6 !py-2.5 !font-bold !text-slate-900 shadow-lg shadow-primary/20 hover:!bg-primary/90"
-          >
-            Tambah Karyawan
-          </Button>
-        </div>
+        <button
+          onClick={() => navigate("/hr/karyawan/tambah")}
+          className="flex items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-sm shadow-primary/20 transition-all cursor-pointer"
+        >
+          <span className="material-symbols-outlined font-bold">add</span>
+          <span>Tambah Karyawan</span>
+        </button>
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -282,7 +262,7 @@ function KaryawanListPage() {
           dataSource={items}
           loading={isLoading}
           scroll={{ x: 1200 }}
-          className="[&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-[0.14em] [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:align-top"
+          className="[&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-wider [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:!align-middle [&_.ant-table-tbody>tr>td]:!border-b [&_.ant-table-tbody>tr>td]:!border-slate-100"
           pagination={{
             current: meta.page,
             pageSize: meta.limit,

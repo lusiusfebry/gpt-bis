@@ -257,15 +257,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
   };
 
   return (
-    <Form<HrInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit}>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <IdcardOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Kepegawaian</h3>
+    <Form<HrInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit} className="w-full">
+      <div className="space-y-6 max-w-5xl">
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">badge</span>
+            <h3 className="text-lg font-bold text-slate-900">Kepegawaian</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Nomor Induk Karyawan" name="nomor_induk_karyawan">
                 <Input readOnly />
               </Form.Item>
@@ -292,16 +291,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <FileProtectOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Kontrak</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">contract</span>
+            <h3 className="text-lg font-bold text-slate-900">Kontrak</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Jenis Hubungan Kerja" name="jenis_hubungan_kerja_id">
                 <Select
                   allowClear
@@ -330,15 +327,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <DatePicker className="w-full" format="DD/MM/YYYY" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <BookOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Education</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">school</span>
+            <h3 className="text-lg font-bold text-slate-900">Education</h3>
           </div>
-          <div className="p-5">
+          <div className="mb-4">
             <Form.List name="educations">
               {(fields, { add, remove }) => (
                 <div className="space-y-4">
@@ -350,7 +346,7 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                           Hapus
                         </Button>
                       </div>
-                      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                         <Form.Item label="Tingkat Pendidikan" name={[field.name, "tingkat_pendidikan"]}>
                           <Input placeholder="Masukkan tingkat pendidikan" />
                         </Form.Item>
@@ -386,15 +382,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
               )}
             </Form.List>
           </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <TrophyOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Pangkat dan Golongan</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">military_tech</span>
+            <h3 className="text-lg font-bold text-slate-900">Pangkat dan Golongan</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Kategori Pangkat" name="kategori_pangkat_id">
                 <Select
                   allowClear
@@ -417,16 +412,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <Input placeholder="Masukkan no dana pensiun" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <PhoneOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Kontak Darurat</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">emergency</span>
+            <h3 className="text-lg font-bold text-slate-900">Kontak Darurat</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Nama Kontak Darurat 1" name="nama_kontak_darurat_1">
                 <Input placeholder="Masukkan nama kontak darurat 1" />
               </Form.Item>
@@ -452,16 +445,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 2" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <EnvironmentOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">POO / POH</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">distance</span>
+            <h3 className="text-lg font-bold text-slate-900">POO / POH</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Point of Original" name="point_of_original">
                 <Input placeholder="Masukkan point of original" />
               </Form.Item>
@@ -469,16 +460,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <Input placeholder="Masukkan point of hire" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <SkinOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Seragam dan Sepatu Kerja</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">checkroom</span>
+            <h3 className="text-lg font-bold text-slate-900">Seragam dan Sepatu Kerja</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Ukuran Seragam Kerja" name="ukuran_seragam_kerja">
                 <Input placeholder="Masukkan ukuran seragam kerja" />
               </Form.Item>
@@ -486,16 +475,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <Input placeholder="Masukkan ukuran sepatu kerja" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <DollarOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Costing</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">payments</span>
+            <h3 className="text-lg font-bold text-slate-900">Costing</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Siklus Pembayaran Gaji" name="siklus_pembayaran_gaji">
                 <Input placeholder="Masukkan siklus pembayaran gaji" />
               </Form.Item>
@@ -509,16 +496,14 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <Input placeholder="Masukkan actual" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
-            <SwapOutlined className="text-primary" />
-            <h3 className="text-sm font-bold">Pergerakan Karyawan</h3>
+        <section className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary text-xl">move_up</span>
+            <h3 className="text-lg font-bold text-slate-900">Pergerakan Karyawan</h3>
           </div>
-          <div className="p-5">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
               <Form.Item label="Lokasi Sebelumnya" name="lokasi_sebelumnya_id">
                 <Select allowClear {...getSelectProps(dropdowns.lokasiKerjaOptions, dropdowns.loadingState.lokasiKerja.loading)} />
               </Form.Item>
@@ -526,26 +511,24 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
                 <DatePicker className="w-full" format="DD/MM/YYYY" />
               </Form.Item>
             </div>
-          </div>
-        </div>
+        </section>
       </div>
 
-      <div className="mt-8 flex justify-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+      <div className="mt-8 pt-4 border-t border-slate-200 flex justify-end gap-3 max-w-5xl">
         <button
           type="button"
           onClick={() => form.setFieldsValue(mapDataToFormValues(data))}
-          className="rounded-lg px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100"
+          className="px-6 py-2 rounded-lg border border-slate-300 text-sm font-bold hover:bg-slate-50 transition-colors"
         >
-          Discard
+          Batal
         </button>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={isSaving}
-          className="!rounded-lg !border !border-primary !bg-primary !px-8 !font-semibold !text-white !shadow-md hover:!brightness-95"
+        <button
+          type="submit"
+          disabled={isSaving}
+          className={`px-6 py-2 rounded-lg bg-primary hover:bg-primary/90 text-slate-900 text-sm font-bold shadow-md transition-all ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
-          Simpan
-        </Button>
+          {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
+        </button>
       </div>
     </Form>
   );

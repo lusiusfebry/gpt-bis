@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">Bebang Apple Touch Icon</title>
+  <desc id="desc">Ikon sentuh aplikasi Bebang dengan monogram huruf B berwarna emas di atas latar biru gelap.</desc>
+  <rect width="180" height="180" rx="40" fill="#0f172a" />
+  <rect x="15" y="15" width="150" height="150" rx="32" fill="#111c34" stroke="#f2c40d" stroke-width="4" />
+  <path d="M58 43h37c21.986 0 36 11.298 36 28.5 0 10.799-6.073 18.348-15.5 22.5 13.687 4.136 21.5 14.124 21.5 27.5 0 19.167-15.377 32.5-38.5 32.5H58V43Zm22.5 18.5v24h14.5c8.872 0 14-4.536 14-11.75 0-7.504-5.325-12.25-14-12.25h-14.5Zm0 41.5v29h17.5c10.857 0 17-5.457 17-14.5 0-9.17-6.39-14.5-17-14.5h-17.5Z" fill="#f2c40d" />
+</svg>
