@@ -375,14 +375,14 @@ function ImportPage() {
 
   return (
     <Space direction="vertical" size={24} className="flex w-full">
-      <Card className="rounded-3xl border-0 bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white shadow-2xl shadow-slate-950/10">
+      <Card className="rounded-xl border border-slate-200 bg-white">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <Space direction="vertical" size={14} className="w-full">
-            <Text className="uppercase tracking-[0.3em] !text-teal-300">Human Resources</Text>
-            <Title level={2} className="!mb-0 !text-white">
+            <Text className="text-xs font-bold uppercase tracking-wider text-primary">Human Resources</Text>
+            <Title level={2} className="!mb-0">
               Import Data Karyawan
             </Title>
-            <Paragraph className="!mb-0 !text-slate-300">
+            <Paragraph className="!mb-0 !text-slate-500">
               Pilih file Excel, tampilkan preview upload, lanjutkan validasi, lalu jalankan execute import
               secara terpisah agar setiap tahap dapat ditinjau dengan aman.
             </Paragraph>
@@ -392,14 +392,14 @@ function ImportPage() {
             size="large"
             icon={<CloudDownloadOutlined />}
             onClick={() => void downloadTemplate()}
-            className="border-white/20 bg-white/10 !text-white hover:!border-white/40 hover:!bg-white/15"
+            className="!border-primary !bg-primary !font-bold !text-slate-900 hover:!brightness-95"
           >
             Download Template
           </Button>
         </div>
       </Card>
 
-      <Card className="rounded-3xl shadow-panel">
+      <Card className="rounded-xl border border-slate-200 bg-white">
         <Steps
           current={currentStep}
           items={[
@@ -422,7 +422,7 @@ function ImportPage() {
         />
       </Card>
 
-      <Card className="rounded-3xl shadow-panel">
+      <Card className="rounded-xl border border-slate-200 bg-white">
         {currentStep === 0 && (
           <Space direction="vertical" size={20} className="flex w-full">
             <div>
@@ -438,10 +438,10 @@ function ImportPage() {
             <Dragger
               {...uploadProps}
               disabled={isUploadingPreview || isValidating || isExecuting}
-              className="rounded-2xl !p-6"
+              className="!rounded-xl !p-6"
             >
               <p className="ant-upload-drag-icon">
-                <InboxOutlined className="!text-4xl !text-teal-600" />
+                <InboxOutlined className="!text-4xl !text-primary" />
               </p>
               <p className="ant-upload-text">Klik atau tarik file Excel ke area ini</p>
               <p className="ant-upload-hint">
@@ -450,7 +450,7 @@ function ImportPage() {
               </p>
             </Dragger>
 
-            <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 lg:flex-row lg:items-center lg:justify-between">
               <Space direction="vertical" size={4}>
                 <Text strong>File terpilih</Text>
                 <Text type="secondary">{file ? file.name : "Belum ada file dipilih"}</Text>
@@ -486,7 +486,7 @@ function ImportPage() {
 
                 <PreviewSummary previewResult={previewResult} />
 
-                <Card size="small" className="rounded-2xl border border-slate-200 bg-slate-50">
+                <Card size="small" className="rounded-xl border border-slate-200 bg-slate-50">
                   <Space direction="vertical" size={12} className="flex">
                     <Text strong>Contoh isi row pertama</Text>
                     {previewRawEntries.length ? (
@@ -580,7 +580,7 @@ function ImportPage() {
             )}
 
             <div className="grid gap-4 xl:grid-cols-2">
-              <Card size="small" title="Contoh Raw Data Row Pertama" className="rounded-2xl">
+              <Card size="small" title="Contoh Raw Data Row Pertama" className="rounded-xl border border-slate-200 bg-slate-50">
                 {validationRawEntries.length ? (
                   <Descriptions bordered size="small" column={1}>
                     {validationRawEntries.slice(0, 10).map((entry) => (
@@ -594,7 +594,7 @@ function ImportPage() {
                 )}
               </Card>
 
-              <Card size="small" title="Contoh Normalized Data Row Pertama" className="rounded-2xl">
+              <Card size="small" title="Contoh Normalized Data Row Pertama" className="rounded-xl border border-slate-200 bg-slate-50">
                 {validationNormalizedEntries.length ? (
                   <Descriptions bordered size="small" column={1}>
                     {validationNormalizedEntries.slice(0, 10).map((entry) => (
@@ -664,7 +664,7 @@ function ImportPage() {
             <ImportSummary importResult={importResult} />
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Card size="small" className="rounded-2xl border border-emerald-200 bg-emerald-50">
+              <Card size="small" className="rounded-xl border border-emerald-200 bg-emerald-50">
                 <Space direction="vertical" size={4}>
                   <Text strong className="!text-emerald-800">
                     Ringkasan Berhasil
@@ -676,7 +676,7 @@ function ImportPage() {
                 </Space>
               </Card>
 
-              <Card size="small" className="rounded-2xl border border-rose-200 bg-rose-50">
+              <Card size="small" className="rounded-xl border border-rose-200 bg-rose-50">
                 <Space direction="vertical" size={4}>
                   <Text strong className="!text-rose-800">
                     Ringkasan Gagal

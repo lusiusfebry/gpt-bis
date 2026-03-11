@@ -1,4 +1,15 @@
-import { Button, Card, Collapse, DatePicker, Form, Input, Select, message } from "antd";
+import {
+  BookOutlined,
+  DollarOutlined,
+  EnvironmentOutlined,
+  FileProtectOutlined,
+  IdcardOutlined,
+  PhoneOutlined,
+  SkinOutlined,
+  SwapOutlined,
+  TrophyOutlined,
+} from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import dayjs, { type Dayjs } from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../../../lib/axios";
@@ -191,251 +202,6 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
 
   const initialEducationPayload = useMemo(() => buildInitialEducationPayload(data), [data]);
 
-  const collapseItems = useMemo(
-    () => [
-      {
-        key: "kepegawaian",
-        label: "Kepegawaian",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Nomor Induk Karyawan" name="nomor_induk_karyawan">
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item label="Posisi Jabatan" name="posisi_jabatan_id">
-              <Select disabled {...getSelectProps(dropdowns.posisiJabatanOptions, dropdowns.loadingState.posisiJabatan.loading)} />
-            </Form.Item>
-            <Form.Item label="Divisi" name="divisi_id">
-              <Select disabled {...getSelectProps(dropdowns.divisiOptions, dropdowns.loadingState.divisi.loading)} />
-            </Form.Item>
-            <Form.Item label="Department" name="department_id">
-              <Select disabled {...getSelectProps(dropdowns.departmentOptions, dropdowns.loadingState.department.loading)} />
-            </Form.Item>
-            <Form.Item label="Email Perusahaan" name="email_perusahaan">
-              <Input readOnly />
-            </Form.Item>
-            <Form.Item label="Manager" name="manager_id">
-              <Select disabled allowClear {...getSelectProps(dropdowns.managerOptions, dropdowns.loadingState.manager.loading)} />
-            </Form.Item>
-            <Form.Item label="Atasan Langsung" name="atasan_langsung_id">
-              <Select disabled allowClear {...getSelectProps(dropdowns.atasanLangsungOptions, dropdowns.loadingState.atasanLangsung.loading)} />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "kontrak",
-        label: "Kontrak",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Jenis Hubungan Kerja" name="jenis_hubungan_kerja_id">
-              <Select
-                allowClear
-                {...getSelectProps(
-                  dropdowns.jenisHubunganKerjaOptions,
-                  dropdowns.loadingState.jenisHubunganKerja.loading,
-                )}
-              />
-            </Form.Item>
-            <Form.Item label="Tanggal Masuk Group" name="tanggal_masuk_group">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Masuk" name="tanggal_masuk">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Permanent" name="tanggal_permanent">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Kontrak" name="tanggal_kontrak">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Akhir Kontrak" name="tanggal_akhir_kontrak">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Berhenti" name="tanggal_berhenti">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "education",
-        label: "Education",
-        children: (
-          <Form.List name="educations">
-            {(fields, { add, remove }) => (
-              <div className="space-y-4">
-                {fields.map((field, index) => (
-                  <div key={field.key} className="rounded-2xl border border-slate-200 p-4">
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <h4 className="text-sm font-semibold text-slate-800">Pendidikan #{index + 1}</h4>
-                      <Button danger type="text" onClick={() => remove(field.name)}>
-                        Hapus
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                      <Form.Item label="Tingkat Pendidikan" name={[field.name, "tingkat_pendidikan"]}>
-                        <Input placeholder="Masukkan tingkat pendidikan" />
-                      </Form.Item>
-                      <Form.Item label="Bidang Studi" name={[field.name, "bidang_studi"]}>
-                        <Input placeholder="Masukkan bidang studi" />
-                      </Form.Item>
-                      <Form.Item label="Nama Sekolah" name={[field.name, "nama_sekolah"]}>
-                        <Input placeholder="Masukkan nama sekolah" />
-                      </Form.Item>
-                      <Form.Item label="Kota Sekolah" name={[field.name, "kota_sekolah"]}>
-                        <Input placeholder="Masukkan kota sekolah" />
-                      </Form.Item>
-                      <Form.Item label="Status Kelulusan" name={[field.name, "status_kelulusan"]}>
-                        <Select
-                          allowClear
-                          placeholder="Pilih status kelulusan"
-                          showSearch
-                          optionFilterProp="label"
-                          filterOption
-                          options={STATUS_KELULUSAN_OPTIONS}
-                        />
-                      </Form.Item>
-                      <Form.Item label="Keterangan" name={[field.name, "keterangan"]} className="lg:col-span-2">
-                        <Input.TextArea rows={4} placeholder="Masukkan keterangan pendidikan" />
-                      </Form.Item>
-                    </div>
-                  </div>
-                ))}
-                <Button type="dashed" onClick={() => add({})} block>
-                  Tambah Riwayat Pendidikan
-                </Button>
-              </div>
-            )}
-          </Form.List>
-        ),
-      },
-      {
-        key: "pangkat-dan-golongan",
-        label: "Pangkat dan Golongan",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Kategori Pangkat" name="kategori_pangkat_id">
-              <Select
-                allowClear
-                {...getSelectProps(
-                  dropdowns.kategoriPangkatOptions,
-                  dropdowns.loadingState.kategoriPangkat.loading,
-                )}
-              />
-            </Form.Item>
-            <Form.Item label="Golongan Pangkat" name="golongan_id">
-              <Select allowClear {...getSelectProps(dropdowns.golonganOptions, dropdowns.loadingState.golongan.loading)} />
-            </Form.Item>
-            <Form.Item label="Sub Golongan Pangkat" name="sub_golongan_id">
-              <Select
-                allowClear
-                {...getSelectProps(dropdowns.subGolonganOptions, dropdowns.loadingState.subGolongan.loading)}
-              />
-            </Form.Item>
-            <Form.Item label="No Dana Pensiun" name="no_dana_pensiun">
-              <Input placeholder="Masukkan no dana pensiun" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "kontak-darurat",
-        label: "Kontak Darurat",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Nama Kontak Darurat 1" name="nama_kontak_darurat_1">
-              <Input placeholder="Masukkan nama kontak darurat 1" />
-            </Form.Item>
-            <Form.Item label="Nomor Telepon Kontak Darurat 1" name="nomor_telepon_kontak_darurat_1">
-              <Input placeholder="Masukkan nomor telepon kontak darurat 1" />
-            </Form.Item>
-            <Form.Item label="Hubungan Kontak Darurat 1" name="hubungan_kontak_darurat_1">
-              <Input placeholder="Masukkan hubungan kontak darurat 1" />
-            </Form.Item>
-            <Form.Item label="Alamat Kontak Darurat 1" name="alamat_kontak_darurat_1" className="lg:col-span-2">
-              <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 1" />
-            </Form.Item>
-            <Form.Item label="Nama Kontak Darurat 2" name="nama_kontak_darurat_2">
-              <Input placeholder="Masukkan nama kontak darurat 2" />
-            </Form.Item>
-            <Form.Item label="Nomor Telepon Kontak Darurat 2" name="nomor_telepon_kontak_darurat_2">
-              <Input placeholder="Masukkan nomor telepon kontak darurat 2" />
-            </Form.Item>
-            <Form.Item label="Hubungan Kontak Darurat 2" name="hubungan_kontak_darurat_2">
-              <Input placeholder="Masukkan hubungan kontak darurat 2" />
-            </Form.Item>
-            <Form.Item label="Alamat Kontak Darurat 2" name="alamat_kontak_darurat_2" className="lg:col-span-2">
-              <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 2" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "poo-poh",
-        label: "POO / POH",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Point of Original" name="point_of_original">
-              <Input placeholder="Masukkan point of original" />
-            </Form.Item>
-            <Form.Item label="Point of Hire" name="point_of_hire">
-              <Input placeholder="Masukkan point of hire" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "seragam-dan-sepatu-kerja",
-        label: "Seragam dan Sepatu Kerja",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Ukuran Seragam Kerja" name="ukuran_seragam_kerja">
-              <Input placeholder="Masukkan ukuran seragam kerja" />
-            </Form.Item>
-            <Form.Item label="Ukuran Sepatu Kerja" name="ukuran_sepatu_kerja">
-              <Input placeholder="Masukkan ukuran sepatu kerja" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "pergerakan-karyawan",
-        label: "Pergerakan Karyawan",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Lokasi Sebelumnya" name="lokasi_sebelumnya_id">
-              <Select allowClear {...getSelectProps(dropdowns.lokasiKerjaOptions, dropdowns.loadingState.lokasiKerja.loading)} />
-            </Form.Item>
-            <Form.Item label="Tanggal Mutasi" name="tanggal_mutasi">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "costing",
-        label: "Costing",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Siklus Pembayaran Gaji" name="siklus_pembayaran_gaji">
-              <Input placeholder="Masukkan siklus pembayaran gaji" />
-            </Form.Item>
-            <Form.Item label="Costing" name="costing">
-              <Input placeholder="Masukkan costing" />
-            </Form.Item>
-            <Form.Item label="Assign" name="assign">
-              <Input placeholder="Masukkan assign" />
-            </Form.Item>
-            <Form.Item label="Actual" name="actual">
-              <Input placeholder="Masukkan actual" />
-            </Form.Item>
-          </div>
-        ),
-      },
-    ],
-    [dropdowns],
-  );
-
   const handleSubmit = async (values: HrInfoFormValues) => {
     setIsSaving(true);
 
@@ -491,16 +257,297 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
   };
 
   return (
-    <Card bordered={false} className="shadow-none">
-      <Form<HrInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit}>
-        <Collapse defaultActiveKey={["kepegawaian"]} items={collapseItems} />
-        <div className="mt-6 flex justify-end">
-          <Button type="primary" htmlType="submit" loading={isSaving}>
-            Simpan
-          </Button>
+    <Form<HrInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit}>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <IdcardOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Kepegawaian</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Nomor Induk Karyawan" name="nomor_induk_karyawan">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Posisi Jabatan" name="posisi_jabatan_id">
+                <Select disabled {...getSelectProps(dropdowns.posisiJabatanOptions, dropdowns.loadingState.posisiJabatan.loading)} />
+              </Form.Item>
+              <Form.Item label="Divisi" name="divisi_id">
+                <Select disabled {...getSelectProps(dropdowns.divisiOptions, dropdowns.loadingState.divisi.loading)} />
+              </Form.Item>
+              <Form.Item label="Department" name="department_id">
+                <Select disabled {...getSelectProps(dropdowns.departmentOptions, dropdowns.loadingState.department.loading)} />
+              </Form.Item>
+              <Form.Item label="Email Perusahaan" name="email_perusahaan">
+                <Input readOnly />
+              </Form.Item>
+              <Form.Item label="Manager" name="manager_id">
+                <Select disabled allowClear {...getSelectProps(dropdowns.managerOptions, dropdowns.loadingState.manager.loading)} />
+              </Form.Item>
+              <Form.Item label="Atasan Langsung" name="atasan_langsung_id">
+                <Select
+                  disabled
+                  allowClear
+                  {...getSelectProps(dropdowns.atasanLangsungOptions, dropdowns.loadingState.atasanLangsung.loading)}
+                />
+              </Form.Item>
+            </div>
+          </div>
         </div>
-      </Form>
-    </Card>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <FileProtectOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Kontrak</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Jenis Hubungan Kerja" name="jenis_hubungan_kerja_id">
+                <Select
+                  allowClear
+                  {...getSelectProps(
+                    dropdowns.jenisHubunganKerjaOptions,
+                    dropdowns.loadingState.jenisHubunganKerja.loading,
+                  )}
+                />
+              </Form.Item>
+              <Form.Item label="Tanggal Masuk Group" name="tanggal_masuk_group">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Masuk" name="tanggal_masuk">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Permanent" name="tanggal_permanent">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Kontrak" name="tanggal_kontrak">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Akhir Kontrak" name="tanggal_akhir_kontrak">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Berhenti" name="tanggal_berhenti">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <BookOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Education</h3>
+          </div>
+          <div className="p-5">
+            <Form.List name="educations">
+              {(fields, { add, remove }) => (
+                <div className="space-y-4">
+                  {fields.map((field, index) => (
+                    <div key={field.key} className="rounded-2xl border border-slate-200 p-4">
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <h4 className="text-sm font-semibold text-slate-800">Pendidikan #{index + 1}</h4>
+                        <Button danger type="text" onClick={() => remove(field.name)}>
+                          Hapus
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                        <Form.Item label="Tingkat Pendidikan" name={[field.name, "tingkat_pendidikan"]}>
+                          <Input placeholder="Masukkan tingkat pendidikan" />
+                        </Form.Item>
+                        <Form.Item label="Bidang Studi" name={[field.name, "bidang_studi"]}>
+                          <Input placeholder="Masukkan bidang studi" />
+                        </Form.Item>
+                        <Form.Item label="Nama Sekolah" name={[field.name, "nama_sekolah"]}>
+                          <Input placeholder="Masukkan nama sekolah" />
+                        </Form.Item>
+                        <Form.Item label="Kota Sekolah" name={[field.name, "kota_sekolah"]}>
+                          <Input placeholder="Masukkan kota sekolah" />
+                        </Form.Item>
+                        <Form.Item label="Status Kelulusan" name={[field.name, "status_kelulusan"]}>
+                          <Select
+                            allowClear
+                            placeholder="Pilih status kelulusan"
+                            showSearch
+                            optionFilterProp="label"
+                            filterOption
+                            options={STATUS_KELULUSAN_OPTIONS}
+                          />
+                        </Form.Item>
+                        <Form.Item label="Keterangan" name={[field.name, "keterangan"]} className="lg:col-span-2">
+                          <Input.TextArea rows={4} placeholder="Masukkan keterangan pendidikan" />
+                        </Form.Item>
+                      </div>
+                    </div>
+                  ))}
+                  <Button type="dashed" onClick={() => add({})} block>
+                    Tambah Riwayat Pendidikan
+                  </Button>
+                </div>
+              )}
+            </Form.List>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <TrophyOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Pangkat dan Golongan</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Kategori Pangkat" name="kategori_pangkat_id">
+                <Select
+                  allowClear
+                  {...getSelectProps(
+                    dropdowns.kategoriPangkatOptions,
+                    dropdowns.loadingState.kategoriPangkat.loading,
+                  )}
+                />
+              </Form.Item>
+              <Form.Item label="Golongan Pangkat" name="golongan_id">
+                <Select allowClear {...getSelectProps(dropdowns.golonganOptions, dropdowns.loadingState.golongan.loading)} />
+              </Form.Item>
+              <Form.Item label="Sub Golongan Pangkat" name="sub_golongan_id">
+                <Select
+                  allowClear
+                  {...getSelectProps(dropdowns.subGolonganOptions, dropdowns.loadingState.subGolongan.loading)}
+                />
+              </Form.Item>
+              <Form.Item label="No Dana Pensiun" name="no_dana_pensiun">
+                <Input placeholder="Masukkan no dana pensiun" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <PhoneOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Kontak Darurat</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Nama Kontak Darurat 1" name="nama_kontak_darurat_1">
+                <Input placeholder="Masukkan nama kontak darurat 1" />
+              </Form.Item>
+              <Form.Item label="Nomor Telepon Kontak Darurat 1" name="nomor_telepon_kontak_darurat_1">
+                <Input placeholder="Masukkan nomor telepon kontak darurat 1" />
+              </Form.Item>
+              <Form.Item label="Hubungan Kontak Darurat 1" name="hubungan_kontak_darurat_1">
+                <Input placeholder="Masukkan hubungan kontak darurat 1" />
+              </Form.Item>
+              <Form.Item label="Alamat Kontak Darurat 1" name="alamat_kontak_darurat_1" className="lg:col-span-2">
+                <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 1" />
+              </Form.Item>
+              <Form.Item label="Nama Kontak Darurat 2" name="nama_kontak_darurat_2">
+                <Input placeholder="Masukkan nama kontak darurat 2" />
+              </Form.Item>
+              <Form.Item label="Nomor Telepon Kontak Darurat 2" name="nomor_telepon_kontak_darurat_2">
+                <Input placeholder="Masukkan nomor telepon kontak darurat 2" />
+              </Form.Item>
+              <Form.Item label="Hubungan Kontak Darurat 2" name="hubungan_kontak_darurat_2">
+                <Input placeholder="Masukkan hubungan kontak darurat 2" />
+              </Form.Item>
+              <Form.Item label="Alamat Kontak Darurat 2" name="alamat_kontak_darurat_2" className="lg:col-span-2">
+                <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 2" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <EnvironmentOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">POO / POH</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Point of Original" name="point_of_original">
+                <Input placeholder="Masukkan point of original" />
+              </Form.Item>
+              <Form.Item label="Point of Hire" name="point_of_hire">
+                <Input placeholder="Masukkan point of hire" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <SkinOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Seragam dan Sepatu Kerja</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Ukuran Seragam Kerja" name="ukuran_seragam_kerja">
+                <Input placeholder="Masukkan ukuran seragam kerja" />
+              </Form.Item>
+              <Form.Item label="Ukuran Sepatu Kerja" name="ukuran_sepatu_kerja">
+                <Input placeholder="Masukkan ukuran sepatu kerja" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <DollarOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Costing</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Siklus Pembayaran Gaji" name="siklus_pembayaran_gaji">
+                <Input placeholder="Masukkan siklus pembayaran gaji" />
+              </Form.Item>
+              <Form.Item label="Costing" name="costing">
+                <Input placeholder="Masukkan costing" />
+              </Form.Item>
+              <Form.Item label="Assign" name="assign">
+                <Input placeholder="Masukkan assign" />
+              </Form.Item>
+              <Form.Item label="Actual" name="actual">
+                <Input placeholder="Masukkan actual" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <SwapOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Pergerakan Karyawan</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Lokasi Sebelumnya" name="lokasi_sebelumnya_id">
+                <Select allowClear {...getSelectProps(dropdowns.lokasiKerjaOptions, dropdowns.loadingState.lokasiKerja.loading)} />
+              </Form.Item>
+              <Form.Item label="Tanggal Mutasi" name="tanggal_mutasi">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex justify-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+        <button
+          type="button"
+          onClick={() => form.setFieldsValue(mapDataToFormValues(data))}
+          className="rounded-lg px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100"
+        >
+          Discard
+        </button>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isSaving}
+          className="!rounded-lg !border !border-primary !bg-primary !px-8 !font-semibold !text-white !shadow-md hover:!brightness-95"
+        >
+          Simpan
+        </Button>
+      </div>
+    </Form>
   );
 }
 

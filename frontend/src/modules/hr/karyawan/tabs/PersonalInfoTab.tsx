@@ -1,6 +1,15 @@
-import { Button, Card, Collapse, DatePicker, Form, Input, InputNumber, Select, message } from "antd";
+import {
+  BankOutlined,
+  EnvironmentOutlined,
+  HeartOutlined,
+  HomeOutlined,
+  IdcardOutlined,
+  PhoneOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, InputNumber, Select, message } from "antd";
 import dayjs, { type Dayjs } from "dayjs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../../../lib/axios";
 import type { KaryawanDetail } from "../../hooks/useKaryawan";
 
@@ -143,183 +152,9 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
     form.setFieldsValue(mapDataToFormValues(data));
   }, [data, form]);
 
-  const collapseItems = useMemo(
-    () => [
-      {
-        key: "biodata-karyawan",
-        label: "Biodata Karyawan",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Nama Lengkap" name="nama_lengkap">
-              <Input placeholder="Masukkan nama lengkap" readOnly disabled />
-            </Form.Item>
-            <Form.Item label="Jenis Kelamin" name="jenis_kelamin">
-              <Select placeholder="Pilih jenis kelamin" options={GENDER_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
-            </Form.Item>
-            <Form.Item label="Tempat Lahir" name="tempat_lahir">
-              <Input placeholder="Masukkan tempat lahir" />
-            </Form.Item>
-            <Form.Item label="Tanggal Lahir" name="tanggal_lahir">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item
-              label="Email Pribadi"
-              name="email_pribadi"
-              rules={[{ type: "email", message: "Format email pribadi tidak valid" }]}
-            >
-              <Input placeholder="nama@email.com" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "identifikasi",
-        label: "Identifikasi",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Agama" name="agama">
-              <Select placeholder="Pilih agama" allowClear options={AGAMA_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
-            </Form.Item>
-            <Form.Item label="Golongan Darah" name="golongan_darah">
-              <Select
-                placeholder="Pilih golongan darah"
-                allowClear
-                options={BLOOD_TYPE_OPTIONS}
-                {...SEARCHABLE_SELECT_PROPS}
-              />
-            </Form.Item>
-            <Form.Item label="Nomor Kartu Keluarga" name="nomor_kartu_keluarga">
-              <Input placeholder="Masukkan nomor kartu keluarga" />
-            </Form.Item>
-            <Form.Item label="Nomor KTP" name="nomor_ktp">
-              <Input placeholder="Masukkan nomor KTP" />
-            </Form.Item>
-            <Form.Item label="Nomor NPWP" name="nomor_npwp">
-              <Input placeholder="Masukkan nomor NPWP" />
-            </Form.Item>
-            <Form.Item label="Nomor BPJS" name="nomor_bpjs">
-              <Input placeholder="Masukkan nomor BPJS" />
-            </Form.Item>
-            <Form.Item label="No NIK KK" name="no_nik_kk">
-              <Input placeholder="Masukkan no NIK KK" />
-            </Form.Item>
-            <Form.Item label="Status Pajak" name="status_pajak">
-              <Input placeholder="Masukkan status pajak" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "alamat-domisili",
-        label: "Alamat Domisili",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Alamat Domisili" name="alamat_domisili" className="lg:col-span-2">
-              <Input.TextArea rows={4} placeholder="Masukkan alamat domisili" />
-            </Form.Item>
-            <Form.Item label="Kota Domisili" name="kota_domisili">
-              <Input placeholder="Masukkan kota domisili" />
-            </Form.Item>
-            <Form.Item label="Provinsi Domisili" name="provinsi_domisili">
-              <Input placeholder="Masukkan provinsi domisili" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "alamat-ktp",
-        label: "Alamat KTP",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Alamat KTP" name="alamat_ktp" className="lg:col-span-2">
-              <Input.TextArea rows={4} placeholder="Masukkan alamat KTP" />
-            </Form.Item>
-            <Form.Item label="Kota KTP" name="kota_ktp">
-              <Input placeholder="Masukkan kota KTP" />
-            </Form.Item>
-            <Form.Item label="Provinsi KTP" name="provinsi_ktp">
-              <Input placeholder="Masukkan provinsi KTP" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "informasi-kontak",
-        label: "Informasi Kontak",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Nomor Handphone 1" name="nomor_handphone_1">
-              <Input placeholder="Masukkan nomor handphone 1" readOnly disabled />
-            </Form.Item>
-            <Form.Item label="Nomor Handphone 2" name="nomor_handphone_2">
-              <Input placeholder="Masukkan nomor handphone 2" />
-            </Form.Item>
-            <Form.Item label="Nomor Telepon Rumah 1" name="nomor_telepon_rumah_1">
-              <Input placeholder="Masukkan nomor telepon rumah 1" />
-            </Form.Item>
-            <Form.Item label="Nomor Telepon Rumah 2" name="nomor_telepon_rumah_2">
-              <Input placeholder="Masukkan nomor telepon rumah 2" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "status-pernikahan-dan-anak",
-        label: "Status Pernikahan dan Anak",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Status Pernikahan" name="status_pernikahan">
-              <Select
-                placeholder="Pilih status pernikahan"
-                allowClear
-                options={STATUS_PERNIKAHAN_OPTIONS}
-                {...SEARCHABLE_SELECT_PROPS}
-              />
-            </Form.Item>
-            <Form.Item label="Nama Pasangan" name="nama_pasangan">
-              <Input placeholder="Masukkan nama pasangan" />
-            </Form.Item>
-            <Form.Item label="Tanggal Menikah" name="tanggal_menikah">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Cerai" name="tanggal_cerai">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Tanggal Wafat Pasangan" name="tanggal_wafat_pasangan">
-              <DatePicker className="w-full" format="DD/MM/YYYY" />
-            </Form.Item>
-            <Form.Item label="Pekerjaan Pasangan" name="pekerjaan_pasangan">
-              <Input placeholder="Masukkan pekerjaan pasangan" />
-            </Form.Item>
-            <Form.Item label="Jumlah Anak" name="jumlah_anak">
-              <InputNumber min={0} className="w-full" placeholder="Masukkan jumlah anak" />
-            </Form.Item>
-          </div>
-        ),
-      },
-      {
-        key: "rekening-bank",
-        label: "Rekening Bank",
-        children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Nomor Rekening" name="nomor_rekening">
-              <Input placeholder="Masukkan nomor rekening" />
-            </Form.Item>
-            <Form.Item label="Nama Pemegang Rekening" name="nama_pemegang_rekening">
-              <Input placeholder="Masukkan nama pemegang rekening" />
-            </Form.Item>
-            <Form.Item label="Nama Bank" name="nama_bank">
-              <Input placeholder="Masukkan nama bank" />
-            </Form.Item>
-            <Form.Item label="Cabang Bank" name="cabang_bank">
-              <Input placeholder="Masukkan cabang bank" />
-            </Form.Item>
-          </div>
-        ),
-      },
-    ],
-    [],
-  );
+  const handleDiscard = () => {
+    form.setFieldsValue(mapDataToFormValues(data));
+  };
 
   const handleSubmit = async (values: PersonalInfoFormValues) => {
     setIsSaving(true);
@@ -371,16 +206,220 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
   };
 
   return (
-    <Card bordered={false} className="shadow-none">
-      <Form<PersonalInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit}>
-        <Collapse defaultActiveKey={["biodata-karyawan"]} items={collapseItems} />
-        <div className="mt-6 flex justify-end">
-          <Button type="primary" htmlType="submit" loading={isSaving}>
-            Simpan
-          </Button>
+    <Form<PersonalInfoFormValues> form={form} layout="vertical" onFinish={handleSubmit}>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <UserOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Biodata Karyawan</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Nama Lengkap" name="nama_lengkap">
+                <Input placeholder="Masukkan nama lengkap" readOnly disabled />
+              </Form.Item>
+              <Form.Item label="Jenis Kelamin" name="jenis_kelamin">
+                <Select placeholder="Pilih jenis kelamin" options={GENDER_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
+              </Form.Item>
+              <Form.Item label="Tempat Lahir" name="tempat_lahir">
+                <Input placeholder="Masukkan tempat lahir" />
+              </Form.Item>
+              <Form.Item label="Tanggal Lahir" name="tanggal_lahir">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item
+                label="Email Pribadi"
+                name="email_pribadi"
+                rules={[{ type: "email", message: "Format email pribadi tidak valid" }]}
+              >
+                <Input placeholder="nama@email.com" />
+              </Form.Item>
+            </div>
+          </div>
         </div>
-      </Form>
-    </Card>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <IdcardOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Identifikasi</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Agama" name="agama">
+                <Select placeholder="Pilih agama" allowClear options={AGAMA_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
+              </Form.Item>
+              <Form.Item label="Golongan Darah" name="golongan_darah">
+                <Select
+                  placeholder="Pilih golongan darah"
+                  allowClear
+                  options={BLOOD_TYPE_OPTIONS}
+                  {...SEARCHABLE_SELECT_PROPS}
+                />
+              </Form.Item>
+              <Form.Item label="Nomor Kartu Keluarga" name="nomor_kartu_keluarga">
+                <Input placeholder="Masukkan nomor kartu keluarga" />
+              </Form.Item>
+              <Form.Item label="Nomor KTP" name="nomor_ktp">
+                <Input placeholder="Masukkan nomor KTP" />
+              </Form.Item>
+              <Form.Item label="Nomor NPWP" name="nomor_npwp">
+                <Input placeholder="Masukkan nomor NPWP" />
+              </Form.Item>
+              <Form.Item label="Nomor BPJS" name="nomor_bpjs">
+                <Input placeholder="Masukkan nomor BPJS" />
+              </Form.Item>
+              <Form.Item label="No NIK KK" name="no_nik_kk">
+                <Input placeholder="Masukkan no NIK KK" />
+              </Form.Item>
+              <Form.Item label="Status Pajak" name="status_pajak">
+                <Input placeholder="Masukkan status pajak" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <HomeOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Alamat KTP</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Alamat KTP" name="alamat_ktp" className="lg:col-span-2">
+                <Input.TextArea rows={4} placeholder="Masukkan alamat KTP" />
+              </Form.Item>
+              <Form.Item label="Kota KTP" name="kota_ktp">
+                <Input placeholder="Masukkan kota KTP" />
+              </Form.Item>
+              <Form.Item label="Provinsi KTP" name="provinsi_ktp">
+                <Input placeholder="Masukkan provinsi KTP" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <EnvironmentOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Alamat Domisili</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Alamat Domisili" name="alamat_domisili" className="lg:col-span-2">
+                <Input.TextArea rows={4} placeholder="Masukkan alamat domisili" />
+              </Form.Item>
+              <Form.Item label="Kota Domisili" name="kota_domisili">
+                <Input placeholder="Masukkan kota domisili" />
+              </Form.Item>
+              <Form.Item label="Provinsi Domisili" name="provinsi_domisili">
+                <Input placeholder="Masukkan provinsi domisili" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <PhoneOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Informasi Kontak</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Nomor Handphone 1" name="nomor_handphone_1">
+                <Input placeholder="Masukkan nomor handphone 1" readOnly disabled />
+              </Form.Item>
+              <Form.Item label="Nomor Handphone 2" name="nomor_handphone_2">
+                <Input placeholder="Masukkan nomor handphone 2" />
+              </Form.Item>
+              <Form.Item label="Nomor Telepon Rumah 1" name="nomor_telepon_rumah_1">
+                <Input placeholder="Masukkan nomor telepon rumah 1" />
+              </Form.Item>
+              <Form.Item label="Nomor Telepon Rumah 2" name="nomor_telepon_rumah_2">
+                <Input placeholder="Masukkan nomor telepon rumah 2" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <HeartOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Status Pernikahan & Anak</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Status Pernikahan" name="status_pernikahan">
+                <Select
+                  placeholder="Pilih status pernikahan"
+                  allowClear
+                  options={STATUS_PERNIKAHAN_OPTIONS}
+                  {...SEARCHABLE_SELECT_PROPS}
+                />
+              </Form.Item>
+              <Form.Item label="Nama Pasangan" name="nama_pasangan">
+                <Input placeholder="Masukkan nama pasangan" />
+              </Form.Item>
+              <Form.Item label="Tanggal Menikah" name="tanggal_menikah">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Cerai" name="tanggal_cerai">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Tanggal Wafat Pasangan" name="tanggal_wafat_pasangan">
+                <DatePicker className="w-full" format="DD/MM/YYYY" />
+              </Form.Item>
+              <Form.Item label="Pekerjaan Pasangan" name="pekerjaan_pasangan">
+                <Input placeholder="Masukkan pekerjaan pasangan" />
+              </Form.Item>
+              <Form.Item label="Jumlah Anak" name="jumlah_anak">
+                <InputNumber min={0} className="w-full" placeholder="Masukkan jumlah anak" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/50 px-5 py-4">
+            <BankOutlined className="text-primary" />
+            <h3 className="text-sm font-bold">Rekening Bank</h3>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <Form.Item label="Nomor Rekening" name="nomor_rekening">
+                <Input placeholder="Masukkan nomor rekening" />
+              </Form.Item>
+              <Form.Item label="Nama Pemegang Rekening" name="nama_pemegang_rekening">
+                <Input placeholder="Masukkan nama pemegang rekening" />
+              </Form.Item>
+              <Form.Item label="Nama Bank" name="nama_bank">
+                <Input placeholder="Masukkan nama bank" />
+              </Form.Item>
+              <Form.Item label="Cabang Bank" name="cabang_bank">
+                <Input placeholder="Masukkan cabang bank" />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex justify-end gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-lg">
+        <button
+          type="button"
+          onClick={handleDiscard}
+          className="rounded-lg px-6 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100"
+        >
+          Discard
+        </button>
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={isSaving}
+          className="!rounded-lg !border !border-primary !bg-primary !px-8 !font-semibold !text-white !shadow-md hover:!brightness-95"
+        >
+          Simpan
+        </Button>
+      </div>
+    </Form>
   );
 }
 
