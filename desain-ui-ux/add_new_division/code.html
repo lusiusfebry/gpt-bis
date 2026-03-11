@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2c40d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Add New Division - HR Master</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-row overflow-x-hidden">
+<!-- Sidebar -->
+<aside class="w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark flex flex-col justify-between p-4 sticky top-0 h-screen">
+<div class="flex flex-col gap-8">
+<div class="flex gap-3 items-center">
+<div class="bg-primary rounded-full size-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark">corporate_fare</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-slate-100 text-base font-bold leading-none">HR Master</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Enterprise ERP</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Employee Management</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/20 text-slate-900 dark:text-slate-100 rounded-lg" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">database</span>
+<p class="text-sm font-semibold">HR Master Data</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-sm font-medium">Payroll</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</a>
+</nav>
+</div>
+<button class="w-full bg-primary text-background-dark font-bold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="text-sm">New Entry</span>
+</button>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-8 py-4 sticky top-0 z-10">
+<div class="flex items-center gap-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">layers</span>
+<h2 class="text-lg font-bold tracking-tight">HR Master Data</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-semibold text-primary border-b-2 border-primary pb-1" href="#">Divisions</a>
+<a class="text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors" href="#">Departments</a>
+<a class="text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors" href="#">Positions</a>
+<a class="text-sm font-medium text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors" href="#">Locations</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="bg-slate-100 dark:bg-slate-800 border-none rounded-lg py-2 pl-10 pr-4 text-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search..." type="text"/>
+</div>
+<button class="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800"></span>
+</button>
+<button class="p-1 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+<div class="size-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-8 max-w-4xl">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-6">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">HR Master Data</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">Add New Division</span>
+</nav>
+<!-- Page Title -->
+<div class="mb-8">
+<h1 class="text-3xl font-bold mb-2">Add New Division</h1>
+<p class="text-slate-500 dark:text-slate-400">Define a new organizational division for your company hierarchy.</p>
+</div>
+<!-- Form Section -->
+<div class="bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 p-8 shadow-sm">
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Kode Divisi -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="kode_divisi">Kode Divisi</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">tag</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" id="kode_divisi" name="kode_divisi" placeholder="DIV0000x" type="text"/>
+</div>
+<p class="text-xs text-slate-400 mt-1">Format: DIV followed by 5 digits and an identifier</p>
+</div>
+<!-- Nama Divisi -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="nama_divisi">Nama Divisi</label>
+<input class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" id="nama_divisi" name="nama_divisi" placeholder="e.g. Information Technology" type="text"/>
+</div>
+<!-- Status -->
+<div class="flex flex-col gap-2 md:col-span-1">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="status">Status</label>
+<div class="relative">
+<select class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none appearance-none" id="status" name="status">
+<option value="aktif">Aktif</option>
+<option value="tidak_aktif">Tidak Aktif</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Keterangan -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="keterangan">Keterangan</label>
+<textarea class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none" id="keterangan" name="keterangan" placeholder="Enter division description or notes..." rows="4"></textarea>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center justify-end gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+<button class="px-6 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" type="button">
+                                Cancel
+                            </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-background-dark font-bold hover:shadow-lg transition-all flex items-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                                Save Division
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+</body></html>

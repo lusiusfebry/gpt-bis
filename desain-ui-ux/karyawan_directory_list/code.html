@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2c40d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-white dark:bg-zinc-900 border-r border-slate-200 dark:border-zinc-800 flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-zinc-900">
+<span class="material-symbols-outlined font-bold">corporate_fare</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold leading-tight uppercase tracking-wider">Bebang Sistem</h1>
+<p class="text-xs text-slate-500 dark:text-zinc-400 font-medium">HR Module</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<div class="pt-4 pb-2">
+<p class="px-3 text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-[0.15em]">Manajemen Karyawan</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-zinc-900 shadow-sm transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-semibold">Karyawan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">event_available</span>
+<span class="text-sm font-medium">Absensi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-sm font-medium">Gaji</span>
+</a>
+<div class="pt-4 pb-2">
+<p class="px-3 text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-[0.15em]">Sistem</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Pengaturan</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-zinc-800">
+<button class="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+<span class="material-symbols-outlined text-[22px]">logout</span>
+<span class="text-sm font-medium">Keluar</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header Bar -->
+<header class="h-16 bg-white dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<span class="text-slate-400 dark:text-zinc-500">/</span>
+<span class="text-sm font-medium text-slate-600 dark:text-zinc-400 uppercase tracking-tight">Karyawan</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-zinc-800"></div>
+<div class="flex items-center gap-3 cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Avatar of the HR Administrator" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCh6FoRZChF2xCRHkdNhnBKop1hKpM6SvJ5VDUxEuEPyPdhWeV_etjp7tTR8Up6BwBUuiHzYvbfo9xqSvWK8ga03Vwdan9y0cSJvxL8g1fKREnF-XZ4Nj6OhB7iIE8qvmZ7nDDkUu25zlVncdWj7jmEscvxoeFEE2WEd13zIWamQ9Pb38w03MNRYKGTl2mQFf4xZy3kOm_cnNCC2-H4kJr0d3etBIQoUPq8UbOS1aJgozbLelGDAssUOyvlGJYSqqbAeN1N0Cqjq3Y')"></div>
+</div>
+<span class="text-sm font-semibold">Admin HR</span>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 bg-background-light dark:bg-background-dark">
+<!-- Page Title and CTA -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">Direktori Karyawan</h2>
+<p class="text-slate-500 dark:text-zinc-400 mt-1">Mengelola dan memantau data seluruh karyawan perusahaan.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-zinc-900 font-bold px-6 py-3 rounded-lg shadow-sm shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined font-bold">add</span>
+<span>Tambah Karyawan</span>
+</button>
+</div>
+<!-- Search and Filters -->
+<div class="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col lg:flex-row gap-4 mb-6">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-zinc-500">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-zinc-800 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm" placeholder="Cari Nama atau NIK Karyawan..." type="text"/>
+</div>
+<div class="flex flex-wrap gap-2">
+<select class="bg-slate-50 dark:bg-zinc-800 border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary min-w-[140px]">
+<option>Departemen</option>
+<option>IT Support</option>
+<option>Human Resources</option>
+<option>Finance</option>
+</select>
+<select class="bg-slate-50 dark:bg-zinc-800 border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary min-w-[140px]">
+<option>Status</option>
+<option>Active</option>
+<option>Inactive</option>
+</select>
+<select class="bg-slate-50 dark:bg-zinc-800 border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary min-w-[140px]">
+<option>Lokasi Kerja</option>
+<option>Jakarta HQ</option>
+<option>Bandung Office</option>
+</select>
+<button class="px-4 py-2 text-primary font-semibold hover:bg-primary/10 rounded-lg transition-colors text-sm">Reset Filter</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">NIK</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Nama Lengkap</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Departemen</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Jabatan</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Lokasi Kerja</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider text-center">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
+<tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-600 dark:text-zinc-400">24-00123</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden shrink-0" data-alt="Profile photo of Ahmad Fauzi" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD0C4nl_rgZOcTvn93KQkS2Xxu8-hFDMrTce5Ys3Q4WXV8ZYq9VkNmShUEYxmsgzxJDNu7XDhRlaqfdRbWPH1e08cgc9hbk3x4oSndX7vU9P8oGD8FNVB6K4IvMzLOzlsJogAsCL9zXr4ElbmtNCUepB5L3rTuXu_AQXxuRoIk7yA2eFsLBTIbNwVtWaOwOFvqwAgtotXKj7le36vD0Fq72-fI4VxcLP5de8YTZ2lSQXwYlDd4TF5ZZL8QSiXnnHKzAQhVm1dNLEQ'); background-size: cover;"></div>
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Ahmad Fauzi</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">IT Support</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Senior Engineer</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Jakarta HQ</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" title="View details">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors" title="Edit employee">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-600 dark:text-zinc-400">24-00456</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden shrink-0" data-alt="Profile photo of Siti Aminah" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCze7AiET_TRvTxwO_ue6XvrXaJo70_2eOqrg4iw-SmpLutSkZmf9EbCEvYS_wVCCYChBhhTl8I-JDmnnyGG70Liw36XArgCetKnnwGwFstG7jPiHnM73m0XNWk20MbakrRty8Ohpq_itnTTsIpM1_a4IeC-tpbcX-BULHat3PcWEhk28rxcQkHGbhYT73f0uxZ-biCfwwe4LK_objJAZHbfIc-F0frXkRVX97kqP5pv30mcgrzvXqSe4lomVmgNjTVrilPFDuWQSw'); background-size: cover;"></div>
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Siti Aminah</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Human Resources</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">HR Manager</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Bandung Office</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-600 dark:text-zinc-400">23-00789</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden shrink-0" data-alt="Profile photo of Budi Santoso" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCCceM3DpRq7DAseKP7C5b_yh1dfeNgXIr1iEirD6CBBKhT_A4n4H1Rrq_iWePjtjITM-wRpVvBfWTwhKzKMte8B6NjKLPQ4KIiia-eT8xZCRDK2GleI06-AqDIrJRJbu4OZIJIcD9P1G-kZdhj2DlrRKt5zEwaLkdOvJ9QW4dqYRhNe4s7kn5Hz8KyywqK9CD27ROEM_VtYkut0k3UQFF7we2uriURQan3mV1m2aJxKbkL5fwsQ_MYT2PuPcBUo80PVmytw7idd0o'); background-size: cover;"></div>
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Budi Santoso</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Finance</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Accountant</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Jakarta HQ</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 dark:bg-zinc-800 dark:text-zinc-500">Inactive</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-600 dark:text-zinc-400">24-00234</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden shrink-0" data-alt="Profile photo of Dewi Lestari" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAey4wJfyDvofdQn7IkS_OqtcJgupPl64OsNVUHvUmIx4SzDlUntVC-5EN63ZIszBggM7re75YHN1IzAEn8Zt8wMufJst0cOuAuXkeSnrrBBD_MikE8NJEjWlphyOn_0Zcj5-g1VNltmqM2GV4U2SUONvbPvdedLbqXWtUJzX5rEVLNJ65BQf5ikQWO8N9Tuy7A_kNYTIolGbvyrf589LCpaOTGzhrhBY18XLmAq72fB-qD_Dxoq98mAdeiEqmC6mU0RglL2EEuvqY'); background-size: cover;"></div>
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Dewi Lestari</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Marketing</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Content Creator</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Surabaya Branch</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-600 dark:text-zinc-400">24-00567</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-zinc-700 overflow-hidden shrink-0" data-alt="Profile photo of Eko Prasetyo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAlF-kcVU1-Ow9OWyKaGwGthskRBuQUMzvOx1Nou1TmeVMJkinfEF4TWs368t2nC-UUd8MJioOJEm43KJ7cV9lWkhmRBVAxyT9tUWwXCvGsZEu1Chzjvs5Njc85ah3khKpmi-D6KkXkfWvbGAH2V7b8qX0avdZxrRJN5zlNVUyT9bIxNKkicmuvB9tnmnieP8xNjUwK8crHRBVEINLnGaWcfiFAtHyRvjnwfVjsogsV6SozR9hZuOKznJB_nI_tS9cLqagdhPa4s50'); background-size: cover;"></div>
+<span class="text-sm font-semibold text-slate-900 dark:text-slate-100">Eko Prasetyo</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Operations</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Supervisor</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-zinc-400">Jakarta HQ</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Active</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_square</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-slate-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+<span class="text-xs font-medium text-slate-500 dark:text-zinc-400">Menampilkan 1-5 dari 124 Karyawan</span>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-slate-200 dark:border-zinc-700 text-slate-400 hover:bg-white dark:hover:bg-zinc-700 transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-zinc-900 text-xs font-bold shadow-sm">1</button>
+<button class="w-8 h-8 rounded-lg text-slate-600 dark:text-zinc-400 text-xs font-bold hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors">2</button>
+<button class="w-8 h-8 rounded-lg text-slate-600 dark:text-zinc-400 text-xs font-bold hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors">3</button>
+<span class="text-slate-400">...</span>
+<button class="w-8 h-8 rounded-lg text-slate-600 dark:text-zinc-400 text-xs font-bold hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors">25</button>
+<button class="p-2 rounded-lg border border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

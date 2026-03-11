@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Profile - Informasi HR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2c40d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-4 md:px-10 py-3 bg-white dark:bg-slate-900">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">corporate_fare</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Employee Management System</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 text-sm" placeholder="Search employee..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbgVx9luFD4XaPv9FWL2QHJdoeeuxnRNX4LzjdDY15kACo957ipZc-Wyd_jUbyxEYKpFFu9vRYfn7oSyt-P4yBJG6ilmmeHP2lN_emFq6-SJR60QE_1a-cpvjhBqZRwnv32m32lTy9Nc6dbMiF1Lu5qwM9DGBVHd7D6VG_fVJA7qw9TQG4jeT2CxnvrRbafQdodpqHUi_Jp4or-MmQFe9aBQMXIuZh3vdEb6uXFCHQsaVLPWGJn73NDeGCUPkghfIu5xAwB6BO6Rg");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 gap-6">
+<div class="flex gap-3 items-center">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">admin_panel_settings</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-sm font-semibold">Redesign HR</h1>
+<p class="text-slate-500 text-xs">Admin Panel</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border-r-4 border-primary" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-bold">Employee Directory</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">calendar_today</span>
+<p class="text-sm font-medium">Attendance</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">payments</span>
+<p class="text-sm font-medium">Payroll</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-slate-500">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto max-w-full">
+<!-- Profile Header (Bagian Head) -->
+<div class="p-4 md:p-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+<div class="flex flex-col @container">
+<div class="flex w-full flex-col gap-6 @[520px]:flex-row @[520px]:justify-between items-start">
+<div class="flex gap-6 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl h-32 w-32 shadow-lg border-4 border-white dark:border-slate-800" data-alt="Professional portrait of male employee" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4FxL2SYPQs0tdUP2Wqv1WGlDIhZb55Q-dUwvWjGk0sAfuCaZDXcDl3DPYnr4QSuU910zmRcHQbZakxDRLCWT6vXTkzSH3R1dgSd6eqOir4O3YTkguiloGTLWeEKNH1yverk8RBufS6rlbGUGFgslfviOAb8WIUOhIT2YMgPrK2ovGvPOvX-V0_h5-NImCpXg47fc4vrAynPhwJYhqOvJ6Jo-IP2VTU6BoAxbXRhSsxTW0BJfiQ8eDLKOVw8D9x4Bg7zaa9cE-KoI");'></div>
+<div class="flex flex-col">
+<h2 class="text-2xl font-bold leading-tight text-slate-900 dark:text-white">John Doe</h2>
+<p class="text-primary font-semibold text-base">Senior Software Engineer</p>
+<p class="text-slate-500 text-sm flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">badge</span> NIK: 12345678
+                                        </p>
+</div>
+</div>
+<div class="flex w-full max-w-[480px] gap-3 @[480px]:w-auto">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-sm font-bold transition-colors flex-1 @[480px]:flex-auto">
+<span class="material-symbols-outlined mr-2">qr_code_2</span> View QR
+                                    </button>
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-slate-900 hover:bg-primary/90 text-sm font-bold transition-colors flex-1 @[480px]:flex-auto">
+<span class="material-symbols-outlined mr-2">edit</span> Edit Profile
+                                    </button>
+</div>
+</div>
+<!-- Key Stats -->
+<div class="flex flex-wrap gap-4 mt-8">
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-800/50">
+<p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Tenure</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold">5 Years</p>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-800/50">
+<p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Status</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<p class="text-slate-900 dark:text-white text-xl font-bold">Active</p>
+</div>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-800/50">
+<p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Performance</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold text-primary">A+</p>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl border border-slate-200 dark:border-slate-800 p-4 bg-slate-50/50 dark:bg-slate-800/50">
+<p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Leave Balance</p>
+<p class="text-slate-900 dark:text-white text-xl font-bold">12 Days</p>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="mt-8">
+<div class="flex border-b border-slate-200 dark:border-slate-800 gap-8 overflow-x-auto no-scrollbar">
+<a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 pb-4 px-1 hover:text-slate-700 dark:hover:text-slate-300 font-medium text-sm whitespace-nowrap transition-all" href="#">
+                                    Personal Info
+                                </a>
+<a class="flex items-center justify-center border-b-2 border-primary text-slate-900 dark:text-white pb-4 px-1 font-bold text-sm whitespace-nowrap transition-all" href="#">
+                                    Informasi HR
+                                </a>
+<a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 pb-4 px-1 hover:text-slate-700 dark:hover:text-slate-300 font-medium text-sm whitespace-nowrap transition-all" href="#">
+                                    Employment History
+                                </a>
+<a class="flex items-center justify-center border-b-2 border-transparent text-slate-500 pb-4 px-1 hover:text-slate-700 dark:hover:text-slate-300 font-medium text-sm whitespace-nowrap transition-all" href="#">
+                                    Documents
+                                </a>
+</div>
+</div>
+</div>
+<!-- HR Information Content -->
+<div class="p-4 md:p-8 space-y-8 pb-20">
+<!-- Kepegawaian Group -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">badge</span> Kepegawaian
+                            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">NIK</label>
+<p class="font-medium">12345678</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Position</label>
+<p class="font-medium">Senior Software Engineer</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Division</label>
+<p class="font-medium">Technology &amp; Innovation</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Department</label>
+<p class="font-medium">Product Development</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Company Email</label>
+<p class="font-medium text-primary underline">john.doe@company.com</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Manager</label>
+<p class="font-medium">Jane Smith</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Direct Supervisor</label>
+<p class="font-medium">Michael Ross</p>
+</div>
+</div>
+</section>
+<!-- Kontrak Group -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history_edu</span> Kontrak
+                            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Relationship Type</label>
+<p class="font-medium">Permanent Employee</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Group Entry Date</label>
+<p class="font-medium">Jan 12, 2019</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Entry Date</label>
+<p class="font-medium">Feb 01, 2019</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Permanent Date</label>
+<p class="font-medium">Feb 01, 2020</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Contract Date</label>
+<p class="font-medium">N/A</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">End of Contract Date</label>
+<p class="font-medium">N/A</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Termination Date</label>
+<p class="font-medium text-slate-400">---</p>
+</div>
+</div>
+</section>
+<!-- Education Group -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span> Education
+                            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Level</label>
+<p class="font-medium">Bachelor Degree (S1)</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Field of Study</label>
+<p class="font-medium">Computer Science</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">School Name</label>
+<p class="font-medium">Institut Teknologi Bandung</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">School City</label>
+<p class="font-medium">Bandung</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Graduation Status</label>
+<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                        Graduated
+                                    </span>
+</div>
+<div class="space-y-1 lg:col-span-2">
+<label class="text-xs font-semibold text-slate-500 uppercase">Notes</label>
+<p class="font-medium">GPA 3.85/4.00 - Cum Laude</p>
+</div>
+</div>
+</section>
+<!-- Pangkat dan Golongan -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">military_tech</span> Pangkat dan Golongan
+                            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Category</label>
+<p class="font-medium">Staff Specialist</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Grade</label>
+<p class="font-medium">Grade 8</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Sub-grade</label>
+<p class="font-medium">8B</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Pension Fund No</label>
+<p class="font-medium">PEN-99220011</p>
+</div>
+</div>
+</section>
+<!-- Emergency Contacts -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_emergency</span> Kontak Darurat
+                            </h3>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Contact 1 -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-xs font-bold text-primary uppercase mb-4">Primary Emergency Contact</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Name</label>
+<p class="font-medium">Mary Doe</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Relationship</label>
+<p class="font-medium">Wife</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Phone</label>
+<p class="font-medium">+62 812-3456-7890</p>
+</div>
+<div class="space-y-1 col-span-2">
+<label class="text-xs font-semibold text-slate-500">Address</label>
+<p class="font-medium">Jl. Mawar No. 123, Kebayoran Baru, Jakarta Selatan</p>
+</div>
+</div>
+</div>
+<!-- Contact 2 -->
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-xs font-bold text-primary uppercase mb-4">Secondary Emergency Contact</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Name</label>
+<p class="font-medium">Robert Doe</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Relationship</label>
+<p class="font-medium">Father</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500">Phone</label>
+<p class="font-medium">+62 813-1122-3344</p>
+</div>
+<div class="space-y-1 col-span-2">
+<label class="text-xs font-semibold text-slate-500">Address</label>
+<p class="font-medium">Perum Green Valley Block C-4, BSD, Tangerang</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- POO / POH -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span> POO / POH
+                                </h3>
+<div class="grid grid-cols-2 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-full">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Point of Origin</label>
+<p class="font-medium">Bandung, Jawa Barat</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Point of Hire</label>
+<p class="font-medium">Jakarta Head Office</p>
+</div>
+</div>
+</section>
+<!-- Seragam dan Sepatu -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">apparel</span> Seragam dan Sepatu
+                                </h3>
+<div class="grid grid-cols-2 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-full">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Uniform Size</label>
+<p class="font-medium text-lg">XL</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Shoe Size</label>
+<p class="font-medium text-lg">43 (EU)</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Pergerakan Karyawan -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">trending_up</span> Pergerakan Karyawan
+                            </h3>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-800 text-slate-500 uppercase text-xs font-bold">
+<tr>
+<th class="px-6 py-4">Mutation Type</th>
+<th class="px-6 py-4">Previous Location</th>
+<th class="px-6 py-4">Current Location</th>
+<th class="px-6 py-4">Mutation Date</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr>
+<td class="px-6 py-4 font-medium">Internal Transfer</td>
+<td class="px-6 py-4">Bandung Regional Office</td>
+<td class="px-6 py-4">Jakarta HQ</td>
+<td class="px-6 py-4">Oct 15, 2021</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-medium">Onboarding</td>
+<td class="px-6 py-4">-</td>
+<td class="px-6 py-4">Bandung Regional Office</td>
+<td class="px-6 py-4">Feb 01, 2019</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Costing Group -->
+<section>
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span> Costing
+                            </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Payroll Cycle</label>
+<div class="relative mt-2">
+<div class="flex items-center justify-between w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800">
+<span>Monthly Standard</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Costing Center</label>
+<div class="relative mt-2">
+<div class="flex items-center justify-between w-full border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800">
+<span>CC-TECH-001</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Assign Status</label>
+<p class="font-medium pt-3">Budgeted</p>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-slate-500 uppercase">Actual Code</label>
+<p class="font-medium pt-3 text-primary">ACT-PROD-DEV-2023</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Employee Profile - ERP System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2c40d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark">factory</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ERP Industrial</h2>
+</div>
+<label class="flex flex-col min-w-64 h-10">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full border-none bg-transparent focus:ring-0 text-sm placeholder:text-slate-500" placeholder="Search employee, NIK, or department..."/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:border-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden md:block">
+<p class="text-xs font-bold">Admin Panel</p>
+<p class="text-[10px] text-slate-500">Super User</p>
+</div>
+<div class="bg-primary rounded-full size-10 flex items-center justify-center font-bold text-background-dark" data-alt="User profile avatar placeholder">
+                            AD
+                        </div>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark hidden lg:flex flex-col p-4 gap-2">
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3">Main Menu</p>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-slate-900 dark:text-primary font-semibold border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span class="text-sm">Karyawan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">schedule</span>
+<span class="text-sm font-medium">Absensi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Laporan</span>
+</a>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6">
+<!-- Breadcrumbs -->
+<nav class="flex text-sm text-slate-500 mb-6 gap-2 items-center">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary" href="#">Karyawan</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 font-medium">Profil Karyawan</span>
+</nav>
+<!-- Employee Header Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+<div class="flex flex-col xl:flex-row gap-8 items-start">
+<!-- Photo & Basic Info -->
+<div class="flex flex-col sm:flex-row gap-6 flex-1 w-full">
+<div class="relative group mx-auto sm:mx-0">
+<div class="size-32 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden border-4 border-white dark:border-slate-700 shadow-md">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of male employee Budi Santoso" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdZXRyuzA-IU7g99A87jJfq8l_9bMFFRl1eYE_s9_549xcbjXiXOuw1b03L1XUFy4RIxie_OxhAUHRQQNmgTO7oDPN-D-fkjoPXQouGf-KbSg0fWOnNLQOgwfGO4GedJStGm780W9-74Kbu6asehVHk6rd6ICNCZu1YzjELLo6MSF8rUY6tFDUH7fsjjwTgGWR26msCNBk0_2NO__z8_lZ3gOv3VxakE1ZpkDU9SAnijjHvYK-2nWwOU_ZrNO6rSr772RqMmC8fkA"/>
+</div>
+<button class="absolute -bottom-2 -right-2 bg-primary p-2 rounded-full shadow-lg text-background-dark">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<div class="flex-1 space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Budi Santoso <span class="ml-2 px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Permanent</span></h1>
+<p class="text-slate-500 font-medium">NIK: 20230104 • Senior Logistics Staff</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Export PDF</button>
+<button class="px-4 py-2 bg-primary text-background-dark rounded-lg text-sm font-bold hover:brightness-95 transition-all">Edit Profile</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-6 text-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">corporate_fare</span>
+<div>
+<p class="text-xs text-slate-400">Division / Dept</p>
+<p class="font-medium">Operations / Logistics</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">person_pin</span>
+<div>
+<p class="text-xs text-slate-400">Manager / Supervisor</p>
+<p class="font-medium">Hendra Wijaya / Siti Aminah</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">mail</span>
+<div>
+<p class="text-xs text-slate-400">Company Email</p>
+<p class="font-medium">budi.santoso@industrial-erp.com</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">call</span>
+<div>
+<p class="text-xs text-slate-400">Phone</p>
+<p class="font-medium">+62 812 3456 7890</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+<div>
+<p class="text-xs text-slate-400">Work Location</p>
+<p class="font-medium text-primary underline decoration-dotted">Jakarta Central Office</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">sell</span>
+<div class="flex gap-1 flex-wrap">
+<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold">WAREHOUSE</span>
+<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold">SAFETY_A1</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- QR Code Section -->
+<div class="xl:border-l xl:border-slate-200 dark:xl:border-slate-800 xl:pl-8 flex flex-col items-center justify-center w-full xl:w-auto">
+<div class="p-3 bg-white border-2 border-slate-100 rounded-lg shadow-sm mb-2">
+<div class="size-24 bg-slate-100 flex items-center justify-center relative">
+<!-- Mock QR Code with dots -->
+<div class="grid grid-cols-4 gap-1">
+<div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-300"></div><div class="size-4 bg-slate-900"></div>
+<div class="size-4 bg-slate-300"></div><div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-300"></div>
+<div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-300"></div><div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-900"></div>
+<div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-900"></div><div class="size-4 bg-slate-300"></div><div class="size-4 bg-slate-900"></div>
+</div>
+</div>
+</div>
+<p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Employee QR (20230104)</p>
+</div>
+</div>
+</div>
+<!-- Tabs Section -->
+<div class="border-b border-slate-200 dark:border-slate-800 mb-6 flex overflow-x-auto gap-8">
+<button class="pb-3 px-1 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap">Personal Information</button>
+<button class="pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap">Employment Data</button>
+<button class="pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap">Attendance &amp; Leaves</button>
+<button class="pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap">Payroll &amp; Tax</button>
+<button class="pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap">Education &amp; Training</button>
+<button class="pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 whitespace-nowrap">Asset Management</button>
+</div>
+<!-- Personal Information Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Biodata Karyawan -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="font-bold text-sm">Biodata Karyawan</h3>
+</div>
+<div class="p-5 grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+<div><p class="text-xs text-slate-400">Full Name</p><p class="font-medium">Budi Santoso</p></div>
+<div><p class="text-xs text-slate-400">Gender</p><p class="font-medium">Laki-laki (Male)</p></div>
+<div><p class="text-xs text-slate-400">Place of Birth</p><p class="font-medium">Surabaya</p></div>
+<div><p class="text-xs text-slate-400">Date of Birth</p><p class="font-medium">12 Mei 1988</p></div>
+<div><p class="text-xs text-slate-400">Religion</p><p class="font-medium">Islam</p></div>
+<div><p class="text-xs text-slate-400">Blood Type</p><p class="font-medium">O+</p></div>
+</div>
+</div>
+<!-- Identifikasi -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">id_card</span>
+<h3 class="font-bold text-sm">Identifikasi</h3>
+</div>
+<div class="p-5 grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+<div><p class="text-xs text-slate-400">KTP Number</p><p class="font-medium">3275011205880001</p></div>
+<div><p class="text-xs text-slate-400">NPWP Number</p><p class="font-medium">09.234.567.8-412.000</p></div>
+<div><p class="text-xs text-slate-400">Passport Number</p><p class="font-medium">-</p></div>
+<div><p class="text-xs text-slate-400">BPJS Kesehatan</p><p class="font-medium">0001234567890</p></div>
+<div><p class="text-xs text-slate-400">BPJS Ketenagakerjaan</p><p class="font-medium">12345678912</p></div>
+</div>
+</div>
+<!-- Alamat KTP -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">home</span>
+<h3 class="font-bold text-sm">Alamat KTP</h3>
+</div>
+<div class="p-5 text-sm space-y-4">
+<div>
+<p class="text-xs text-slate-400">Address Details</p>
+<p class="font-medium">Jl. Kebon Jeruk No. 45, RT 005 RW 012</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div><p class="text-xs text-slate-400">City / District</p><p class="font-medium">Jakarta Barat / Palmerah</p></div>
+<div><p class="text-xs text-slate-400">Province / Postal Code</p><p class="font-medium">DKI Jakarta / 11480</p></div>
+</div>
+</div>
+</div>
+<!-- Alamat Domisili -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_away</span>
+<h3 class="font-bold text-sm">Alamat Domisili</h3>
+</div>
+<span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">SAME AS KTP</span>
+</div>
+<div class="p-5 text-sm space-y-4">
+<div>
+<p class="text-xs text-slate-400">Address Details</p>
+<p class="font-medium">Jl. Kebon Jeruk No. 45, RT 005 RW 012</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div><p class="text-xs text-slate-400">City / District</p><p class="font-medium">Jakarta Barat / Palmerah</p></div>
+<div><p class="text-xs text-slate-400">Province / Postal Code</p><p class="font-medium">DKI Jakarta / 11480</p></div>
+</div>
+</div>
+</div>
+<!-- Informasi Kontak -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_phone</span>
+<h3 class="font-bold text-sm">Informasi Kontak</h3>
+</div>
+<div class="p-5 grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+<div class="col-span-2"><p class="text-xs text-slate-400">Personal Email</p><p class="font-medium">budi_88@gmail.com</p></div>
+<div><p class="text-xs text-slate-400">Emergency Contact Name</p><p class="font-medium">Ani Santoso (Istri)</p></div>
+<div><p class="text-xs text-slate-400">Emergency Phone</p><p class="font-medium">+62 813 9988 7766</p></div>
+</div>
+</div>
+<!-- Status Pernikahan dan Anak -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">family_restroom</span>
+<h3 class="font-bold text-sm">Status Pernikahan &amp; Anak</h3>
+</div>
+<div class="p-5 grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+<div><p class="text-xs text-slate-400">Marital Status</p><p class="font-medium">Menikah (K/2)</p></div>
+<div><p class="text-xs text-slate-400">Spouse Name</p><p class="font-medium">Ani Santoso</p></div>
+<div><p class="text-xs text-slate-400">Number of Children</p><p class="font-medium">2</p></div>
+<div><p class="text-xs text-slate-400">Tax Dependency Status</p><p class="font-medium">K/2 (Kawin 2 Anak)</p></div>
+</div>
+</div>
+<!-- Rekening Bank -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden lg:col-span-2">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance</span>
+<h3 class="font-bold text-sm">Rekening Bank</h3>
+</div>
+<div class="p-5 grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-12 text-sm">
+<div class="flex items-center gap-4">
+<div class="size-10 bg-slate-100 dark:bg-slate-800 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">payments</span>
+</div>
+<div>
+<p class="text-xs text-slate-400">Bank Name</p>
+<p class="font-bold">Bank Mandiri</p>
+</div>
+</div>
+<div>
+<p class="text-xs text-slate-400">Account Number</p>
+<p class="font-bold text-lg tracking-wider">123-000-456789-0</p>
+</div>
+<div>
+<p class="text-xs text-slate-400">Account Holder</p>
+<p class="font-medium">BUDI SANTOSO</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Save Footer (Floating-like or at end) -->
+<div class="mt-8 flex justify-end gap-3 p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg">
+<button class="px-6 py-2.5 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">Discard Changes</button>
+<button class="px-8 py-2.5 rounded-lg text-sm font-bold bg-primary text-background-dark shadow-md hover:brightness-95">Save Profile Data</button>
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

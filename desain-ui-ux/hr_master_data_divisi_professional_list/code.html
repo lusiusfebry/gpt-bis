@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Master Data Divisi - PT Prima Sarana Gemilang</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2c40d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221e10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 lg:px-20">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-900 text-xl">construction</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">PT Prima Sarana Gemilang</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-semibold transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Human Resources</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-semibold transition-colors" href="#">Payroll</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-semibold transition-colors" href="#">Safety</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search data..." type="text"/>
+</div>
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYyKGekdC_r06vGaTR5WOwvgel1gOHYFJE43y7AFsIbRgBulRAE68SeJSCNFPcAM8pua0jPhD32l2WhXHBdBmPVS3JNi_Tqdgbv75OGpmMCNn0Y6vQNMbF18EAAyE6PieeYM1BYXDsX66VQV5tgtJlXI4GJuyntzlt_n5kgDiah4sO1OzsfLZsJlzB8izSZWds8bg1PMhDt-dZh2-k28ICZjsnMUqhNAc6UGmU2oO0l6_mk33CwvLF8MvdsNMyzvQTW9XRCM6tX0w"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 flex-col lg:flex-row px-4 lg:px-20 py-8 gap-8">
+<!-- Sidebar Navigation -->
+<aside class="w-full lg:w-72 flex flex-col gap-2">
+<div class="mb-4">
+<h1 class="text-slate-900 dark:text-white text-xl font-bold">HR Master Data</h1>
+<p class="text-slate-500 text-sm">Organization management</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-slate-900 font-bold transition-all" href="#">
+<span class="material-symbols-outlined">corporate_fare</span>
+<span>Divisi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span>Department</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">badge</span>
+<span>Posisi Jabatan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span>Kategori Pangkat</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span>Golongan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">segment</span>
+<span>Sub Golongan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span>Jenis Hubungan Kerja</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">sell</span>
+<span>Tag</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span>Lokasi Kerja</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-all" href="#">
+<span class="material-symbols-outlined">check_circle</span>
+<span>Status Karyawan</span>
+</a>
+</nav>
+<div class="mt-8 border-t border-slate-200 dark:border-slate-800 pt-6">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 bg-slate-200 dark:bg-slate-800 rounded-lg text-sm font-bold hover:bg-slate-300 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-lg">grid_view</span>
+                    Main Menu
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col gap-6">
+<!-- Breadcrumbs & Header -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<div class="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">
+<span>Human Resources</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Master Data</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">Divisi</span>
+</div>
+<h2 class="text-3xl font-black tracking-tight dark:text-white">Master Data Divisi</h2>
+<p class="text-slate-500">Manage and organize organizational units for PT Prima Sarana Gemilang</p>
+</div>
+<button class="flex items-center gap-2 px-6 py-3 bg-primary text-slate-900 font-bold rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+<span class="material-symbols-outlined">add</span>
+                    Add New Division
+                </button>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800"><th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">KODE</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Nama Divisi</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Keterangan</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">AKSI</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"><td class="px-6 font-mono text-xs text-slate-500 py-6">DIV00001</td>
+<td class="px-6 font-semibold text-slate-900 dark:text-slate-100 py-6">Divisi Tambang</td>
+<td class="px-6 text-slate-600 dark:text-slate-400 py-6">Operasional Penambangan Utama di Site</td>
+<td class="px-6 py-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 text-right py-6"><div class="flex justify-end items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+View
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 dark:text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-slate-900 transition-all">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+Edit
+</button>
+</div></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"><td class="px-6 font-mono text-xs text-slate-500 py-6">DIV00002</td>
+<td class="px-6 font-semibold text-slate-900 dark:text-slate-100 py-6">Divisi HSE</td>
+<td class="px-6 text-slate-600 dark:text-slate-400 py-6">Health, Safety, and Environment Compliance</td>
+<td class="px-6 py-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 text-right py-6"><div class="flex justify-end items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+View
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 dark:text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-slate-900 transition-all">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+Edit
+</button>
+</div></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"><td class="px-6 font-mono text-xs text-slate-500 py-6">DIV00003</td>
+<td class="px-6 font-semibold text-slate-900 dark:text-slate-100 py-6">Divisi HRGA</td>
+<td class="px-6 text-slate-600 dark:text-slate-400 py-6">Human Resources &amp; General Affairs Management</td>
+<td class="px-6 py-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 text-right py-6"><div class="flex justify-end items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+View
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 dark:text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-slate-900 transition-all">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+Edit
+</button>
+</div></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"><td class="px-6 font-mono text-xs text-slate-500 py-6">DIV00004</td>
+<td class="px-6 font-semibold text-slate-900 dark:text-slate-100 py-6">Divisi Logistik</td>
+<td class="px-6 text-slate-600 dark:text-slate-400 py-6">Supply Chain &amp; Spareparts Management</td>
+<td class="px-6 py-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                        Inactive
+                                    </span>
+</td>
+<td class="px-6 text-right py-6"><div class="flex justify-end items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+View
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 dark:text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-slate-900 transition-all">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+Edit
+</button>
+</div></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"><td class="px-6 font-mono text-xs text-slate-500 py-6">DIV00005</td>
+<td class="px-6 font-semibold text-slate-900 dark:text-slate-100 py-6">Divisi Maintenance</td>
+<td class="px-6 text-slate-600 dark:text-slate-400 py-6">Heavy Equipment Maintenance &amp; Workshop</td>
+<td class="px-6 py-6">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 text-right py-6"><div class="flex justify-end items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+View
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-slate-900 dark:text-primary text-xs font-bold border border-primary/20 hover:bg-primary hover:text-slate-900 transition-all">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+Edit
+</button>
+</div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<p class="text-sm text-slate-500">Showing <span class="font-bold">1</span> to <span class="font-bold">5</span> of <span class="font-bold">12</span> results</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="px-3 py-1 rounded border border-primary bg-primary text-slate-900 font-bold text-sm">1</button>
+<button class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50">2</button>
+<button class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50">3</button>
+<button class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Form/Modal Overlay Preview (Visual only for UI demo) -->
+</main>
+</div>
+<!-- Footer -->
+<footer class="px-4 lg:px-20 py-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-slate-500 uppercase font-bold tracking-widest">© 2024 PT Prima Sarana Gemilang - Internal Systems</p>
+<div class="flex items-center gap-6">
+<a class="text-xs font-bold text-slate-400 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-bold text-slate-400 hover:text-primary transition-colors" href="#">Support Center</a>
+<a class="text-xs font-bold text-slate-400 hover:text-primary transition-colors" href="#">System v4.2.0</a>
+</div>
+</footer>
+</div>
+</body></html>

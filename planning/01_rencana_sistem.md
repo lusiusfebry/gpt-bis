@@ -1,7 +1,7 @@
 # Rencana Sistem Aplikasi Bebang Sistem Informasi
 
 ## Deskripsi Umum
-Aplikasi enterprise web progresif bernama **Bebang Sistem Informasi** akan diimplementasikan di PT Prima Sarana Gemilang, site Taliabu. Tujuan aplikasi adalah sebagai pusat pelayanan data bagi karyawan.
+Aplikasi enterprise web progresif bernama **Bebang Sistem Informasi** akan diimplementasikan di PT Prima Sarana Gemilang, site Taliabu. PT Prima Sarana Gemilang adalah perusahaan kontraktor pertambangan. Tujuan aplikasi adalah sebagai pusat pelayanan data bagi karyawan.
 
 ### Flow
 Login page - Welcome Page - Module
