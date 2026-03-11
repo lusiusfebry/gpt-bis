@@ -1,16 +1,6 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Input,
-  Select,
-  Space,
-  Table,
-  Tag,
-  Typography,
-  type TableProps,
-} from "antd";
-import { useMemo } from "react";
+import { EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Avatar, Button, Input, Select, Table, Typography, type TableProps } from "antd";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   buildFotoKaryawanUrl,
@@ -19,7 +9,7 @@ import {
   type KaryawanListItem,
 } from "../hooks/useKaryawan";
 
-const { Text, Title } = Typography;
+const { Paragraph, Text, Title } = Typography;
 
 function getInitials(name: string) {
   return name
@@ -34,97 +24,191 @@ function KaryawanListPage() {
   const navigate = useNavigate();
   const { items, meta, query, isLoading, setFilter, setPage, setSearch } = useKaryawanList();
   const dropdowns = useMasterDataDropdowns();
+  const [searchValue, setSearchValue] = useState(query.search);
+
+  useEffect(() => {
+    setSearchValue(query.search);
+  }, [query.search]);
 
   const columns = useMemo<TableProps<KaryawanListItem>["columns"]>(
     () => [
       {
-        title: "Foto",
-        dataIndex: "foto_karyawan",
-        key: "foto_karyawan",
-        width: 88,
-        render: (_, record) => (
-          <Avatar
-            size={48}
-            src={buildFotoKaryawanUrl(record.foto_karyawan)}
-            className="bg-slate-900"
-          >
-            {getInitials(record.nama_lengkap)}
-          </Avatar>
-        ),
-      },
-      {
         title: "NIK",
         dataIndex: "nomor_induk_karyawan",
         key: "nomor_induk_karyawan",
-        width: 140,
-        render: (value: string) => <Text strong>{value}</Text>,
+        width: 150,
+        render: (value: string) => (
+          <span className="font-mono text-sm font-semibold text-slate-700">{value}</span>
+        ),
       },
       {
         title: "Nama Lengkap",
         dataIndex: "nama_lengkap",
         key: "nama_lengkap",
-        render: (value: string) => <Text strong>{value}</Text>,
+        width: 280,
+        render: (value: string, record) => (
+          <div className="flex items-center gap-3">
+            <Avatar
+              size={42}
+              src={buildFotoKaryawanUrl(record.foto_karyawan)}
+              className="bg-slate-900"
+            >
+              {getInitials(record.nama_lengkap)}
+            </Avatar>
+            <div className="min-w-0">
+              <span className="block truncate text-sm font-semibold text-slate-900">{value}</span>
+            </div>
+          </div>
+        ),
       },
       {
         title: "Divisi",
         key: "divisi",
-        render: (_, record) => record.divisi?.nama ?? "-",
+        width: 180,
+        render: (_, record) => <span className="text-sm text-slate-600">{record.divisi?.nama ?? "-"}</span>,
       },
       {
         title: "Department",
         key: "department",
-        render: (_, record) => record.department?.nama ?? "-",
+        width: 180,
+        render: (_, record) => (
+          <span className="text-sm text-slate-600">{record.department?.nama ?? "-"}</span>
+        ),
       },
       {
         title: "Posisi Jabatan",
         key: "posisi_jabatan",
-        render: (_, record) => record.posisi_jabatan?.nama ?? "-",
+        width: 220,
+        render: (_, record) => (
+          <span className="text-sm text-slate-600">{record.posisi_jabatan?.nama ?? "-"}</span>
+        ),
       },
       {
         title: "Status Karyawan",
         key: "status_karyawan",
-        render: (_, record) => <Tag color="blue">{record.status_karyawan?.nama ?? "-"}</Tag>,
+        width: 180,
+        render: (_, record) => {
+          const statusLabel = record.status_karyawan?.nama ?? "-";
+          const isActive =
+            record.status_karyawan?.status === "Aktif" &&
+            record.status_karyawan.nama?.toLowerCase() === "aktif";
+
+          return (
+            <span
+              className={[
+                "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-tight",
+                isActive ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600",
+              ].join(" ")}
+            >
+              <span
+                className={[
+                  "h-2 w-2 rounded-full",
+                  isActive ? "bg-emerald-500" : "bg-slate-400",
+                ].join(" ")}
+              />
+              {statusLabel}
+            </span>
+          );
+        },
       },
       {
         title: "Lokasi Kerja",
         key: "lokasi_kerja",
-        render: (_, record) => record.lokasi_kerja?.nama ?? "-",
+        width: 180,
+        render: (_, record) => (
+          <span className="text-sm text-slate-600">{record.lokasi_kerja?.nama ?? "-"}</span>
+        ),
+      },
+      {
+        title: "Aksi",
+        key: "actions",
+        width: 120,
+        align: "right",
+        render: (_, record) => (
+          <div className="flex items-center justify-end gap-2">
+            <button
+              type="button"
+              aria-label={`Lihat ${record.nama_lengkap}`}
+              onClick={(event) => {
+                event.stopPropagation();
+                navigate(`/hr/karyawan/${record.id}`);
+              }}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+            >
+              <EyeOutlined className="text-[14px]" />
+            </button>
+            <button
+              type="button"
+              aria-label={`Edit ${record.nama_lengkap}`}
+              onClick={(event) => {
+                event.stopPropagation();
+                navigate(`/hr/karyawan/${record.id}`);
+              }}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-slate-900"
+            >
+              <EditOutlined className="text-[14px]" />
+            </button>
+          </div>
+        ),
       },
     ],
-    [],
+    [navigate],
   );
 
   return (
-    <Space direction="vertical" size={24} className="flex w-full">
-      <Card className="rounded-3xl border-0 bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white shadow-2xl shadow-slate-950/10">
-        <Space direction="vertical" size={14} className="w-full">
-          <Text className="uppercase tracking-[0.3em] !text-teal-300">Human Resources</Text>
-          <Title level={2} className="!mb-0 !text-white">
-            Daftar Karyawan
-          </Title>
-          <Text className="!text-slate-300">
-            Kelola data karyawan dengan pencarian cepat, filter server-side, dan navigasi langsung ke
-            detail.
-          </Text>
-        </Space>
-      </Card>
+    <div className="flex w-full flex-col gap-6">
+      <div>
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <span>Human Resources</span>
+          <span className="text-slate-300">›</span>
+          <span className="text-primary">Karyawan</span>
+        </div>
 
-      <Card className="rounded-3xl shadow-panel">
-        <Space direction="vertical" size={16} className="flex w-full">
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-            <Input.Search
-              allowClear
-              placeholder="Cari nama lengkap atau NIK"
-              defaultValue={query.search}
-              onSearch={setSearch}
-              className="w-full xl:max-w-md"
-            />
-            <Button type="primary" size="large" onClick={() => navigate("/hr/karyawan/tambah")}>
-              Tambah Karyawan
-            </Button>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1">
+            <Title level={2} className="!mb-0 !text-3xl !font-black !tracking-tight !text-slate-900">
+              Direktori Karyawan
+            </Title>
+            <Paragraph className="!mb-0 !max-w-3xl !text-sm !text-slate-500">
+              Kelola data karyawan dengan pencarian cepat, filter server-side, dan navigasi langsung ke
+              detail profil karyawan.
+            </Paragraph>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => navigate("/hr/karyawan/tambah")}
+            className="!inline-flex !h-auto !items-center !gap-2 !rounded-xl !border-0 !bg-primary !px-6 !py-2.5 !font-bold !text-slate-900 shadow-lg shadow-primary/20 hover:!bg-primary/90"
+          >
+            Tambah Karyawan
+          </Button>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <Input.Search
+            allowClear
+            placeholder="Cari nama lengkap atau NIK"
+            value={searchValue}
+            onChange={(event) => {
+              const nextValue = event.target.value;
+              setSearchValue(nextValue);
+
+              if (nextValue === "") {
+                setSearch("");
+              }
+            }}
+            onSearch={(value) => {
+              setSearchValue(value);
+              setSearch(value);
+            }}
+            prefix={<SearchOutlined className="text-slate-400" />}
+            className="w-full xl:max-w-md [&_.ant-input-affix-wrapper]:!h-11 [&_.ant-input-affix-wrapper]:!rounded-xl [&_.ant-input-affix-wrapper]:!border-slate-200 [&_.ant-input-affix-wrapper]:!bg-slate-50 [&_.ant-input-affix-wrapper]:!px-4 [&_.ant-input]:!bg-transparent [&_.ant-input]:!text-sm [&_.ant-input-search-button]:!h-11 [&_.ant-input-search-button]:!rounded-r-xl [&_.ant-input-search-button]:!border-slate-200 [&_.ant-input-search-button]:!bg-slate-50"
+          />
+
+          <div className="flex flex-wrap items-center justify-end gap-3">
             <Select
               allowClear
               showSearch
@@ -135,6 +219,7 @@ function KaryawanListPage() {
               loading={dropdowns.loadingState.divisi.loading}
               onChange={(value) => setFilter("divisi_id", value)}
               value={query.divisi_id}
+              className="min-w-[180px] [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-slate-200 [&_.ant-select-selector]:!bg-slate-50 [&_.ant-select-selector]:!px-4"
             />
             <Select
               allowClear
@@ -146,6 +231,7 @@ function KaryawanListPage() {
               loading={dropdowns.loadingState.department.loading}
               onChange={(value) => setFilter("department_id", value)}
               value={query.department_id}
+              className="min-w-[180px] [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-slate-200 [&_.ant-select-selector]:!bg-slate-50 [&_.ant-select-selector]:!px-4"
             />
             <Select
               allowClear
@@ -157,6 +243,7 @@ function KaryawanListPage() {
               loading={dropdowns.loadingState.statusKaryawan.loading}
               onChange={(value) => setFilter("status_karyawan_id", value)}
               value={query.status_karyawan_id}
+              className="min-w-[180px] [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-slate-200 [&_.ant-select-selector]:!bg-slate-50 [&_.ant-select-selector]:!px-4"
             />
             <Select
               allowClear
@@ -168,30 +255,50 @@ function KaryawanListPage() {
               loading={dropdowns.loadingState.lokasiKerja.loading}
               onChange={(value) => setFilter("lokasi_kerja_id", value)}
               value={query.lokasi_kerja_id}
+              className="min-w-[180px] [&_.ant-select-selector]:!h-11 [&_.ant-select-selector]:!items-center [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-slate-200 [&_.ant-select-selector]:!bg-slate-50 [&_.ant-select-selector]:!px-4"
             />
+            <Button
+              type="link"
+              onClick={() => {
+                setFilter("divisi_id", undefined);
+                setFilter("department_id", undefined);
+                setFilter("status_karyawan_id", undefined);
+                setFilter("lokasi_kerja_id", undefined);
+                setSearchValue("");
+                setSearch("");
+              }}
+              className="!h-11 !rounded-xl !px-1 !font-semibold !text-primary hover:!text-primary/80"
+            >
+              Reset Filter
+            </Button>
           </div>
+        </div>
+      </div>
 
-          <Table<KaryawanListItem>
-            rowKey="id"
-            columns={columns}
-            dataSource={items}
-            loading={isLoading}
-            pagination={{
-              current: meta.page,
-              pageSize: meta.limit,
-              total: meta.total,
-              showSizeChanger: true,
-              onChange: setPage,
-            }}
-            scroll={{ x: 1200 }}
-            onRow={(record) => ({
-              onClick: () => navigate(`/hr/karyawan/${record.id}`),
-              className: "cursor-pointer",
-            })}
-          />
-        </Space>
-      </Card>
-    </Space>
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <Table<KaryawanListItem>
+          rowKey="id"
+          columns={columns}
+          dataSource={items}
+          loading={isLoading}
+          scroll={{ x: 1200 }}
+          className="[&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-[0.14em] [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:align-top"
+          pagination={{
+            current: meta.page,
+            pageSize: meta.limit,
+            total: meta.total,
+            showSizeChanger: true,
+            onChange: setPage,
+            showTotal: (total, range) => `Menampilkan ${range[0]}-${range[1]} dari ${total} Karyawan`,
+            className: "!px-6 !py-4",
+          }}
+          onRow={(record) => ({
+            onClick: () => navigate(`/hr/karyawan/${record.id}`),
+            className: "cursor-pointer transition-colors hover:bg-slate-50/50",
+          })}
+        />
+      </div>
+    </div>
   );
 }
 

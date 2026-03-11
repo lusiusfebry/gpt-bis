@@ -1,5 +1,5 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Card, Form, Input, Select, Space, Typography } from "antd";
+import { ArrowLeftOutlined, SaveOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Select, Typography } from "antd";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,7 +9,7 @@ import {
   type KaryawanPayload,
 } from "../hooks/useKaryawan";
 
-const { Text, Title } = Typography;
+const { Paragraph, Title } = Typography;
 
 function KaryawanCreatePage() {
   const navigate = useNavigate();
@@ -32,21 +32,28 @@ function KaryawanCreatePage() {
   };
 
   return (
-    <Space direction="vertical" size={24} className="flex w-full">
-      <Card className="rounded-3xl border-0 bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white shadow-2xl shadow-slate-950/10">
-        <Space direction="vertical" size={14} className="w-full">
-          <Text className="uppercase tracking-[0.3em] !text-teal-300">Human Resources</Text>
-          <Title level={2} className="!mb-0 !text-white">
+    <div className="flex w-full flex-col gap-6">
+      <div>
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <span>Human Resources</span>
+          <span className="text-slate-300">›</span>
+          <span>Karyawan</span>
+          <span className="text-slate-300">›</span>
+          <span className="text-primary">Tambah Baru</span>
+        </div>
+
+        <div className="space-y-1">
+          <Title level={2} className="!mb-0 !text-3xl !font-black !tracking-tight !text-slate-900">
             Tambah Karyawan Baru
           </Title>
-          <Text className="!text-slate-300">
-            Form single-page untuk membuat data head karyawan baru dengan dropdown master data
-            yang dapat dicari.
-          </Text>
-        </Space>
-      </Card>
+          <Paragraph className="!mb-0 !max-w-3xl !text-sm !text-slate-500">
+            Lengkapi informasi utama karyawan baru melalui formulir terstruktur dengan dukungan
+            dropdown master data yang dapat dicari.
+          </Paragraph>
+        </div>
+      </div>
 
-      <Card className="rounded-3xl shadow-panel">
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <Form<KaryawanPayload> form={form} layout="vertical" onFinish={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Form.Item
@@ -165,17 +172,27 @@ function KaryawanCreatePage() {
             </Form.Item>
           </div>
 
-          <div className="mt-2 flex flex-wrap justify-end gap-3">
-            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/hr/karyawan")}>
+          <div className="mt-2 flex flex-wrap justify-end gap-3 border-t border-slate-200 pt-6">
+            <Button
+              icon={<ArrowLeftOutlined />}
+              onClick={() => navigate("/hr/karyawan")}
+              className="!inline-flex !h-11 !items-center !justify-center !rounded-xl !border !border-slate-200 !bg-white !px-5 !font-semibold !text-slate-600 !shadow-none hover:!border-slate-300 hover:!bg-slate-50 hover:!text-slate-800"
+            >
               Batal
             </Button>
-            <Button type="primary" htmlType="submit" loading={isSubmitting || dropdowns.isAnyLoading}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              icon={<SaveOutlined />}
+              loading={isSubmitting || dropdowns.isAnyLoading}
+              className="!inline-flex !h-11 !items-center !justify-center !rounded-xl !border !border-[#d4a63a] !bg-[#f2c94c] !px-5 !font-bold !text-slate-900 !shadow-none hover:!border-[#c79824] hover:!bg-[#e6bc38]"
+            >
               Simpan
             </Button>
           </div>
         </Form>
-      </Card>
-    </Space>
+      </div>
+    </div>
   );
 }
 
