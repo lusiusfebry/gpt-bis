@@ -5,16 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: "#f3f7f6",
-          100: "#d9e6e2",
-          500: "#0f766e",
-          700: "#115e59",
-          900: "#0b2f2d",
-        },
+        primary: "#f2c40d",
+        "background-light": "#f8f8f5",
+        "background-dark": "#221e10",
       },
       boxShadow: {
-        panel: "0 18px 45px rgba(15, 23, 42, 0.08)",
+        panel: "0 4px 12px rgba(15, 23, 42, 0.04)",
       },
     },
   },
