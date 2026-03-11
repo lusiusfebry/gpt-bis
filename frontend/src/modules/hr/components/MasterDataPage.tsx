@@ -1,12 +1,12 @@
 import {
   CheckCircleOutlined,
   EditOutlined,
+  EyeOutlined,
   PlusOutlined,
   StopOutlined,
 } from "@ant-design/icons";
 import {
   Button,
-  Card,
   Col,
   ColorPicker,
   Form,
@@ -16,7 +16,6 @@ import {
   Select,
   Space,
   Table,
-  Tag,
   Typography,
   type FormInstance,
   type FormItemProps,
@@ -145,10 +144,6 @@ function renderField(field: MasterDataFormField) {
   }
 }
 
-function getStatusTagColor(status: MasterDataStatus) {
-  return status === "Aktif" ? "success" : "default";
-}
-
 function MasterDataPage<
   TItem extends MasterDataBaseItem,
   TFormValues extends Record<string, unknown>,
@@ -190,25 +185,27 @@ function MasterDataPage<
   const actionColumn: NonNullable<TableProps<TItem>["columns"]>[number] = {
     title: "Aksi",
     key: "actions",
-    width: 180,
-    render: (_, record) => {
-      const isActive = record.status === "Aktif";
-
-      return (
-        <Space wrap>
-          <Button icon={<EditOutlined />} onClick={() => onEdit(record)}>
-            Edit
-          </Button>
-          <Button
-            icon={isActive ? <StopOutlined /> : <CheckCircleOutlined />}
-            danger={isActive}
-            onClick={() => onToggleStatus(record)}
-          >
-            {isActive ? "Nonaktifkan" : "Aktifkan"}
-          </Button>
-        </Space>
-      );
-    },
+    width: 260,
+    render: (_, record) => (
+      <div className="flex flex-wrap justify-end gap-2">
+        <button
+          type="button"
+          onClick={() => onEdit(record)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+        >
+          <EyeOutlined className="text-[13px]" />
+          View
+        </button>
+        <button
+          type="button"
+          onClick={() => onEdit(record)}
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition-colors hover:border-amber-300 hover:bg-amber-50 hover:text-slate-900"
+        >
+          <EditOutlined className="text-[13px]" />
+          Edit
+        </button>
+      </div>
+    ),
   };
 
   const mergedColumns: TableProps<TItem>["columns"] = [
@@ -217,8 +214,27 @@ function MasterDataPage<
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width: 140,
-      render: (value: MasterDataStatus) => <Tag color={getStatusTagColor(value)}>{value}</Tag>,
+      width: 220,
+      render: (value: MasterDataStatus) => {
+        const isActive = value === "Aktif";
+
+        return (
+          <span
+            className={[
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-tight",
+              isActive ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "h-2 w-2 rounded-full",
+                isActive ? "bg-emerald-500" : "bg-slate-400",
+              ].join(" ")}
+            />
+            {isActive ? "Active" : "Inactive"}
+          </span>
+        );
+      },
     },
     actionColumn,
   ];
@@ -227,63 +243,79 @@ function MasterDataPage<
 
   return (
     <Space direction="vertical" size={24} className="flex w-full">
-      <Card className="rounded-3xl border-0 bg-slate-950 text-white shadow-2xl shadow-slate-950/10">
-        <Space direction="vertical" size={12} className="w-full">
-          <Text className="uppercase tracking-[0.28em] !text-teal-300">Human Resources</Text>
-          <Title level={2} className="!mb-0 !text-white">
-            {title}
-          </Title>
-          <Paragraph className="!mb-0 !text-slate-300">{description}</Paragraph>
-        </Space>
-      </Card>
+      <div className="flex flex-col gap-6">
+        <div>
+          <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <span>Human Resources</span>
+            <span className="text-slate-300">›</span>
+            <span>Master Data</span>
+            <span className="text-slate-300">›</span>
+            <span className="text-primary">{entityName}</span>
+          </div>
 
-      <Card className="rounded-3xl shadow-panel">
-        <Row gutter={[16, 16]} align="middle" justify="space-between">
-          <Col xs={24} xl={16}>
-            <Space wrap size={12} className="w-full">
-              <Input.Search
-                allowClear
-                placeholder={searchPlaceholder}
-                value={searchValue}
-                onChange={(event) => onSearchChange(event.target.value)}
-                className="w-full min-w-[280px] sm:w-[320px]"
-              />
-              <Select
-                allowClear
-                placeholder="Filter status"
-                value={statusValue}
-                options={STATUS_OPTIONS}
-                onChange={(value) => onStatusChange(value)}
-                className="w-full sm:w-[180px]"
-              />
-            </Space>
-          </Col>
-          <Col xs={24} xl={8}>
-            <div className="flex justify-start xl:justify-end">
-              <Button type="primary" icon={<PlusOutlined />} onClick={onCreate}>
-                Tambah {entityName}
-              </Button>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="space-y-1">
+              <Title level={2} className="!mb-0 !text-3xl !font-black !tracking-tight !text-slate-900">
+                {title}
+              </Title>
+              <Paragraph className="!mb-0 !text-sm !text-slate-500">{description}</Paragraph>
             </div>
-          </Col>
-        </Row>
 
-        <Table<TItem>
-          rowKey="id"
-          loading={isLoading}
-          columns={mergedColumns}
-          dataSource={items}
-          scroll={{ x: 960 }}
-          className="mt-6"
-          pagination={{
-            current: meta.page,
-            pageSize: meta.limit,
-            total: meta.total,
-            showSizeChanger: true,
-            showTotal: (total, range) => `${range[0]}-${range[1]} dari ${total} data`,
-            onChange: onPageChange,
-          }}
-        />
-      </Card>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={onCreate}
+              className="!inline-flex !h-auto !items-center !gap-2 !rounded-xl !border-0 !bg-primary !px-6 !py-2.5 !font-bold !text-slate-900 shadow-lg shadow-primary/20 hover:!bg-primary/90"
+            >
+              Tambah {entityName}
+            </Button>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <Row gutter={[16, 16]} align="middle" justify="space-between">
+            <Col xs={24} xl={16}>
+              <Space wrap size={12} className="w-full">
+                <Input.Search
+                  allowClear
+                  placeholder={searchPlaceholder}
+                  value={searchValue}
+                  onChange={(event) => onSearchChange(event.target.value)}
+                  className="w-full min-w-[280px] sm:w-[320px]"
+                />
+                <Select
+                  allowClear
+                  placeholder="Filter status"
+                  value={statusValue}
+                  options={STATUS_OPTIONS}
+                  onChange={(value) => onStatusChange(value)}
+                  className="w-full sm:w-[180px]"
+                />
+              </Space>
+            </Col>
+          </Row>
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <Table<TItem>
+            rowKey="id"
+            loading={isLoading}
+            columns={mergedColumns}
+            dataSource={items}
+            scroll={{ x: 960 }}
+            className="master-data-table [&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-[0.14em] [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:align-top"
+            pagination={{
+              current: meta.page,
+              pageSize: meta.limit,
+              total: meta.total,
+              showSizeChanger: true,
+              className: "!px-6 !py-4",
+              showTotal: (total, range) => `${range[0]}-${range[1]} dari ${total} data`,
+              onChange: onPageChange,
+            }}
+          />
+        </div>
+      </div>
 
       <Modal
         open={isModalOpen}
@@ -292,13 +324,28 @@ function MasterDataPage<
         okText={editingItem ? "Simpan Perubahan" : "Simpan"}
         cancelText="Batal"
         confirmLoading={isSubmitting}
+        okButtonProps={{
+          className:
+            "!inline-flex !h-11 !items-center !justify-center !rounded-xl !border !border-[#d4a63a] !bg-[#f2c94c] !px-5 !font-bold !text-slate-900 !shadow-none hover:!border-[#c79824] hover:!bg-[#e6bc38] focus:!border-[#c79824] focus:!bg-[#e6bc38]",
+        }}
+        cancelButtonProps={{
+          className:
+            "!inline-flex !h-11 !items-center !justify-center !rounded-xl !border !border-slate-200 !bg-white !px-5 !font-semibold !text-slate-600 !shadow-none hover:!border-slate-300 hover:!bg-slate-50 hover:!text-slate-800 focus:!border-slate-300 focus:!bg-slate-50",
+        }}
         destroyOnHidden
         width={760}
+        classNames={{
+          content: "!rounded-2xl",
+          header: "!border-b !border-slate-200 !px-6 !py-5",
+          body: "!px-6 !pb-6 !pt-2",
+          footer: "!border-t !border-slate-200 !px-6 !py-4",
+        }}
         onOk={() => {
           void form.submit();
         }}
       >
         <Form<TFormValues>
+          className="mt-4"
           layout="vertical"
           form={form}
           initialValues={initialValues}
@@ -336,6 +383,58 @@ function MasterDataPage<
                 </Form.Item>
               </Col>
             ))}
+            {editingItem ? (
+              <Col xs={24}>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="space-y-1">
+                      <Text className="!text-xs !font-bold !uppercase !tracking-[0.18em] !text-slate-500">
+                        Manajemen Status
+                      </Text>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Text className="!mb-0 !text-sm !font-medium !text-slate-600">Status saat ini</Text>
+                        <span
+                          className={[
+                            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold tracking-tight",
+                            editingItem.status === "Aktif"
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-slate-200 text-slate-600",
+                          ].join(" ")}
+                        >
+                          <span
+                            className={[
+                              "h-2 w-2 rounded-full",
+                              editingItem.status === "Aktif" ? "bg-emerald-500" : "bg-slate-400",
+                            ].join(" ")}
+                          />
+                          {editingItem.status === "Aktif" ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                      <Text className="!text-sm !text-slate-500">
+                        Ubah status data dari panel edit ini tanpa menambahkan kontrol langsung pada baris tabel.
+                      </Text>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onToggleStatus(editingItem)}
+                      className={[
+                        "inline-flex h-10 items-center justify-center gap-1.5 rounded-lg border bg-white px-4 text-sm font-semibold transition-colors",
+                        editingItem.status === "Aktif"
+                          ? "border-rose-200 text-rose-700 hover:border-rose-300 hover:bg-rose-50"
+                          : "border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
+                      ].join(" ")}
+                    >
+                      {editingItem.status === "Aktif" ? (
+                        <StopOutlined className="text-[12px]" />
+                      ) : (
+                        <CheckCircleOutlined className="text-[12px]" />
+                      )}
+                      {editingItem.status === "Aktif" ? "Nonaktifkan" : "Aktifkan"}
+                    </button>
+                  </div>
+                </div>
+              </Col>
+            ) : null}
           </Row>
         </Form>
       </Modal>

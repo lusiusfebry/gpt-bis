@@ -129,18 +129,23 @@ export const DEFAULT_MASTER_DATA_COLUMNS: TableProps<MasterDataBaseItem>["column
     dataIndex: "code",
     key: "code",
     width: 140,
+    render: (value: string) => <span className="font-mono text-xs text-slate-500">{value}</span>,
   },
   {
     title: "Nama",
     dataIndex: "nama",
     key: "nama",
-    render: (value: string) => <Text strong>{value}</Text>,
+    render: (value: string) => (
+      <div className="text-slate-900">
+        <Text strong>{value}</Text>
+      </div>
+    ),
   },
   {
     title: "Keterangan",
     dataIndex: "keterangan",
     key: "keterangan",
-    render: (value?: string | null) => value || "-",
+    render: (value?: string | null) => <span className="text-slate-500">{value || "-"}</span>,
   },
 ];
 
@@ -150,6 +155,7 @@ export const DEPARTMENT_COLUMNS: TableProps<DepartmentMasterDataItem>["columns"]
     dataIndex: "code",
     key: "code",
     width: 140,
+    render: (value: string) => <span className="font-mono text-xs text-slate-500">{value}</span>,
   },
   {
     title: "Nama Department",
@@ -160,13 +166,13 @@ export const DEPARTMENT_COLUMNS: TableProps<DepartmentMasterDataItem>["columns"]
   {
     title: "Divisi",
     key: "divisi",
-    render: (_, record) => record.divisi?.nama ?? "-",
+    render: (_, record) => <span className="text-slate-600">{record.divisi?.nama ?? "-"}</span>,
   },
   {
     title: "Keterangan",
     dataIndex: "keterangan",
     key: "keterangan",
-    render: (value?: string | null) => value || "-",
+    render: (value?: string | null) => <span className="text-slate-500">{value || "-"}</span>,
   },
 ];
 
@@ -176,6 +182,7 @@ export const POSISI_JABATAN_COLUMNS: TableProps<PosisiJabatanMasterDataItem>["co
     dataIndex: "code",
     key: "code",
     width: 140,
+    render: (value: string) => <span className="font-mono text-xs text-slate-500">{value}</span>,
   },
   {
     title: "Nama Posisi Jabatan",
@@ -186,18 +193,18 @@ export const POSISI_JABATAN_COLUMNS: TableProps<PosisiJabatanMasterDataItem>["co
   {
     title: "Department",
     key: "department",
-    render: (_, record) => record.department?.nama ?? "-",
+    render: (_, record) => <span className="text-slate-700">{record.department?.nama ?? "-"}</span>,
   },
   {
     title: "Divisi",
     key: "divisi",
-    render: (_, record) => record.department?.divisi?.nama ?? "-",
+    render: (_, record) => <span className="text-slate-600">{record.department?.divisi?.nama ?? "-"}</span>,
   },
   {
     title: "Keterangan",
     dataIndex: "keterangan",
     key: "keterangan",
-    render: (value?: string | null) => value || "-",
+    render: (value?: string | null) => <span className="text-slate-500">{value || "-"}</span>,
   },
 ];
 
@@ -207,6 +214,7 @@ export const TAG_COLUMNS: TableProps<TagMasterDataItem>["columns"] = [
     dataIndex: "code",
     key: "code",
     width: 140,
+    render: (value: string) => <span className="font-mono text-xs text-slate-500">{value}</span>,
   },
   {
     title: "Nama Tag",
@@ -224,7 +232,7 @@ export const TAG_COLUMNS: TableProps<TagMasterDataItem>["columns"] = [
     title: "Keterangan",
     dataIndex: "keterangan",
     key: "keterangan",
-    render: (value?: string | null) => value || "-",
+    render: (value?: string | null) => <span className="text-slate-500">{value || "-"}</span>,
   },
 ];
 
@@ -234,6 +242,7 @@ export const LOKASI_KERJA_COLUMNS: TableProps<LokasiKerjaMasterDataItem>["column
     dataIndex: "code",
     key: "code",
     width: 140,
+    render: (value: string) => <span className="font-mono text-xs text-slate-500">{value}</span>,
   },
   {
     title: "Nama Lokasi Kerja",
@@ -245,13 +254,13 @@ export const LOKASI_KERJA_COLUMNS: TableProps<LokasiKerjaMasterDataItem>["column
     title: "Alamat",
     dataIndex: "alamat",
     key: "alamat",
-    render: (value: string) => value || "-",
+    render: (value: string) => <span className="text-slate-600">{value || "-"}</span>,
   },
   {
     title: "Keterangan",
     dataIndex: "keterangan",
     key: "keterangan",
-    render: (value?: string | null) => value || "-",
+    render: (value?: string | null) => <span className="text-slate-500">{value || "-"}</span>,
   },
 ];
 
@@ -551,9 +560,9 @@ export const HR_MASTER_MENU_ITEMS = [
 export function HrStatsPreview() {
   return (
     <Space size={12} wrap>
-      <Tag color="blue">10 Master Data</Tag>
+      <Tag className="border-primary/30 bg-primary/10 text-slate-800">10 Master Data</Tag>
       <Tag color="green">CRUD Terintegrasi</Tag>
-      <Tag color="gold">Filter Status & Pencarian</Tag>
+      <Tag className="border-primary/30 bg-primary/10 text-slate-800">Filter Status & Pencarian</Tag>
     </Space>
   );
 }

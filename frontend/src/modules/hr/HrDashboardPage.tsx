@@ -17,13 +17,13 @@ function HrDashboardPage() {
 
   return (
     <Space direction="vertical" size={24} className="flex w-full">
-      <Card className="rounded-3xl border-0 bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 text-white shadow-2xl shadow-slate-950/10">
+      <Card className="rounded-xl border border-slate-200 bg-white p-6">
         <Space direction="vertical" size={16} className="w-full">
-          <Text className="uppercase tracking-[0.3em] !text-teal-300">Human Resources</Text>
-          <Title level={2} className="!mb-0 !text-white">
+          <Text className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Human Resources</Text>
+          <Title level={2} className="!mb-0 !text-slate-900">
             Dashboard Modul HR
           </Title>
-          <Paragraph className="!mb-0 !text-slate-300">
+          <Paragraph className="!mb-0 !text-slate-500">
             Area kerja frontend untuk pengelolaan master data HR, termasuk struktur organisasi,
             pangkat, status kepegawaian, tag, lokasi kerja, dan manajemen karyawan.
           </Paragraph>
@@ -33,7 +33,7 @@ function HrDashboardPage() {
 
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={16}>
-          <Card className="h-full rounded-3xl shadow-panel" title="Daftar Master Data">
+          <Card className="h-full rounded-xl border border-slate-200 shadow-sm" title="Daftar Master Data">
             <List<HrDashboardMenuItem>
               dataSource={masterMenus}
               renderItem={(item) => (
@@ -52,7 +52,7 @@ function HrDashboardPage() {
         </Col>
         <Col xs={24} lg={8}>
           <Space direction="vertical" size={16} className="flex w-full">
-            <Card className="rounded-3xl shadow-panel" title="Manajemen Karyawan">
+            <Card className="rounded-xl border border-slate-200 shadow-sm" title="Manajemen Karyawan">
               <Link to={HR_KARYAWAN_MENU_KEY} className="flex items-center justify-between gap-4">
                 <Space>
                   {manajemenKaryawanMenu.icon}
@@ -61,7 +61,7 @@ function HrDashboardPage() {
                 <Text type="secondary">Buka</Text>
               </Link>
             </Card>
-            <Card className="h-full rounded-3xl shadow-panel" title="Cakupan Implementasi">
+            <Card className="h-full rounded-xl border border-slate-200 shadow-sm" title="Cakupan Implementasi">
               <Space direction="vertical" size={12}>
                 <Text>
                   CRUD master data frontend berbasis React 19, Ant Design v5, Tailwind, dan Axios.

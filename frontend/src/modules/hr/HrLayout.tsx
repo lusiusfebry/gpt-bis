@@ -1,5 +1,4 @@
-import { Layout, Menu, Typography } from "antd";
-import type { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { AppstoreOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -8,15 +7,17 @@ import {
   HR_KARYAWAN_MENU_PATHS,
   HR_MASTER_DATA_MENU_ITEMS,
   HR_MASTER_MENU_ITEMS,
-  HR_MASTER_MENU_PARENT_KEY,
 } from "./master-data/shared";
 
-const { Content, Sider } = Layout;
-const { Text, Title } = Typography;
+const ACTIVE_ITEM_CLASS =
+  "bg-primary text-slate-900 font-bold rounded-lg px-4 py-3 flex items-center gap-3 transition-colors";
+const INACTIVE_ITEM_CLASS =
+  "text-slate-600 hover:bg-slate-100 font-medium rounded-lg px-4 py-3 flex items-center gap-3 transition-colors";
 
 function HrLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const footerCtaLabel = "HR Dashboard";
 
   const selectedKeys = useMemo(() => {
     const isKaryawanPath =
@@ -41,69 +42,72 @@ function HrLayout() {
     return match ? [match.key] : [];
   }, [location.pathname]);
 
-  const openKeys = useMemo(() => {
-    if (selectedKeys.some((key) => key.startsWith("/hr/master-data/"))) {
-      return [HR_MASTER_MENU_PARENT_KEY];
-    }
-
-    return [];
-  }, [selectedKeys]);
-
-  const menuItems = useMemo<ItemType<MenuItemType>[]>(
-    () => [
-      {
-        key: HR_MASTER_MENU_PARENT_KEY,
-        icon: HR_MASTER_MENU_ITEMS[0].icon,
-        label: HR_MASTER_MENU_ITEMS[0].label,
-        children: HR_MASTER_DATA_MENU_ITEMS.map((child) => ({
-          key: child.key,
-          icon: child.icon,
-          label: child.label,
-        })),
-      },
-      {
-        key: HR_KARYAWAN_MENU_KEY,
-        icon: HR_MASTER_MENU_ITEMS[1].icon,
-        label: HR_MASTER_MENU_ITEMS[1].label,
-      },
-      {
-        key: HR_IMPORT_MENU_KEY,
-        icon: HR_MASTER_MENU_ITEMS[2].icon,
-        label: HR_MASTER_MENU_ITEMS[2].label,
-      },
-    ],
-    [],
-  );
+  const employeeMenuItems = [HR_MASTER_MENU_ITEMS[1], HR_MASTER_MENU_ITEMS[2]];
 
   return (
-    <Layout className="min-h-[calc(100vh-13rem)] rounded-[2rem] bg-transparent">
-      <Sider
-        width={280}
-        breakpoint="lg"
-        collapsedWidth={0}
-        theme="light"
-        className="overflow-hidden rounded-[1.75rem] border border-slate-200/70 bg-white"
-      >
-        <div className="border-b border-slate-200 px-5 py-5">
-          <Text className="block text-xs uppercase tracking-[0.3em] text-teal-700">Human Resources</Text>
-          <Title level={4} className="!mb-0 !mt-2">
-            Human Resources
-          </Title>
+    <div className="flex flex-1 flex-col gap-8 lg:flex-row">
+      <aside className="w-full lg:flex lg:w-72 lg:min-h-full lg:self-stretch">
+        <div className="flex h-full w-full flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="mb-4 px-2">
+            <h1 className="text-xl font-bold text-slate-900">HR Master Data</h1>
+            <p className="text-sm text-slate-500">Organization management</p>
+          </div>
+
+          <nav className="flex flex-1 flex-col gap-2" aria-label="HR navigation">
+            {HR_MASTER_DATA_MENU_ITEMS.map((item) => {
+              const isActive = selectedKeys.includes(item.key);
+
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => navigate(item.key)}
+                  className={isActive ? ACTIVE_ITEM_CLASS : INACTIVE_ITEM_CLASS}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+
+            <div className="px-4 pt-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+              Manajemen Karyawan
+            </div>
+
+            {employeeMenuItems.map((item) => {
+              const isActive = selectedKeys.includes(item.key);
+
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => navigate(item.key)}
+                  className={isActive ? ACTIVE_ITEM_CLASS : INACTIVE_ITEM_CLASS}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <div className="mt-auto border-t border-slate-200 pt-6">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-200 px-4 py-2 text-sm font-bold transition-all hover:bg-slate-300"
+            >
+              <AppstoreOutlined />
+              <span>{footerCtaLabel}</span>
+            </button>
+          </div>
         </div>
-        <Menu
-          mode="inline"
-          selectedKeys={selectedKeys}
-          defaultOpenKeys={[HR_MASTER_MENU_PARENT_KEY]}
-          openKeys={openKeys}
-          items={menuItems}
-          onClick={({ key }) => navigate(key)}
-          className="border-0 px-3 py-4"
-        />
-      </Sider>
-      <Content className="pt-6 lg:pl-6 lg:pt-0">
+      </aside>
+
+      <main className="flex-1">
         <Outlet />
-      </Content>
-    </Layout>
+      </main>
+    </div>
   );
 }
 
