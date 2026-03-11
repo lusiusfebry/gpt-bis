@@ -26,12 +26,7 @@ type HrInfoFormValues = {
   tanggal_kontrak?: Dayjs | null;
   tanggal_akhir_kontrak?: Dayjs | null;
   tanggal_berhenti?: Dayjs | null;
-  tingkat_pendidikan?: string;
-  bidang_studi?: string;
-  nama_sekolah?: string;
-  kota_sekolah?: string;
-  status_kelulusan?: string;
-  keterangan?: string;
+  educations?: EducationPayload[];
   kategori_pangkat_id?: string;
   golongan_id?: string;
   sub_golongan_id?: string;
@@ -100,20 +95,16 @@ function hasEducationValue(education: EducationPayload) {
   return Object.values(education).some((value) => normalizeOptionalText(value) !== undefined);
 }
 
-function buildEducationPayload(values: HrInfoFormValues): EducationPayload {
-  return {
-    tingkat_pendidikan: normalizeOptionalText(values.tingkat_pendidikan),
-    bidang_studi: normalizeOptionalText(values.bidang_studi),
-    nama_sekolah: normalizeOptionalText(values.nama_sekolah),
-    kota_sekolah: normalizeOptionalText(values.kota_sekolah),
-    status_kelulusan: normalizeOptionalText(values.status_kelulusan),
-    keterangan: normalizeOptionalText(values.keterangan),
-  };
-}
-
-function buildInitialEducationPayload(data: KaryawanDetail): EducationPayload {
-  const education = data.educations?.[0];
-
+function normalizeEducationPayload(
+  education?: {
+    tingkat_pendidikan?: string | null;
+    bidang_studi?: string | null;
+    nama_sekolah?: string | null;
+    kota_sekolah?: string | null;
+    status_kelulusan?: string | null;
+    keterangan?: string | null;
+  } | null,
+): EducationPayload {
   return {
     tingkat_pendidikan: normalizeOptionalText(education?.tingkat_pendidikan),
     bidang_studi: normalizeOptionalText(education?.bidang_studi),
@@ -124,15 +115,18 @@ function buildInitialEducationPayload(data: KaryawanDetail): EducationPayload {
   };
 }
 
-function isEducationPayloadEqual(left: EducationPayload, right: EducationPayload) {
-  return (
-    left.tingkat_pendidikan === right.tingkat_pendidikan &&
-    left.bidang_studi === right.bidang_studi &&
-    left.nama_sekolah === right.nama_sekolah &&
-    left.kota_sekolah === right.kota_sekolah &&
-    left.status_kelulusan === right.status_kelulusan &&
-    left.keterangan === right.keterangan
-  );
+function buildEducationPayload(values: HrInfoFormValues): EducationPayload[] {
+  return (values.educations ?? [])
+    .map((education) => normalizeEducationPayload(education))
+    .filter(hasEducationValue);
+}
+
+function buildInitialEducationPayload(data: KaryawanDetail): EducationPayload[] {
+  return (data.educations ?? []).map((education) => normalizeEducationPayload(education));
+}
+
+function isEducationPayloadEqual(left: EducationPayload[], right: EducationPayload[]) {
+  return JSON.stringify(left) === JSON.stringify(right);
 }
 
 function getSelectProps(options: SelectOption[], loading?: boolean) {
@@ -146,8 +140,6 @@ function getSelectProps(options: SelectOption[], loading?: boolean) {
 }
 
 function mapDataToFormValues(data: KaryawanDetail): HrInfoFormValues {
-  const education = data.educations?.[0];
-
   return {
     nomor_induk_karyawan: data.nomor_induk_karyawan,
     posisi_jabatan_id: data.posisi_jabatan?.id ?? data.posisi_jabatan_id ?? undefined,
@@ -163,12 +155,7 @@ function mapDataToFormValues(data: KaryawanDetail): HrInfoFormValues {
     tanggal_kontrak: toDayjs(data.tanggal_kontrak),
     tanggal_akhir_kontrak: toDayjs(data.tanggal_akhir_kontrak),
     tanggal_berhenti: toDayjs(data.tanggal_berhenti),
-    tingkat_pendidikan: education?.tingkat_pendidikan ?? undefined,
-    bidang_studi: education?.bidang_studi ?? undefined,
-    nama_sekolah: education?.nama_sekolah ?? undefined,
-    kota_sekolah: education?.kota_sekolah ?? undefined,
-    status_kelulusan: education?.status_kelulusan ?? undefined,
-    keterangan: education?.keterangan ?? undefined,
+    educations: buildInitialEducationPayload(data),
     kategori_pangkat_id: data.kategori_pangkat_id ?? undefined,
     golongan_id: data.golongan_id ?? undefined,
     sub_golongan_id: data.sub_golongan_id ?? undefined,
@@ -274,33 +261,52 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
         key: "education",
         label: "Education",
         children: (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Form.Item label="Tingkat Pendidikan" name="tingkat_pendidikan">
-              <Input placeholder="Masukkan tingkat pendidikan" />
-            </Form.Item>
-            <Form.Item label="Bidang Studi" name="bidang_studi">
-              <Input placeholder="Masukkan bidang studi" />
-            </Form.Item>
-            <Form.Item label="Nama Sekolah" name="nama_sekolah">
-              <Input placeholder="Masukkan nama sekolah" />
-            </Form.Item>
-            <Form.Item label="Kota Sekolah" name="kota_sekolah">
-              <Input placeholder="Masukkan kota sekolah" />
-            </Form.Item>
-            <Form.Item label="Status Kelulusan" name="status_kelulusan">
-              <Select
-                allowClear
-                placeholder="Pilih status kelulusan"
-                showSearch
-                optionFilterProp="label"
-                filterOption
-                options={STATUS_KELULUSAN_OPTIONS}
-              />
-            </Form.Item>
-            <Form.Item label="Keterangan" name="keterangan" className="lg:col-span-2">
-              <Input.TextArea rows={4} placeholder="Masukkan keterangan pendidikan" />
-            </Form.Item>
-          </div>
+          <Form.List name="educations">
+            {(fields, { add, remove }) => (
+              <div className="space-y-4">
+                {fields.map((field, index) => (
+                  <div key={field.key} className="rounded-2xl border border-slate-200 p-4">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <h4 className="text-sm font-semibold text-slate-800">Pendidikan #{index + 1}</h4>
+                      <Button danger type="text" onClick={() => remove(field.name)}>
+                        Hapus
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                      <Form.Item label="Tingkat Pendidikan" name={[field.name, "tingkat_pendidikan"]}>
+                        <Input placeholder="Masukkan tingkat pendidikan" />
+                      </Form.Item>
+                      <Form.Item label="Bidang Studi" name={[field.name, "bidang_studi"]}>
+                        <Input placeholder="Masukkan bidang studi" />
+                      </Form.Item>
+                      <Form.Item label="Nama Sekolah" name={[field.name, "nama_sekolah"]}>
+                        <Input placeholder="Masukkan nama sekolah" />
+                      </Form.Item>
+                      <Form.Item label="Kota Sekolah" name={[field.name, "kota_sekolah"]}>
+                        <Input placeholder="Masukkan kota sekolah" />
+                      </Form.Item>
+                      <Form.Item label="Status Kelulusan" name={[field.name, "status_kelulusan"]}>
+                        <Select
+                          allowClear
+                          placeholder="Pilih status kelulusan"
+                          showSearch
+                          optionFilterProp="label"
+                          filterOption
+                          options={STATUS_KELULUSAN_OPTIONS}
+                        />
+                      </Form.Item>
+                      <Form.Item label="Keterangan" name={[field.name, "keterangan"]} className="lg:col-span-2">
+                        <Input.TextArea rows={4} placeholder="Masukkan keterangan pendidikan" />
+                      </Form.Item>
+                    </div>
+                  </div>
+                ))}
+                <Button type="dashed" onClick={() => add({})} block>
+                  Tambah Riwayat Pendidikan
+                </Button>
+              </div>
+            )}
+          </Form.List>
         ),
       },
       {
@@ -435,14 +441,7 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
 
     try {
       const educationPayload = buildEducationPayload(values);
-      const isEducationChanged = !isEducationPayloadEqual(
-        educationPayload,
-        initialEducationPayload,
-      );
-      const shouldSendEducations = isEducationChanged;
-      const nextEducationsPayload = hasEducationValue(educationPayload)
-        ? [educationPayload]
-        : [];
+      const isEducationChanged = !isEducationPayloadEqual(educationPayload, initialEducationPayload);
 
       const payload = {
         jenis_hubungan_kerja_id: values.jenis_hubungan_kerja_id,
@@ -474,9 +473,9 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
         costing: values.costing,
         assign: values.assign,
         actual: values.actual,
-        ...(shouldSendEducations
+        ...(isEducationChanged
           ? {
-              educations: nextEducationsPayload,
+              educations: educationPayload,
             }
           : {}),
       };

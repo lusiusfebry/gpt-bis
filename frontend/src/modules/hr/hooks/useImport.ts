@@ -3,10 +3,34 @@ import { AxiosError } from "axios";
 import { useCallback, useState } from "react";
 import api from "../../../lib/axios";
 
+export type ImportRowCellError = {
+  field: string;
+  message: string;
+};
+
+export type ImportPreviewRow = {
+  rowNumber: number;
+  data: Record<string, unknown>;
+};
+
+export type ImportPreviewResult = {
+  filename: string;
+  totalRows: number;
+  rows: ImportPreviewRow[];
+};
+
 export type ImportValidationIssue = {
   row: number;
   field: string;
   message: string;
+};
+
+export type ImportValidationRow = {
+  rowNumber: number;
+  status: "valid" | "error";
+  rawData: Record<string, unknown>;
+  normalizedData?: Record<string, unknown>;
+  errors: ImportRowCellError[];
 };
 
 export type ImportValidationResult = {
@@ -17,12 +41,26 @@ export type ImportValidationResult = {
   invalidRows: number;
   expiresAt: string;
   issues: ImportValidationIssue[];
+  rows: ImportValidationRow[];
+};
+
+export type ImportExecuteRowDetail = {
+  rowNumber: number;
+  status: "success" | "failed";
+  rawData: Record<string, unknown>;
+  normalizedData?: Record<string, unknown>;
+  nomor_induk_karyawan?: string;
+  employeeId?: string;
+  message?: string;
+  errors: ImportRowCellError[];
 };
 
 export type ImportExecuteResult = {
   sessionId: string;
-  importedRows: number;
-  employeeIds: string[];
+  processed: number;
+  success: number;
+  failed: number;
+  details: ImportExecuteRowDetail[];
 };
 
 type ApiErrorResponse = {
@@ -57,56 +95,101 @@ function downloadBlob(blob: Blob, filename: string) {
   window.URL.revokeObjectURL(url);
 }
 
+async function postImportFile<T>(url: string, file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const { data } = await api.post<T>(url, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+}
+
 export function useImport() {
   const { message } = App.useApp();
   const [currentStep, setCurrentStep] = useState(0);
+  const [isUploadingPreview, setIsUploadingPreview] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
+  const [previewResult, setPreviewResult] = useState<ImportPreviewResult | null>(null);
   const [validationResult, setValidationResult] = useState<ImportValidationResult | null>(null);
   const [importResult, setImportResult] = useState<ImportExecuteResult | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
   const reset = useCallback(() => {
     setCurrentStep(0);
+    setIsUploadingPreview(false);
     setIsValidating(false);
     setIsExecuting(false);
+    setPreviewResult(null);
     setValidationResult(null);
     setImportResult(null);
     setFile(null);
   }, []);
 
-  const validateFile = useCallback(
-    async (selectedFile: File) => {
-      setIsValidating(true);
-      setFile(selectedFile);
-      setImportResult(null);
-      setValidationResult(null);
-      setCurrentStep(0);
+  const selectFile = useCallback((selectedFile: File) => {
+    setFile(selectedFile);
+    setCurrentStep(0);
+    setPreviewResult(null);
+    setValidationResult(null);
+    setImportResult(null);
+  }, []);
 
-      try {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
+  const uploadPreview = useCallback(async () => {
+    if (!file) {
+      const error = new Error("File import belum dipilih");
+      message.error("Pilih file import terlebih dahulu");
+      throw error;
+    }
 
-        const { data } = await api.post<ImportValidationResult>("/hr/import/validate", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+    setIsUploadingPreview(true);
+    setPreviewResult(null);
+    setValidationResult(null);
+    setImportResult(null);
+    setCurrentStep(0);
 
-        setValidationResult(data);
-        setCurrentStep(1);
-        message.success("File berhasil divalidasi");
-        return data;
-      } catch (error) {
-        const errorMessage = getErrorMessage(error, "Gagal memvalidasi file import");
-        message.error(errorMessage);
-        throw error;
-      } finally {
-        setIsValidating(false);
-      }
-    },
-    [message],
-  );
+    try {
+      const data = await postImportFile<ImportPreviewResult>("/hr/import/upload", file);
+      setPreviewResult(data);
+      message.success("Preview file berhasil dimuat");
+      return data;
+    } catch (error) {
+      const errorMessage = getErrorMessage(error, "Gagal memuat preview file import");
+      message.error(errorMessage);
+      throw error;
+    } finally {
+      setIsUploadingPreview(false);
+    }
+  }, [file, message]);
+
+  const validateImport = useCallback(async () => {
+    if (!file) {
+      const error = new Error("File import belum dipilih");
+      message.error("Pilih file import terlebih dahulu");
+      throw error;
+    }
+
+    setIsValidating(true);
+    setValidationResult(null);
+    setImportResult(null);
+
+    try {
+      const data = await postImportFile<ImportValidationResult>("/hr/import/validate", file);
+      setValidationResult(data);
+      setCurrentStep(1);
+      message.success("Validasi file berhasil dijalankan");
+      return data;
+    } catch (error) {
+      const errorMessage = getErrorMessage(error, "Gagal memvalidasi file import");
+      message.error(errorMessage);
+      throw error;
+    } finally {
+      setIsValidating(false);
+    }
+  }, [file, message]);
 
   const executeImport = useCallback(async () => {
     if (!validationResult?.sessionId) {
@@ -152,16 +235,18 @@ export function useImport() {
 
   return {
     currentStep,
+    isUploadingPreview,
     isValidating,
     isExecuting,
+    previewResult,
     validationResult,
     importResult,
     file,
-    validateFile,
+    selectFile,
+    uploadPreview,
+    validateImport,
     executeImport,
     downloadTemplate,
     reset,
-    setCurrentStep,
-    setFile,
   };
 }

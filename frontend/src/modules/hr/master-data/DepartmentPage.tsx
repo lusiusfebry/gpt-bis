@@ -1,12 +1,15 @@
 import { Form } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import MasterDataPage from "../components/MasterDataPage";
-import { fetchMasterDataOptions, useMasterData } from "../hooks/useMasterData";
+import { useMasterData } from "../hooks/useMasterData";
+import api from "../../../lib/axios";
+import type { EmployeeOption } from "../hooks/useKaryawan";
 import {
   buildDepartmentFields,
   DEPARTMENT_COLUMNS,
   DEPARTMENT_INITIAL_VALUES,
   type DepartmentFormValues,
+  type DepartmentManagerOption,
   type DepartmentMasterDataItem,
   type RelationOption,
 } from "./shared";
@@ -14,7 +17,7 @@ import {
 function DepartmentPage() {
   const [form] = Form.useForm<DepartmentFormValues>();
   const [divisiOptions, setDivisiOptions] = useState<RelationOption[]>([]);
-  const [managerOptions, setManagerOptions] = useState<RelationOption[]>([]);
+  const [managerOptions, setManagerOptions] = useState<DepartmentManagerOption[]>([]);
   const [isDivisiLoading, setIsDivisiLoading] = useState(false);
   const [isManagerLoading, setIsManagerLoading] = useState(false);
   const [hasManagerSource, setHasManagerSource] = useState(false);
@@ -39,16 +42,30 @@ function DepartmentPage() {
 
       try {
         const [divisiData, managerData] = await Promise.allSettled([
-          fetchMasterDataOptions<RelationOption>("/hr/master-data/divisi"),
-          fetchMasterDataOptions<RelationOption>("/hr/employee"),
+          api.get<RelationOption[]>("/hr/master-data/divisi/active"),
+          api.get<EmployeeOption[]>("/hr/karyawan/options"),
         ]);
 
         if (divisiData.status === "fulfilled") {
-          setDivisiOptions(divisiData.value);
+          setDivisiOptions(divisiData.value.data);
         }
 
         if (managerData.status === "fulfilled") {
-          setManagerOptions(managerData.value);
+          setManagerOptions(
+            managerData.value.data
+              .filter(
+                (item) =>
+                  item.status_karyawan?.status === "Aktif" &&
+                  item.status_karyawan.nama?.toLowerCase() === "aktif" &&
+                  item.posisi_jabatan?.status === "Aktif" &&
+                  item.posisi_jabatan.nama?.toLowerCase().includes("head"),
+              )
+              .map((item) => ({
+                id: item.id,
+                nama_lengkap: item.nama_lengkap,
+                nomor_induk_karyawan: item.nomor_induk_karyawan,
+              })),
+          );
           setHasManagerSource(true);
         } else {
           setManagerOptions([]);

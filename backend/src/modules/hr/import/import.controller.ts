@@ -25,6 +25,30 @@ import { ImportService } from './import.service';
 export class ImportController {
   constructor(private readonly importService: ImportService) {}
 
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  upload(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: IMPORT_MAX_FILE_SIZE,
+            message: 'Ukuran file import maksimal 10MB',
+          }),
+        ],
+        fileIsRequired: true,
+      }),
+    )
+    file: {
+      originalname: string;
+      mimetype: string;
+      buffer: Buffer;
+      size: number;
+    },
+  ) {
+    return this.importService.upload(file);
+  }
+
   @Post('validate')
   @UseInterceptors(FileInterceptor('file'))
   validate(

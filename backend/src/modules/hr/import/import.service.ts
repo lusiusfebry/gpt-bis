@@ -46,6 +46,11 @@ type ImportValidationIssue = {
   message: string;
 };
 
+type ImportRowCellError = {
+  field: string;
+  message: string;
+};
+
 type MasterLookupRecord = {
   id: string;
   nama: string;
@@ -193,6 +198,30 @@ type ImportRowPayload = {
   educations?: ImportEducationPayload[];
 };
 
+type ImportPreviewRow = {
+  rowNumber: number;
+  data: Record<string, unknown>;
+};
+
+type ImportValidationRowDetail = {
+  rowNumber: number;
+  status: 'valid' | 'error';
+  rawData: Record<string, unknown>;
+  normalizedData?: Partial<ImportRowPayload>;
+  errors: ImportRowCellError[];
+};
+
+type ImportExecuteRowDetail = {
+  rowNumber: number;
+  status: 'success' | 'failed';
+  rawData: Record<string, unknown>;
+  normalizedData?: Partial<ImportRowPayload>;
+  nomor_induk_karyawan?: string;
+  employeeId?: string;
+  message?: string;
+  errors: ImportRowCellError[];
+};
+
 type ImportSessionRecord = {
   id: string;
   createdAt: number;
@@ -202,6 +231,7 @@ type ImportSessionRecord = {
   validRows: number;
   issues: ImportValidationIssue[];
   payloads: Array<{ rowNumber: number; data: ImportRowPayload }>;
+  rows: ImportValidationRowDetail[];
 };
 
 type ValidationSummary = {
@@ -212,6 +242,7 @@ type ValidationSummary = {
   invalidRows: number;
   expiresAt: string;
   issues: ImportValidationIssue[];
+  rows: ImportValidationRowDetail[];
 };
 
 type ActiveReferenceData = {
@@ -220,28 +251,11 @@ type ActiveReferenceData = {
   employees: Map<string, EmployeeLookupRecord>;
 };
 
-type PrismaMasterLookupDelegate = {
-  findMany(args: {
-    where: { status: string };
-    select: {
-      id: true;
-      nama: true;
-      status: true;
-      divisi_id: true;
-      department_id: true;
-    };
-    orderBy: { nama: 'asc' };
-  }): Promise<MasterLookupRecord[]>;
-};
-
-type PrismaMasterLookupModel =
-  (typeof MASTER_LOOKUP_CONFIG)[ImportMasterLookupField]['model'];
-
-type PrismaMasterLookupClient = Record<PrismaMasterLookupModel, PrismaMasterLookupDelegate>;
-
 @Injectable()
 export class ImportService {
   private readonly sessions = new Map<string, ImportSessionRecord>();
+
+  private readonly nikPattern = /^\d{2}-\d{5}$/;
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -381,24 +395,205 @@ export class ImportService {
   private async preloadReferenceData(): Promise<ActiveReferenceData> {
     const masterData = {} as ActiveReferenceData['masterData'];
     const masterById = {} as ActiveReferenceData['masterById'];
+    const masterLookupLoaders = {
+      divisi_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.divisi.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
 
-    await Promise.all(
-      (Object.entries(MASTER_LOOKUP_CONFIG) as Array<
-        [ImportMasterLookupField, (typeof MASTER_LOOKUP_CONFIG)[ImportMasterLookupField]]
-      >      ).map(async ([field, config]) => {
-        const prismaMasterLookupClient = this.prisma as unknown as PrismaMasterLookupClient;
-        const records = await prismaMasterLookupClient[config.model].findMany({
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      department_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.department.findMany({
           where: { status: 'Aktif' },
           select: {
             id: true,
             nama: true,
             status: true,
             divisi_id: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+          ...(record.divisi_id !== undefined ? { divisi_id: record.divisi_id } : {}),
+        }));
+      },
+      posisi_jabatan_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.posisiJabatan.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
             department_id: true,
           },
           orderBy: { nama: 'asc' },
         });
 
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+          ...(record.department_id !== undefined
+            ? { department_id: record.department_id }
+            : {}),
+        }));
+      },
+      status_karyawan_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.statusKaryawan.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      lokasi_kerja_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.lokasiKerja.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      tag_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.tag.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      jenis_hubungan_kerja_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.jenisHubunganKerja.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      kategori_pangkat_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.kategoriPangkat.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      golongan_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.golongan.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      sub_golongan_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.subGolongan.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+      lokasi_sebelumnya_id: async (): Promise<MasterLookupRecord[]> => {
+        const records = await this.prisma.lokasiKerja.findMany({
+          where: { status: 'Aktif' },
+          select: {
+            id: true,
+            nama: true,
+            status: true,
+          },
+          orderBy: { nama: 'asc' },
+        });
+
+        return records.map((record) => ({
+          id: record.id,
+          nama: record.nama,
+          status: record.status,
+        }));
+      },
+    } satisfies Record<ImportMasterLookupField, () => Promise<MasterLookupRecord[]>>;
+
+    await Promise.all(
+      (Object.keys(MASTER_LOOKUP_CONFIG) as ImportMasterLookupField[]).map(async (field) => {
+        const records = await masterLookupLoaders[field]();
 
         masterData[field] = new Map<string, MasterLookupRecord>();
         masterById[field] = new Map<string, MasterLookupRecord>();
@@ -481,6 +676,52 @@ export class ImportService {
     });
 
     return rawRow;
+  }
+
+  private async loadParsedWorksheet(file: UploadFile): Promise<{
+    workbook: ExcelJS.Workbook;
+    worksheet: ExcelJS.Worksheet;
+    headerMap: Map<number, string>;
+  }> {
+    await this.ensureFileExtension(file);
+
+    const workbook = new ExcelJS.Workbook();
+    await (workbook.xlsx.load as (input: unknown) => Promise<ExcelJS.Workbook>)(file.buffer);
+
+    const worksheet = workbook.getWorksheet(IMPORT_SHEET_INDEX);
+    if (!worksheet) {
+      throw new BadRequestException('Worksheet import tidak ditemukan');
+    }
+
+    const headerMap = this.buildWorksheetHeaderMap(worksheet);
+    if (!headerMap.size) {
+      throw new BadRequestException('Header file import tidak dikenali');
+    }
+
+    return { workbook, worksheet, headerMap };
+  }
+
+  private collectPreviewRows(
+    worksheet: ExcelJS.Worksheet,
+    headerMap: Map<number, string>,
+  ): ImportPreviewRow[] {
+    const rows: ImportPreviewRow[] = [];
+    const lastRowNumber = Math.min(worksheet.rowCount, FIRST_DATA_ROW_INDEX + MAX_IMPORT_ROWS - 1);
+
+    for (let rowNumber = FIRST_DATA_ROW_INDEX; rowNumber <= lastRowNumber; rowNumber += 1) {
+      const rawRow = this.buildRawRow(worksheet, rowNumber, headerMap);
+
+      if (this.isEmptyRow(rawRow)) {
+        continue;
+      }
+
+      rows.push({
+        rowNumber,
+        data: rawRow,
+      });
+    }
+
+    return rows;
   }
 
   private isEmptyRow(rawRow: Record<string, unknown>): boolean {
@@ -721,6 +962,25 @@ export class ImportService {
     }
   }
 
+  private validateNikFormat(
+    rowNumber: number,
+    payload: Partial<ImportRowPayload>,
+    issues: ImportValidationIssue[],
+  ): void {
+    if (!payload.nomor_induk_karyawan) {
+      return;
+    }
+
+    if (!this.nikPattern.test(payload.nomor_induk_karyawan)) {
+      this.addIssue(
+        issues,
+        rowNumber,
+        'nomor_induk_karyawan',
+        'nomor_induk_karyawan harus berformat xx-xxxxx',
+      );
+    }
+  }
+
   private validateRelationConsistency(
     rowNumber: number,
     payload: Partial<ImportRowPayload>,
@@ -790,11 +1050,45 @@ export class ImportService {
     }
   }
 
+  private buildRowErrors(
+    rowNumber: number,
+    issues: ImportValidationIssue[],
+  ): ImportRowCellError[] {
+    return issues
+      .filter((issue) => issue.row === rowNumber)
+      .map((issue) => ({
+        field: issue.field,
+        message: issue.message,
+      }));
+  }
+
+  private buildValidationRows(
+    snapshots: Array<{
+      rowNumber: number;
+      rawData: Record<string, unknown>;
+      normalizedData?: Partial<ImportRowPayload>;
+    }>,
+    issues: ImportValidationIssue[],
+  ): ImportValidationRowDetail[] {
+    return snapshots.map((snapshot) => {
+      const errors = this.buildRowErrors(snapshot.rowNumber, issues);
+
+      return {
+        rowNumber: snapshot.rowNumber,
+        status: errors.length ? 'error' : 'valid',
+        rawData: snapshot.rawData,
+        normalizedData: snapshot.normalizedData,
+        errors,
+      };
+    });
+  }
+
   private buildSessionRecord(
     file: UploadFile,
     payloads: Array<{ rowNumber: number; data: ImportRowPayload }>,
     issues: ImportValidationIssue[],
     totalRows: number,
+    rows: ImportValidationRowDetail[],
   ): ImportSessionRecord {
     const createdAt = Date.now();
 
@@ -807,29 +1101,38 @@ export class ImportService {
       validRows: payloads.length,
       issues,
       payloads,
+      rows,
+    };
+  }
+
+  async upload(file: UploadFile): Promise<{
+    filename: string;
+    totalRows: number;
+    rows: ImportPreviewRow[];
+  }> {
+    this.cleanupExpiredSessions();
+    const { worksheet, headerMap } = await this.loadParsedWorksheet(file);
+    const rows = this.collectPreviewRows(worksheet, headerMap);
+
+    return {
+      filename: file.originalname,
+      totalRows: rows.length,
+      rows,
     };
   }
 
   async validate(file: UploadFile): Promise<ValidationSummary> {
     this.cleanupExpiredSessions();
-    await this.ensureFileExtension(file);
-
-    const workbook = new ExcelJS.Workbook();
-    await (workbook.xlsx.load as (input: unknown) => Promise<ExcelJS.Workbook>)(file.buffer);
-
-    const worksheet = workbook.getWorksheet(IMPORT_SHEET_INDEX);
-    if (!worksheet) {
-      throw new BadRequestException('Worksheet import tidak ditemukan');
-    }
-
-    const headerMap = this.buildWorksheetHeaderMap(worksheet);
-    if (!headerMap.size) {
-      throw new BadRequestException('Header file import tidak dikenali');
-    }
+    const { worksheet, headerMap } = await this.loadParsedWorksheet(file);
 
     const references = await this.preloadReferenceData();
     const issues: ImportValidationIssue[] = [];
     const rowEntries: Array<{ rowNumber: number; data: ImportRowPayload }> = [];
+    const rowSnapshots: Array<{
+      rowNumber: number;
+      rawData: Record<string, unknown>;
+      normalizedData?: Partial<ImportRowPayload>;
+    }> = [];
     const nikSet = new Set<string>();
     let totalRows = 0;
 
@@ -846,7 +1149,13 @@ export class ImportService {
 
       try {
         const payload = this.mapRowToPayload(rawRow, references);
+        rowSnapshots.push({
+          rowNumber,
+          rawData: rawRow,
+          normalizedData: payload,
+        });
         this.validateRequiredFields(rowNumber, payload, issues);
+        this.validateNikFormat(rowNumber, payload, issues);
         this.validateRelationConsistency(rowNumber, payload, references, issues);
 
         if (payload.nomor_induk_karyawan) {
@@ -862,6 +1171,11 @@ export class ImportService {
           rowEntries.push({ rowNumber, data: payload });
         }
       } catch (error) {
+        rowSnapshots.push({
+          rowNumber,
+          rawData: rawRow,
+        });
+
         const message =
           error instanceof BadRequestException
             ? (error.getResponse() as { message?: string | string[] }).message
@@ -878,7 +1192,8 @@ export class ImportService {
 
     const invalidRows = new Set(issues.map((issue) => issue.row));
     const validEntries = rowEntries.filter((entry) => !invalidRows.has(entry.rowNumber));
-    const session = this.buildSessionRecord(file, validEntries, issues, totalRows);
+    const rows = this.buildValidationRows(rowSnapshots, issues);
+    const session = this.buildSessionRecord(file, validEntries, issues, totalRows, rows);
     this.sessions.set(session.id, session);
 
     return {
@@ -889,6 +1204,7 @@ export class ImportService {
       invalidRows: invalidRows.size,
       expiresAt: new Date(session.expiresAt).toISOString(),
       issues: session.issues,
+      rows: session.rows,
     };
   }
 
@@ -900,18 +1216,25 @@ export class ImportService {
       throw new NotFoundException('Sesi import tidak ditemukan atau sudah kedaluwarsa');
     }
 
-    if (session.issues.length > 0) {
-      throw new BadRequestException('Sesi import masih memiliki error validasi');
-    }
+    const details: ImportExecuteRowDetail[] = session.rows
+      .filter((row) => row.status === 'error')
+      .map((row) => ({
+        rowNumber: row.rowNumber,
+        status: 'failed',
+        rawData: row.rawData,
+        normalizedData: row.normalizedData,
+        nomor_induk_karyawan: row.normalizedData?.nomor_induk_karyawan,
+        message: 'Baris gagal divalidasi',
+        errors: row.errors,
+      }));
 
-    const result = await this.prisma.$transaction(async (tx) => {
-      const employeeIds: string[] = [];
+    for (const entry of session.payloads) {
+      const payload = entry.data;
+      const sessionRow = session.rows.find((row) => row.rowNumber === entry.rowNumber);
 
-      for (const entry of session.payloads) {
-        const payload = entry.data;
+      try {
         const qrCode = await QRCode.toDataURL(payload.nomor_induk_karyawan);
-
-        const employee = await tx.employee.create({
+        const employee = await this.prisma.employee.create({
           data: {
             nomor_induk_karyawan: payload.nomor_induk_karyawan,
             nama_lengkap: payload.nama_lengkap,
@@ -1065,18 +1388,50 @@ export class ImportService {
           },
         });
 
-        employeeIds.push(employee.id);
+        details.push({
+          rowNumber: entry.rowNumber,
+          status: 'success',
+          rawData: sessionRow?.rawData ?? {},
+          normalizedData: payload,
+          nomor_induk_karyawan: payload.nomor_induk_karyawan,
+          employeeId: employee.id,
+          message: 'Baris berhasil diimport',
+          errors: [],
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : 'Baris gagal diproses saat execute import';
+
+        details.push({
+          rowNumber: entry.rowNumber,
+          status: 'failed',
+          rawData: sessionRow?.rawData ?? {},
+          normalizedData: payload,
+          nomor_induk_karyawan: payload.nomor_induk_karyawan,
+          message,
+          errors: [
+            {
+              field: 'row',
+              message,
+            },
+          ],
+        });
       }
+    }
 
-      return {
-        sessionId: session.id,
-        importedRows: session.payloads.length,
-        employeeIds,
-      };
-    });
-
+    details.sort((left, right) => left.rowNumber - right.rowNumber);
     this.sessions.delete(sessionId);
-    return result;
+
+    const success = details.filter((detail) => detail.status === 'success').length;
+    const failed = details.length - success;
+
+    return {
+      sessionId: session.id,
+      processed: session.totalRows,
+      success,
+      failed,
+      details,
+    };
   }
 
   async getTemplatePath(): Promise<string> {

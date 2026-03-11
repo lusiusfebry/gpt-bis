@@ -61,6 +61,10 @@ type EmployeeOptionRecord = {
   } | null;
 };
 
+type ExistingEmployeeEducationRecord = {
+  id: string;
+};
+
 @Injectable()
 export class KaryawanService {
   constructor(private readonly prisma: PrismaService) {}
@@ -899,6 +903,59 @@ export class KaryawanService {
     );
   }
 
+  private async buildEducationMutation(
+    employeeId: string,
+    dto: UpdateKaryawanDto,
+  ): Promise<EmployeeRecord | undefined> {
+    if (dto.educations === undefined) {
+      return undefined;
+    }
+
+    const educationsPayload = this.buildEducationsPayload(dto);
+
+    if (dto.educations.length === 0) {
+      return {
+        deleteMany: {},
+      };
+    }
+
+    if (!educationsPayload?.length) {
+      return undefined;
+    }
+
+    const existingEducations = (await this.prisma.employeeEducation.findMany({
+      where: {
+        employee_id: employeeId,
+      },
+      select: {
+        id: true,
+      },
+      orderBy: {
+        created_at: 'asc',
+      },
+    })) as ExistingEmployeeEducationRecord[];
+
+    const update = educationsPayload
+      .slice(0, existingEducations.length)
+      .map((education, index) => ({
+        where: {
+          id: existingEducations[index].id,
+        },
+        data: education,
+      }));
+
+    const create = educationsPayload.slice(existingEducations.length);
+
+    if (!update.length && !create.length) {
+      return undefined;
+    }
+
+    return {
+      ...(update.length ? { update } : {}),
+      ...(create.length ? { create } : {}),
+    };
+  }
+
   private async ensureEmployeeExists(id: string): Promise<EmployeeRecord> {
     const employee = await this.employeeModel.findUnique({
       where: { id },
@@ -1055,10 +1112,7 @@ export class KaryawanService {
     const familyPayload = this.buildFamilyPayload(dto);
     const childrenPayload = this.buildChildrenPayload(dto);
     const siblingsPayload = this.buildSiblingsPayload(dto);
-    const educationsPayload = this.buildEducationsPayload(dto);
-    const shouldReplaceEducations =
-      dto.educations !== undefined &&
-      (dto.educations.length === 0 || (educationsPayload?.length ?? 0) > 0);
+    const educationMutation = await this.buildEducationMutation(id, dto);
 
     return this.employeeModel.update({
       where: { id },
@@ -1084,12 +1138,7 @@ export class KaryawanService {
               create: siblingsPayload ?? [],
             }
           : undefined,
-        educations: shouldReplaceEducations
-          ? {
-              deleteMany: {},
-              create: educationsPayload ?? [],
-            }
-          : undefined,
+        educations: educationMutation,
       },
       include: this.detailInclude,
     });

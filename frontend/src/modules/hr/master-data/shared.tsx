@@ -21,6 +21,12 @@ export type RelationOption = {
   status: MasterDataStatus;
 };
 
+export type DepartmentManagerOption = {
+  id: string;
+  nama_lengkap: string;
+  nomor_induk_karyawan: string;
+};
+
 export type SimpleMasterDataFormValues = {
   nama: string;
   keterangan?: string;
@@ -323,7 +329,7 @@ export function useSimpleMasterDataPage(config: {
 export function buildDepartmentFields(
   divisiOptions: RelationOption[],
   isDivisiLoading: boolean,
-  managerOptions: RelationOption[],
+  managerOptions: DepartmentManagerOption[],
   isManagerLoading: boolean,
   hasManagerSource: boolean,
 ): MasterDataFormField[] {
@@ -363,7 +369,7 @@ export function buildDepartmentFields(
       type: "select",
       placeholder: managerPlaceholder,
       options: managerOptions.map((item) => ({
-        label: `${item.nama} (${item.code})`,
+        label: `${item.nama_lengkap} (${item.nomor_induk_karyawan})`,
         value: item.id,
       })),
       selectProps: {

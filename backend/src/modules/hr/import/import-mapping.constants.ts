@@ -111,6 +111,22 @@ export const IMPORT_HEADER_FIELD_MAP: Record<string, string> = {
   'KOTA SEKOLAH': 'kota_sekolah',
   'STATUS PENDIDIKAN': 'status_kelulusan',
   'KETERANGAN PENDIDIKAN': 'keterangan',
+  'NAMA ANAK 1': 'nama_anak_1',
+  'NAMA ANAK 2': 'nama_anak_2',
+  'NAMA ANAK 3': 'nama_anak_3',
+  'NAMA ANAK 4': 'nama_anak_4',
+  'JENIS KELAMIN ANAK 1': 'jenis_kelamin_anak_1',
+  'JENIS KELAMIN ANAK 2': 'jenis_kelamin_anak_2',
+  'JENIS KELAMIN ANAK 3': 'jenis_kelamin_anak_3',
+  'JENIS KELAMIN ANAK 4': 'jenis_kelamin_anak_4',
+  'TANGGAL LAHIR ANAK 1': 'tanggal_lahir_anak_1',
+  'TANGGAL LAHIR ANAK 2': 'tanggal_lahir_anak_2',
+  'TANGGAL LAHIR ANAK 3': 'tanggal_lahir_anak_3',
+  'TANGGAL LAHIR ANAK 4': 'tanggal_lahir_anak_4',
+  'KETERANGAN ANAK 1': 'keterangan_anak_1',
+  'KETERANGAN ANAK 2': 'keterangan_anak_2',
+  'KETERANGAN ANAK 3': 'keterangan_anak_3',
+  'KETERANGAN ANAK 4': 'keterangan_anak_4',
 };
 
 export const REQUIRED_IMPORT_FIELDS = [
