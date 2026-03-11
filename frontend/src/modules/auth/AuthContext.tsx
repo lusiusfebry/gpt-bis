@@ -8,7 +8,12 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import api from "../../lib/axios";
+import api, {
+  clearAuthStorage,
+  getStoredAccessToken,
+  getStoredRefreshToken,
+  setAuthTokens,
+} from "../../lib/axios";
 
 export type AuthUser = {
   id: string;
@@ -21,6 +26,7 @@ export type AuthUser = {
 type LoginPayload = {
   nomor_induk_karyawan: string;
   password: string;
+  rememberMe: boolean;
 };
 
 type LoginResponse = {
@@ -46,24 +52,7 @@ export type AuthContextType = {
   setUser: (user: AuthUser | null) => void;
 };
 
-const ACCESS_TOKEN_KEY = "access_token";
-const REFRESH_TOKEN_KEY = "refresh_token";
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-function setStoredTokens(accessToken: string, refreshToken: string) {
-  window.localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-}
-
-function clearStoredTokens() {
-  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
-  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
-}
-
-function getStoredRefreshToken() {
-  return window.localStorage.getItem(REFRESH_TOKEN_KEY);
-}
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const { message } = App.useApp();
@@ -76,7 +65,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     } catch {
       // noop
     } finally {
-      clearStoredTokens();
+      clearAuthStorage();
       setUser(null);
     }
   }, []);
@@ -85,7 +74,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const refreshToken = getStoredRefreshToken();
 
     if (!refreshToken) {
-      clearStoredTokens();
+      clearAuthStorage();
       setUser(null);
       return null;
     }
@@ -94,7 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       refreshToken,
     });
 
-    setStoredTokens(data.accessToken, data.refreshToken);
+    setAuthTokens(data.accessToken, data.refreshToken, Boolean(window.localStorage.getItem("auth_storage") !== "session"));
 
     return data.accessToken;
   }, []);
@@ -106,10 +95,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   const login = useCallback(
-    async (payload: LoginPayload) => {
-      const { data } = await api.post<LoginResponse>("/auth/login", payload);
+    async ({ rememberMe, ...credentials }: LoginPayload) => {
+      const { data } = await api.post<LoginResponse>("/auth/login", credentials);
 
-      setStoredTokens(data.accessToken, data.refreshToken);
+      setAuthTokens(data.accessToken, data.refreshToken, rememberMe);
       setUser(data.user);
       message.success("Login berhasil");
     },
@@ -118,7 +107,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const accessToken = window.localStorage.getItem(ACCESS_TOKEN_KEY);
+      const accessToken = getStoredAccessToken();
       const refreshToken = getStoredRefreshToken();
 
       if (!accessToken && !refreshToken) {
@@ -133,7 +122,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
         await fetchProfile();
       } catch {
-        clearStoredTokens();
+        clearAuthStorage();
         setUser(null);
       } finally {
         setIsInitializing(false);

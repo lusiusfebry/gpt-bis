@@ -30,6 +30,13 @@ const appTheme = {
       itemSelectedColor: "#0f172a",
       itemBorderRadius: 8,
       itemHoverBg: "#f1f5f9",
+      darkItemBg: "#ffffff",
+      darkSubMenuItemBg: "#ffffff",
+      darkItemColor: "#475569",
+      darkItemHoverColor: "#0f172a",
+      darkItemSelectedBg: "#f2c40d",
+      darkItemSelectedColor: "#0f172a",
+      darkItemHoverBg: "#f8fafc",
     },
     Card: {
       borderRadiusLG: 12,

@@ -1,17 +1,16 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Alert, App, Button, Card, Form, Input, Space, Typography } from "antd";
+import { CustomerServiceOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Alert, App, Button, Checkbox, Form, Input } from "antd";
 import { isAxiosError } from "axios";
 import { useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-
-const { Paragraph, Text, Title } = Typography;
 
 const nikPattern = /^\d{2}-\d{5}$/;
 
 type LoginFormValues = {
   nomor_induk_karyawan: string;
   password: string;
+  rememberMe: boolean;
 };
 
 function LoginPage() {
@@ -36,6 +35,7 @@ function LoginPage() {
       await login({
         nomor_induk_karyawan: values.nomor_induk_karyawan,
         password: values.password,
+        rememberMe: values.rememberMe,
       });
 
       notification.success({
@@ -60,77 +60,85 @@ function LoginPage() {
   };
 
   return (
-    <Card className="w-full overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-2xl shadow-teal-950/10 backdrop-blur">
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-500 via-cyan-500 to-emerald-500" />
-      <Space direction="vertical" size={24} className="relative w-full">
-        <div>
-          <Text className="mb-3 block text-xs font-semibold uppercase tracking-[0.34em] text-teal-700">
-            Secure Sign In
-          </Text>
-          <Title level={2} className="!mb-3 !text-slate-900">
-            Akses portal internal perusahaan
-          </Title>
-          <Paragraph className="!mb-0 text-base leading-7 text-slate-600">
-            Gunakan nomor induk karyawan dan password resmi untuk masuk ke sistem administrasi internal dengan aman.
-          </Paragraph>
-        </div>
+    <div>
+      <div className="mb-10">
+        <h2 className="mb-2 text-3xl font-black text-slate-900">Welcome Back</h2>
+        <p className="text-slate-500">Please enter your credentials to access the system.</p>
+      </div>
 
-        {errorMessage ? (
-          <Alert
-            type="error"
-            showIcon
-            message="Autentikasi gagal"
-            description={errorMessage}
-            className="rounded-2xl"
-          />
-        ) : null}
+      {errorMessage ? (
+        <Alert
+          type="error"
+          showIcon
+          message="Autentikasi gagal"
+          description={errorMessage}
+          className="rounded-lg"
+        />
+      ) : null}
 
-        <Form<LoginFormValues>
-          layout="vertical"
-          size="large"
-          requiredMark={false}
-          onFinish={handleSubmit}
-          autoComplete="off"
-          className="w-full"
+      <Form<LoginFormValues>
+        layout="vertical"
+        size="large"
+        requiredMark={false}
+        onFinish={handleSubmit}
+        autoComplete="off"
+        initialValues={{ rememberMe: true }}
+        className="w-full"
+      >
+        <Form.Item
+          label="NIK (Nomor Induk Karyawan)"
+          name="nomor_induk_karyawan"
+          rules={[
+            { required: true, message: "Nomor induk karyawan wajib diisi" },
+            { pattern: nikPattern, message: "Format NIK harus 99-99999" },
+          ]}
         >
-          <Form.Item
-            label="Nomor Induk Karyawan"
-            name="nomor_induk_karyawan"
-            rules={[
-              { required: true, message: "Nomor induk karyawan wajib diisi" },
-              { pattern: nikPattern, message: "Format NIK harus 99-99999" },
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined className="text-slate-400" />}
-              placeholder="Contoh: 12-34567"
-              inputMode="numeric"
-            />
+          <Input
+            prefix={<UserOutlined className="text-slate-400" />}
+            placeholder="XX-XXXXX"
+            inputMode="numeric"
+            className="rounded-lg border-slate-200 bg-slate-50 px-4 py-4 focus:border-primary focus:ring-primary"
+          />
+        </Form.Item>
+
+        <Form.Item label="Password" name="password" rules={[{ required: true, message: "Password wajib diisi" }]}>
+          <Input.Password
+            prefix={<LockOutlined className="text-slate-400" />}
+            placeholder="Enter your password"
+            className="rounded-lg border-slate-200 bg-slate-50 px-4 py-4 focus:border-primary focus:ring-primary"
+          />
+        </Form.Item>
+
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <Form.Item name="rememberMe" valuePropName="checked" noStyle>
+            <Checkbox>Remember me</Checkbox>
           </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Password wajib diisi" }]}
+          <span
+            aria-disabled="true"
+            className="cursor-not-allowed text-sm font-bold text-slate-400 decoration-2 underline-offset-4"
           >
-            <Input.Password
-              prefix={<LockOutlined className="text-slate-400" />}
-              placeholder="Masukkan password"
-            />
-          </Form.Item>
-
-          <Button type="primary" htmlType="submit" block loading={isSubmitting} className="mt-2 h-12 rounded-2xl">
-            Masuk ke dashboard
-          </Button>
-        </Form>
-
-        <div className="rounded-2xl border border-teal-100 bg-teal-50/80 px-4 py-3">
-          <Text className="text-sm leading-6 text-teal-900">
-            Pastikan Anda menggunakan kredensial resmi perusahaan. Seluruh aktivitas login tercatat untuk kepentingan keamanan sistem.
-          </Text>
+            Forgot Password?
+          </span>
         </div>
-      </Space>
-    </Card>
+
+        <Button
+          type="primary"
+          htmlType="submit"
+          block
+          loading={isSubmitting}
+          className="mt-2 h-14 rounded-lg text-sm font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+        >
+          LOGIN TO SYSTEM
+        </Button>
+      </Form>
+
+      <div className="mt-12 rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <div className="flex items-center gap-3 text-sm text-slate-600">
+          <CustomerServiceOutlined className="text-base text-primary" />
+          <span>Need technical assistance? Contact IT Site Taliabu Support at ext. 404</span>
+        </div>
+      </div>
+    </div>
   );
 }
 

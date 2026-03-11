@@ -20,14 +20,55 @@ type RefreshResponse = {
   refreshToken: string;
 };
 
-const ACCESS_TOKEN_KEY = "access_token";
-const REFRESH_TOKEN_KEY = "refresh_token";
+export const ACCESS_TOKEN_KEY = "access_token";
+export const REFRESH_TOKEN_KEY = "refresh_token";
+export const AUTH_STORAGE_KEY = "auth_storage";
+export const PERSISTENT_AUTH_STORAGE = "local";
+export const SESSION_AUTH_STORAGE = "session";
 const DEFAULT_BACKEND_ORIGIN = "http://localhost:3000";
 const API_BASE_PATH = "/api";
 const BACKEND_ORIGIN = (import.meta.env.VITE_BACKEND_ORIGIN as string | undefined)?.trim();
 
 function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, "");
+}
+
+function getAuthStorageType() {
+  return window.localStorage.getItem(AUTH_STORAGE_KEY) === SESSION_AUTH_STORAGE
+    ? SESSION_AUTH_STORAGE
+    : PERSISTENT_AUTH_STORAGE;
+}
+
+function getTokenStorage(storageType = getAuthStorageType()) {
+  return storageType === SESSION_AUTH_STORAGE ? window.sessionStorage : window.localStorage;
+}
+
+export function setAuthTokens(accessToken: string, refreshToken: string, rememberMe: boolean) {
+  const storageType = rememberMe ? PERSISTENT_AUTH_STORAGE : SESSION_AUTH_STORAGE;
+  const storage = getTokenStorage(storageType);
+  const alternateStorage = storageType === SESSION_AUTH_STORAGE ? window.localStorage : window.sessionStorage;
+
+  alternateStorage.removeItem(ACCESS_TOKEN_KEY);
+  alternateStorage.removeItem(REFRESH_TOKEN_KEY);
+  window.localStorage.setItem(AUTH_STORAGE_KEY, storageType);
+  storage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  storage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+}
+
+export function clearAuthStorage() {
+  window.localStorage.removeItem(AUTH_STORAGE_KEY);
+  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
+  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+  window.sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+  window.sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+}
+
+export function getStoredAccessToken() {
+  return getTokenStorage().getItem(ACCESS_TOKEN_KEY);
+}
+
+export function getStoredRefreshToken() {
+  return getTokenStorage().getItem(REFRESH_TOKEN_KEY);
 }
 
 export function getBackendOrigin() {
@@ -77,8 +118,7 @@ function processQueue(error: unknown, token: string | null = null) {
 }
 
 function clearAuthAndRedirect() {
-  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
-  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+  clearAuthStorage();
 
   if (window.location.pathname !== "/login") {
     window.location.assign("/login");
@@ -92,7 +132,7 @@ function withAuthorization(config: AxiosRequestConfig, token: string) {
 }
 
 api.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem(ACCESS_TOKEN_KEY);
+  const token = getStoredAccessToken();
 
   if (token) {
     withAuthorization(config, token);
@@ -119,7 +159,7 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
+    const refreshToken = getStoredRefreshToken();
 
     if (!refreshToken) {
       clearAuthAndRedirect();
@@ -146,8 +186,7 @@ api.interceptors.response.use(
         refreshToken,
       });
 
-      window.localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-      window.localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
+      setAuthTokens(data.accessToken, data.refreshToken, getAuthStorageType() === PERSISTENT_AUTH_STORAGE);
       processQueue(null, data.accessToken);
       withAuthorization(originalRequest, data.accessToken);
 
