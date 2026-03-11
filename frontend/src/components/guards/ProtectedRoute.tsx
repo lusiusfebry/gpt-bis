@@ -8,7 +8,7 @@ function ProtectedRoute() {
 
   if (isInitializing) {
     return (
-      <Flex align="center" justify="center" className="min-h-[40vh]">
+      <Flex align="center" justify="center" className="min-h-screen bg-background-light">
         <Spin size="large" />
       </Flex>
     );
