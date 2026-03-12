@@ -512,6 +512,36 @@ export function useKaryawanCreate() {
   };
 }
 
+export function useKaryawanDelete() {
+  const { message } = App.useApp();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const deleteKaryawan = useCallback(
+    async (id: string, onSuccess?: () => void) => {
+      setIsDeleting(true);
+
+      try {
+        await api.delete(`/hr/karyawan/${id}`);
+        message.success("Karyawan berhasil dihapus");
+        if (onSuccess) {
+          onSuccess();
+        }
+      } catch (error) {
+        message.error("Gagal menghapus karyawan");
+        throw error;
+      } finally {
+        setIsDeleting(false);
+      }
+    },
+    [message],
+  );
+
+  return {
+    deleteKaryawan,
+    isDeleting,
+  };
+}
+
 export function useMasterDataDropdowns(): MasterDataDropdownsResult {
   const [divisiOptions, setDivisiOptions] = useState<SelectOption[]>([]);
   const [departmentOptions, setDepartmentOptions] = useState<SelectOption[]>([]);

@@ -31,10 +31,6 @@ function HrLayout() {
       return [HR_KARYAWAN_MENU_KEY];
     }
 
-    if (location.pathname === HR_IMPORT_MENU_KEY || location.pathname.startsWith(`${HR_IMPORT_MENU_KEY}/`)) {
-      return [HR_IMPORT_MENU_KEY];
-    }
-
     const match = [...HR_MASTER_DATA_MENU_ITEMS]
       .sort((a, b) => b.key.length - a.key.length)
       .find((item) => location.pathname === item.key || location.pathname.startsWith(`${item.key}/`));
@@ -42,7 +38,7 @@ function HrLayout() {
     return match ? [match.key] : [];
   }, [location.pathname]);
 
-  const employeeMenuItems = [HR_MASTER_MENU_ITEMS[1], HR_MASTER_MENU_ITEMS[2]];
+  const employeeMenuItems = [HR_MASTER_MENU_ITEMS[1]];
 
   return (
     <div className="flex flex-1 flex-col gap-8 lg:flex-row py-2">

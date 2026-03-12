@@ -6,6 +6,7 @@ import {
   Image,
   Input,
   Modal,
+  Popconfirm,
   Select,
   Spin,
   Upload,
@@ -30,6 +31,7 @@ import api from "../../../lib/axios";
 import {
   buildFotoKaryawanUrl,
   normalizeNullableSelectValue,
+  useKaryawanDelete,
   useKaryawanDetail,
   useMasterDataDropdowns,
   type KaryawanDetail,
@@ -90,6 +92,7 @@ function KaryawanDetailPage() {
   const [isQrLoading, setIsQrLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("personal-information");
   const { data, isLoading, reload } = useKaryawanDetail(id);
+  const { deleteKaryawan, isDeleting } = useKaryawanDelete();
   const dropdowns = useMasterDataDropdowns();
 
   useEffect(() => {
@@ -278,7 +281,29 @@ function KaryawanDetailPage() {
                     NIK: {data?.nomor_induk_karyawan ?? "-"} • {data?.posisi_jabatan?.nama ?? "Posisi belum diatur"}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <Popconfirm
+                    title="Hapus Karyawan"
+                    description={`Apakah Anda yakin ingin menghapus ${data?.nama_lengkap}?`}
+                    onConfirm={async (event) => {
+                      event?.stopPropagation();
+                      if (id) {
+                        await deleteKaryawan(id, () => {
+                          navigate("/hr/karyawan");
+                        });
+                      }
+                    }}
+                    onCancel={(event) => {
+                      event?.stopPropagation();
+                    }}
+                    okText="Ya, Hapus"
+                    cancelText="Batal"
+                    okButtonProps={{ danger: true, loading: isDeleting }}
+                  >
+                    <button className="px-4 py-2 border border-red-200 dark:border-red-900 bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-lg text-sm font-semibold hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors shadow-sm cursor-pointer whitespace-nowrap">
+                      Hapus
+                    </button>
+                  </Popconfirm>
                   <button onClick={handleOpenQrModal} className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm cursor-pointer whitespace-nowrap">
                     Cetak QR
                   </button>

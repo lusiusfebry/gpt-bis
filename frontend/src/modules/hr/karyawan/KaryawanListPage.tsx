@@ -1,9 +1,10 @@
-import { EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Avatar, Button, Input, Select, Table, Typography, type TableProps } from "antd";
+import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
+import { Avatar, Button, Input, Popconfirm, Select, Table, Typography, type TableProps } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   buildFotoKaryawanUrl,
+  useKaryawanDelete,
   useKaryawanList,
   useMasterDataDropdowns,
   type KaryawanListItem,
@@ -22,7 +23,8 @@ function getInitials(name: string) {
 
 function KaryawanListPage() {
   const navigate = useNavigate();
-  const { items, meta, query, isLoading, setFilter, setPage, setSearch } = useKaryawanList();
+  const { items, meta, query, isLoading, setFilter, setPage, setSearch, reload } = useKaryawanList();
+  const { deleteKaryawan, isDeleting } = useKaryawanDelete();
   const dropdowns = useMasterDataDropdowns();
   const [searchValue, setSearchValue] = useState(query.search);
 
@@ -143,11 +145,36 @@ function KaryawanListPage() {
             >
               <span className="material-symbols-outlined text-[20px]">edit_square</span>
             </button>
+            <Popconfirm
+              title="Hapus Karyawan"
+              description={`Apakah Anda yakin ingin menghapus ${record.nama_lengkap}?`}
+              onConfirm={async (event) => {
+                event?.stopPropagation();
+                await deleteKaryawan(record.id, reload);
+              }}
+              onCancel={(event) => {
+                event?.stopPropagation();
+              }}
+              okText="Ya, Hapus"
+              cancelText="Batal"
+              okButtonProps={{ danger: true, loading: isDeleting }}
+            >
+              <button
+                type="button"
+                title="Hapus karyawan"
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+                className="p-2 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[20px]">delete</span>
+              </button>
+            </Popconfirm>
           </div>
         ),
       },
     ],
-    [navigate],
+    [navigate, deleteKaryawan, isDeleting, reload],
   );
 
   return (
@@ -157,13 +184,22 @@ function KaryawanListPage() {
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">Direktori Karyawan</h2>
           <p className="text-slate-500 mt-1">Mengelola dan memantau data seluruh karyawan perusahaan.</p>
         </div>
-        <button
-          onClick={() => navigate("/hr/karyawan/tambah")}
-          className="flex items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-sm shadow-primary/20 transition-all cursor-pointer"
-        >
-          <span className="material-symbols-outlined font-bold">add</span>
-          <span>Tambah Karyawan</span>
-        </button>
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
+          <button
+            onClick={() => navigate("/hr/import")}
+            className="flex w-full sm:w-auto items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-3 border border-slate-200 rounded-lg shadow-sm transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined font-bold text-[18px]">file_upload</span>
+            <span>Import Data</span>
+          </button>
+          <button
+            onClick={() => navigate("/hr/karyawan/tambah")}
+            className="flex w-full sm:w-auto items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-sm shadow-primary/20 transition-all cursor-pointer"
+          >
+            <span className="material-symbols-outlined font-bold text-[18px]">add</span>
+            <span>Tambah Karyawan</span>
+          </button>
+        </div>
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
