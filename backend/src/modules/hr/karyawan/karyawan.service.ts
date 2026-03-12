@@ -568,6 +568,8 @@ export class KaryawanService {
     const family = dto.family;
     const normalizedPhoneNumber =
       dto.nomor_handphone !== undefined ? dto.nomor_handphone ?? null : undefined;
+    const resolvedNamaPasangan =
+      family?.nama_pasangan !== undefined ? family.nama_pasangan : dto.nama_pasangan;
 
     return {
       ...(dto.user_id !== undefined ? { user_id: dto.user_id } : {}),
@@ -634,7 +636,7 @@ export class KaryawanService {
       ...(dto.status_pernikahan !== undefined
         ? { status_pernikahan: dto.status_pernikahan }
         : {}),
-      ...(dto.nama_pasangan !== undefined ? { nama_pasangan: dto.nama_pasangan } : {}),
+      ...(resolvedNamaPasangan !== undefined ? { nama_pasangan: resolvedNamaPasangan } : {}),
       ...(dto.tanggal_menikah !== undefined
         ? { tanggal_menikah: this.normalizeDate(dto.tanggal_menikah) ?? null }
         : {}),
@@ -800,13 +802,21 @@ export class KaryawanService {
 
   private buildFamilyPayload(dto: CreateKaryawanDto | UpdateKaryawanDto): EmployeeRecord | undefined {
     const family = dto.family;
+    const hasLegacySpousePayload =
+      dto.nama_pasangan !== undefined ||
+      dto.pekerjaan_pasangan !== undefined ||
+      dto.jumlah_anak !== undefined;
 
-    if (!family && dto.nama_pasangan === undefined) {
+    if (!family && !hasLegacySpousePayload) {
       return undefined;
     }
 
     return {
-      ...(dto.nama_pasangan !== undefined ? { nama_pasangan: dto.nama_pasangan } : {}),
+      ...(family?.nama_pasangan !== undefined
+        ? { nama_pasangan: family.nama_pasangan }
+        : dto.nama_pasangan !== undefined
+          ? { nama_pasangan: dto.nama_pasangan }
+          : {}),
       ...(family?.tanggal_lahir_pasangan !== undefined
         ? {
             tanggal_lahir_pasangan:
@@ -820,8 +830,14 @@ export class KaryawanService {
         : {}),
       ...(family?.pekerjaan_pasangan !== undefined
         ? { pekerjaan_pasangan: family.pekerjaan_pasangan }
-        : {}),
-      ...(family?.jumlah_anak !== undefined ? { jumlah_anak: family.jumlah_anak } : {}),
+        : dto.pekerjaan_pasangan !== undefined
+          ? { pekerjaan_pasangan: dto.pekerjaan_pasangan }
+          : {}),
+      ...(family?.jumlah_anak !== undefined
+        ? { jumlah_anak: family.jumlah_anak }
+        : dto.jumlah_anak !== undefined
+          ? { jumlah_anak: dto.jumlah_anak }
+          : {}),
       ...(family?.keterangan_pasangan !== undefined
         ? { keterangan_pasangan: family.keterangan_pasangan }
         : {}),

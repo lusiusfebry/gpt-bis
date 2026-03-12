@@ -1,12 +1,4 @@
-import {
-  DeleteOutlined,
-  HeartOutlined,
-  HomeOutlined,
-  IdcardOutlined,
-  PlusOutlined,
-  SmileOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, InputNumber, Select, message } from "antd";
 import dayjs, { type Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
@@ -87,7 +79,7 @@ function mapFamilyValues(data: KaryawanDetail): FamilyInfoFormValues {
 
   return {
     family: {
-      nama_pasangan: data.nama_pasangan ?? undefined,
+      nama_pasangan: family?.nama_pasangan ?? data.nama_pasangan ?? undefined,
       tanggal_lahir_pasangan: toDayjs(family?.tanggal_lahir_pasangan),
       pendidikan_terakhir_pasangan: family?.pendidikan_terakhir_pasangan ?? undefined,
       pekerjaan_pasangan: family?.pekerjaan_pasangan ?? data.pekerjaan_pasangan ?? undefined,
@@ -162,6 +154,7 @@ function FamilyInfoTab({ data, onSave, employeeId }: FamilyInfoTabProps) {
 
       const payload = {
         family: {
+          nama_pasangan: values.family?.nama_pasangan,
           tanggal_lahir_pasangan: toIsoString(values.family?.tanggal_lahir_pasangan),
           pendidikan_terakhir_pasangan: values.family?.pendidikan_terakhir_pasangan,
           pekerjaan_pasangan: values.family?.pekerjaan_pasangan,
@@ -222,8 +215,12 @@ function FamilyInfoTab({ data, onSave, employeeId }: FamilyInfoTabProps) {
             <h3 className="text-lg font-bold text-slate-900">Informasi Pasangan</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-              <Form.Item label="Nama Pasangan" name={["family", "nama_pasangan"]}>
-                <Input placeholder="Nama pasangan mengikuti data referensi" readOnly disabled />
+              <Form.Item
+                label="Nama Pasangan"
+                name={["family", "nama_pasangan"]}
+                extra="Field ini menjadi sumber data utama pasangan dan tersinkron ke ringkasan personal."
+              >
+                <Input placeholder="Masukkan nama pasangan" />
               </Form.Item>
               <Form.Item label="Tanggal Lahir Pasangan" name={["family", "tanggal_lahir_pasangan"]}>
                 <DatePicker className="w-full" format="DD/MM/YYYY" />

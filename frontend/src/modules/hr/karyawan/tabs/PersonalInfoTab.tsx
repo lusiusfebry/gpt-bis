@@ -122,12 +122,12 @@ function mapDataToFormValues(data: KaryawanDetail): PersonalInfoFormValues {
     nomor_telepon_rumah_1: data.nomor_telepon_rumah_1 ?? undefined,
     nomor_telepon_rumah_2: data.nomor_telepon_rumah_2 ?? undefined,
     status_pernikahan: data.status_pernikahan ?? undefined,
-    nama_pasangan: data.nama_pasangan ?? undefined,
+    nama_pasangan: data.family?.nama_pasangan ?? data.nama_pasangan ?? undefined,
     tanggal_menikah: toDayjs(data.tanggal_menikah),
     tanggal_cerai: toDayjs(data.tanggal_cerai),
     tanggal_wafat_pasangan: toDayjs(data.tanggal_wafat_pasangan),
-    pekerjaan_pasangan: data.pekerjaan_pasangan ?? undefined,
-    jumlah_anak: data.jumlah_anak ?? null,
+    pekerjaan_pasangan: data.family?.pekerjaan_pasangan ?? data.pekerjaan_pasangan ?? undefined,
+    jumlah_anak: data.family?.jumlah_anak ?? data.jumlah_anak ?? null,
     nomor_rekening: data.nomor_rekening ?? undefined,
     nama_pemegang_rekening: data.nama_pemegang_rekening ?? undefined,
     nama_bank: data.nama_bank ?? undefined,
@@ -174,12 +174,9 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
         nomor_telepon_rumah_1: values.nomor_telepon_rumah_1,
         nomor_telepon_rumah_2: values.nomor_telepon_rumah_2,
         status_pernikahan: values.status_pernikahan,
-        nama_pasangan: values.nama_pasangan,
         tanggal_menikah: toIsoString(values.tanggal_menikah),
         tanggal_cerai: toIsoString(values.tanggal_cerai),
         tanggal_wafat_pasangan: toIsoString(values.tanggal_wafat_pasangan),
-        pekerjaan_pasangan: values.pekerjaan_pasangan,
-        jumlah_anak: values.jumlah_anak ?? null,
         nomor_rekening: values.nomor_rekening,
         nama_pemegang_rekening: values.nama_pemegang_rekening,
         nama_bank: values.nama_bank,
@@ -314,8 +311,13 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
             >
               <Input placeholder="nama@email.com" />
             </Form.Item>
-            <Form.Item label="Nomor Handphone 1" name="nomor_handphone_1" className="mb-0">
-              <Input placeholder="Masukkan nomor handphone 1" readOnly disabled />
+            <Form.Item
+              label="Nomor Handphone Utama"
+              name="nomor_handphone_1"
+              extra="Field ini mengikuti data head karyawan di bagian atas profil. Ubah dari form Edit Data Kepegawaian."
+              className="mb-0"
+            >
+              <Input placeholder="Mengikuti data head karyawan" readOnly disabled />
             </Form.Item>
             <Form.Item label="Nomor Handphone 2" name="nomor_handphone_2" className="mb-0">
               <Input placeholder="Masukkan nomor handphone 2" />
@@ -339,8 +341,13 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
             <Form.Item label="Status Pernikahan" name="status_pernikahan" className="mb-0">
               <Select placeholder="Pilih status pernikahan" allowClear options={STATUS_PERNIKAHAN_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
             </Form.Item>
-            <Form.Item label="Nama Pasangan" name="nama_pasangan" className="mb-0">
-              <Input placeholder="Masukkan nama pasangan" />
+            <Form.Item
+              label="Nama Pasangan"
+              name="nama_pasangan"
+              extra="Data pasangan dikelola pada tab Informasi Keluarga agar konsisten dengan relasi keluarga."
+              className="mb-0"
+            >
+              <Input placeholder="Kelola dari tab Informasi Keluarga" readOnly disabled />
             </Form.Item>
             <Form.Item label="Tanggal Menikah" name="tanggal_menikah" className="mb-0">
               <DatePicker className="w-full" format="DD/MM/YYYY" />
@@ -351,11 +358,21 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
             <Form.Item label="Tanggal Wafat Pasangan" name="tanggal_wafat_pasangan" className="mb-0">
               <DatePicker className="w-full" format="DD/MM/YYYY" />
             </Form.Item>
-            <Form.Item label="Pekerjaan Pasangan" name="pekerjaan_pasangan" className="mb-0">
-              <Input placeholder="Masukkan pekerjaan pasangan" />
+            <Form.Item
+              label="Pekerjaan Pasangan"
+              name="pekerjaan_pasangan"
+              extra="Data pasangan dikelola pada tab Informasi Keluarga agar konsisten dengan relasi keluarga."
+              className="mb-0"
+            >
+              <Input placeholder="Kelola dari tab Informasi Keluarga" readOnly disabled />
             </Form.Item>
-            <Form.Item label="Jumlah Anak" name="jumlah_anak" className="mb-0 md:col-span-2">
-              <InputNumber min={0} className="w-full" placeholder="Masukkan jumlah anak" />
+            <Form.Item
+              label="Jumlah Anak"
+              name="jumlah_anak"
+              extra="Jumlah anak mengikuti data anak pada tab Informasi Keluarga."
+              className="mb-0 md:col-span-2"
+            >
+              <InputNumber min={0} className="w-full" placeholder="Tersinkron dari data anak" readOnly disabled />
             </Form.Item>
           </div>
         </div>

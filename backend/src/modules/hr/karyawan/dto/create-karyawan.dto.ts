@@ -166,6 +166,7 @@ export class CreateKaryawanDto {
 
   @IsOptional()
   @IsString()
+  // backward-compatible legacy field; sumber utama pasangan ada di family.nama_pasangan
   nama_pasangan?: string;
 
   @IsOptional()
@@ -182,12 +183,14 @@ export class CreateKaryawanDto {
 
   @IsOptional()
   @IsString()
+  // backward-compatible legacy field; sumber utama pasangan ada di family.pekerjaan_pasangan
   pekerjaan_pasangan?: string;
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(0)
+  // backward-compatible legacy field; sumber utama jumlah anak ada di family.jumlah_anak / children
   jumlah_anak?: number;
 
   @IsOptional()
