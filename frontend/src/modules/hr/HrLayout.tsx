@@ -48,11 +48,16 @@ function HrLayout() {
     <div className="flex flex-1 flex-col gap-8 lg:flex-row py-2">
       <aside className="w-full lg:w-72 flex flex-col shrink-0 gap-2">
         <div className="mb-4">
-          <h1 className="text-xl font-bold text-slate-900">HR Master Data</h1>
-          <p className="text-sm text-slate-500">Organization management</p>
+          <h1 className="text-xl font-bold text-slate-900">Modul HR</h1>
+          <p className="text-sm text-slate-500">Manajemen SDM & Organisasi</p>
         </div>
 
         <nav className="flex flex-1 flex-col gap-1" aria-label="HR navigation">
+          <div className="mb-2 px-4 mt-2">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Data Master
+            </h3>
+          </div>
           {HR_MASTER_DATA_MENU_ITEMS.map((item) => {
             const isActive = selectedKeys.includes(item.key);
 

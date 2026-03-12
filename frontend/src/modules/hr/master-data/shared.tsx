@@ -547,7 +547,7 @@ export const HR_MASTER_MENU_ITEMS = [
   },
   {
     key: HR_KARYAWAN_MENU_KEY,
-    label: "Manajemen Karyawan",
+    label: "Karyawan",
     icon: <TeamOutlined />,
   },
   {
