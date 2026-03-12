@@ -9,11 +9,14 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const frontendUrl = configService.get<string>('frontendUrl', 'http://localhost:5173');
+  const allowedOrigins = Array.from(
+    new Set([frontendUrl, 'http://localhost:5173', 'http://127.0.0.1:5173']),
+  );
   const apiPrefix = configService.get<string>('apiPrefix', 'api');
   const port = configService.get<number>('port', 3000);
 
   app.enableCors({
-    origin: frontendUrl,
+    origin: allowedOrigins,
     credentials: true,
   });
 

@@ -62,3 +62,8 @@ a[href],
 .ant-list-item-action button {
   cursor: pointer;
 }
+
+.master-data-table .ant-table-placeholder .ant-table-expanded-row-fixed {
+  width: 100% !important;
+  max-width: 100% !important;
+}

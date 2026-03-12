@@ -123,14 +123,29 @@ export function useMasterData<
         },
       });
 
+      console.debug("[useMasterData.fetchItems] response", {
+        endpoint,
+        entityName,
+        query,
+        itemCount: data.data.length,
+        meta: data.meta,
+        firstItem: data.data[0] ?? null,
+      });
+
       setItems(data.data);
       setMeta(data.meta);
-    } catch {
+    } catch (error) {
+      console.error("[useMasterData.fetchItems] failed", {
+        endpoint,
+        entityName,
+        query,
+        error,
+      });
       message.error(`Gagal memuat data ${entityName}`);
     } finally {
       setIsLoading(false);
     }
-  }, [endpoint, entityName, message, query.limit, query.page, query.search, query.status]);
+  }, [endpoint, entityName, message, query, query.limit, query.page, query.search, query.status]);
 
   useEffect(() => {
     void fetchItems();
