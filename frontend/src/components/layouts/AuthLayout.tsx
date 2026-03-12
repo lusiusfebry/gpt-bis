@@ -16,11 +16,14 @@ function AuthLayout() {
           <div className="absolute inset-0 bg-slate-900/60" />
 
           <div className="relative z-10 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div className="size-10 bg-primary text-slate-900 flex items-center justify-center rounded-lg shadow-lg">
-                <span className="material-symbols-outlined font-bold">manufacturing</span>
+            <div className="flex items-center gap-4">
+              <div className="size-14 bg-white/10 backdrop-blur-md flex items-center justify-center rounded-xl border border-white/20 p-2 shadow-2xl">
+                <img src="/logo_3d.png" alt="Logo PSG" className="w-full h-full object-contain" />
               </div>
-              <h2 className="text-2xl font-black tracking-tighter">PSG Taliabu</h2>
+              <div className="flex flex-col">
+                <h2 className="text-xl font-black tracking-tighter leading-none">PT. PRIMA SARANA GEMILANG</h2>
+                <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase italic mt-1">Site Taliabu</span>
+              </div>
             </div>
             
             <div className="mt-8 max-w-xl">

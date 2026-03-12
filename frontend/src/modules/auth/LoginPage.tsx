@@ -62,7 +62,21 @@ function LoginPage() {
 
   return (
     <div>
-      <header className="mb-10">
+      <header className="mb-10 flex flex-col items-center text-center">
+        <div className="mb-6 p-4 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 transform hover:scale-105 transition-transform duration-300">
+          <img src="/logo_3d.png" alt="PT. Prima Sarana Gemilang Logo" className="w-24 h-24 object-contain" />
+        </div>
+        <div className="mb-8">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase">
+            PT. Prima Sarana Gemilang
+          </h1>
+          <div className="flex items-center justify-center gap-2 mt-1">
+            <span className="h-px w-8 bg-primary/50"></span>
+            <span className="text-primary font-bold tracking-widest text-xs uppercase italic">Site Taliabu</span>
+            <span className="h-px w-8 bg-primary/50"></span>
+          </div>
+        </div>
+        
         <h2 className="text-3xl font-black text-slate-900 mb-2">Welcome Back</h2>
         <p className="text-slate-500">Please enter your credentials to access the system.</p>
       </header>
