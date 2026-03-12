@@ -11,6 +11,7 @@ import {
 import { Form, Space, Tag, Typography, type TableProps } from "antd";
 import MasterDataPage, { type MasterDataFormField } from "../components/MasterDataPage";
 import { useMasterData, type MasterDataBaseItem, type MasterDataStatus } from "../hooks/useMasterData";
+import { toSelectiveTitleCase } from "../utils/selectiveTitleCase";
 
 const { Text } = Typography;
 
@@ -87,6 +88,9 @@ export const MASTER_DATA_STATUS_OPTIONS: Array<{ label: string; value: MasterDat
   { label: "Aktif", value: "Aktif" },
   { label: "Tidak Aktif", value: "Tidak Aktif" },
 ];
+
+const normalizeSelectiveTitleCase = (value: unknown) =>
+  typeof value === "string" ? toSelectiveTitleCase(value) ?? value : value;
 
 export const SIMPLE_INITIAL_VALUES: SimpleMasterDataFormValues = {
   nama: "",
@@ -270,6 +274,7 @@ export const SIMPLE_FIELDS: MasterDataFormField[] = [
     label: "Nama",
     placeholder: "Masukkan nama",
     rules: [{ required: true, message: "Nama wajib diisi" }],
+    normalize: normalizeSelectiveTitleCase,
   },
   {
     name: "keterangan",
@@ -354,6 +359,7 @@ export function buildDepartmentFields(
       label: "Nama Department",
       placeholder: "Masukkan nama department",
       rules: [{ required: true, message: "Nama department wajib diisi" }],
+      normalize: normalizeSelectiveTitleCase,
     },
     {
       name: "divisi_id",
@@ -419,6 +425,7 @@ export function buildPosisiJabatanFields(
       label: "Nama Posisi Jabatan",
       placeholder: "Masukkan nama posisi jabatan",
       rules: [{ required: true, message: "Nama posisi jabatan wajib diisi" }],
+      normalize: normalizeSelectiveTitleCase,
     },
     {
       name: "department_id",
@@ -461,6 +468,7 @@ export function buildTagFields(): MasterDataFormField[] {
       label: "Nama Tag",
       placeholder: "Masukkan nama tag",
       rules: [{ required: true, message: "Nama tag wajib diisi" }],
+      normalize: normalizeSelectiveTitleCase,
     },
     {
       name: "warna_tag",
@@ -492,6 +500,7 @@ export const LOKASI_KERJA_FIELDS: MasterDataFormField[] = [
     label: "Nama Lokasi Kerja",
     placeholder: "Masukkan nama lokasi kerja",
     rules: [{ required: true, message: "Nama lokasi kerja wajib diisi" }],
+    normalize: normalizeSelectiveTitleCase,
   },
   {
     name: "alamat",

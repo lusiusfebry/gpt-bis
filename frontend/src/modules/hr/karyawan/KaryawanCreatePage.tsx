@@ -8,6 +8,7 @@ import {
   useMasterDataDropdowns,
   type KaryawanPayload,
 } from "../hooks/useKaryawan";
+import { toSelectiveTitleCase } from "../utils/selectiveTitleCase";
 
 const { Paragraph, Title } = Typography;
 
@@ -60,6 +61,7 @@ function KaryawanCreatePage() {
               label="Nama Lengkap"
               name="nama_lengkap"
               rules={[{ required: true, message: "Nama lengkap wajib diisi" }]}
+              normalize={(value) => (typeof value === "string" ? toSelectiveTitleCase(value) ?? value : value)}
             >
               <Input placeholder="Masukkan nama lengkap" />
             </Form.Item>

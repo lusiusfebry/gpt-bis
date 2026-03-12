@@ -46,23 +46,23 @@ function MainLayout() {
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden font-display bg-background-light text-slate-900">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 bg-white px-6 py-4 md:px-10">
-        <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate("/")}>
-          <div className="flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-3xl">manufacturing</span>
+      <header className="glass-header sticky top-0 z-50 flex items-center justify-between px-6 py-4 md:px-10">
+        <div className="flex cursor-pointer items-center gap-4 transition-transform hover:scale-[1.02]" onClick={() => navigate("/")}>
+          <div className="flex items-center justify-center text-primary drop-shadow-sm">
+            <span className="material-symbols-outlined text-4xl">manufacturing</span>
           </div>
-          <div className="flex flex-col">
-            <h2 className="text-lg font-bold leading-tight tracking-tight text-slate-900">
+          <div className="flex min-w-0 flex-col items-start text-left">
+            <h2 className="text-left text-xl font-black leading-tight tracking-tight text-slate-900">
               PT Prima Sarana Gemilang
             </h2>
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+            <span className="text-left text-[10px] font-black uppercase tracking-[0.2em] text-primary">
               Site Taliabu
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="mr-6 hidden items-center gap-6 md:flex">
+          <div className="mr-8 hidden items-center gap-8 md:flex">
             {isLoading ? (
               <Spin size="small" />
             ) : (
@@ -74,33 +74,40 @@ function MainLayout() {
                     key={module.path}
                     type="button"
                     onClick={() => navigate(module.path)}
-                    className={`text-sm font-semibold transition-colors ${isActive ? "text-primary border-b-2 border-primary pb-1" : "text-slate-600 hover:text-primary"
+                    className={`relative text-xs font-black uppercase tracking-widest transition-all hover:text-primary ${isActive ? "text-primary px-2" : "text-slate-500"
                       }`}
                   >
                     {module.nama}
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-primary shadow-[0_0_8px_rgba(242,196,13,0.5)]"></span>
+                    )}
                   </button>
                 );
               })
             )}
           </div>
 
-          <div className="flex gap-2">
-            <button className="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition-colors hover:bg-primary/20">
-              <span className="material-symbols-outlined">notifications</span>
+          <div className="flex items-center gap-2 rounded-xl bg-slate-100/50 p-1.5 backdrop-blur-sm border border-slate-200/50">
+            <button className="flex size-9 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition-all hover:bg-white hover:text-primary hover:shadow-sm">
+              <span className="material-symbols-outlined text-xl">notifications</span>
             </button>
-            <button className="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition-colors hover:bg-primary/20">
-              <span className="material-symbols-outlined">settings</span>
+            <button className="flex size-9 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition-all hover:bg-white hover:text-primary hover:shadow-sm">
+              <span className="material-symbols-outlined text-xl">settings</span>
             </button>
+            <div className="mx-1 h-4 w-px bg-slate-200"></div>
             <button
               onClick={() => void handleLogout()}
-              className="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition-colors hover:bg-red-100 hover:text-red-600"
+              className="flex size-9 cursor-pointer items-center justify-center rounded-lg text-slate-500 transition-all hover:bg-red-50 hover:text-red-600"
               title="Logout"
             >
               <LogoutOutlined />
             </button>
           </div>
 
-          <Avatar className="h-10 w-10 shrink-0 border-2 border-primary bg-slate-900 text-sm font-black text-white">
+          <Avatar 
+            className="h-10 w-10 shrink-0 border-2 border-white bg-slate-900 text-sm font-black text-white shadow-md active:scale-95 transition-transform"
+            style={{ boxShadow: '0 0 0 2px var(--color-primary), var(--shadow-md)' }}
+          >
             {initials}
           </Avatar>
         </div>

@@ -14,6 +14,7 @@ import dayjs, { type Dayjs } from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../../../lib/axios";
 import type { KaryawanDetail, SelectOption, useMasterDataDropdowns } from "../../hooks/useKaryawan";
+import { toSelectiveTitleCase } from "../../utils/selectiveTitleCase";
 
 type HrInfoTabProps = {
   data: KaryawanDetail;
@@ -100,6 +101,10 @@ function toIsoString(value?: Dayjs | null) {
 function normalizeOptionalText(value?: string | null) {
   const normalizedValue = value?.trim();
   return normalizedValue ? normalizedValue : undefined;
+}
+
+function normalizeSelectiveTitleCase(value: unknown) {
+  return typeof value === "string" ? toSelectiveTitleCase(value) ?? value : value;
 }
 
 function hasEducationValue(education: EducationPayload) {
@@ -420,25 +425,25 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
             <h3 className="text-lg font-bold text-slate-900">Kontak Darurat</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-              <Form.Item label="Nama Kontak Darurat 1" name="nama_kontak_darurat_1">
+              <Form.Item label="Nama Kontak Darurat 1" name="nama_kontak_darurat_1" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan nama kontak darurat 1" />
               </Form.Item>
               <Form.Item label="Nomor Telepon Kontak Darurat 1" name="nomor_telepon_kontak_darurat_1">
                 <Input placeholder="Masukkan nomor telepon kontak darurat 1" />
               </Form.Item>
-              <Form.Item label="Hubungan Kontak Darurat 1" name="hubungan_kontak_darurat_1">
+              <Form.Item label="Hubungan Kontak Darurat 1" name="hubungan_kontak_darurat_1" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan hubungan kontak darurat 1" />
               </Form.Item>
               <Form.Item label="Alamat Kontak Darurat 1" name="alamat_kontak_darurat_1" className="lg:col-span-2">
                 <Input.TextArea rows={3} placeholder="Masukkan alamat kontak darurat 1" />
               </Form.Item>
-              <Form.Item label="Nama Kontak Darurat 2" name="nama_kontak_darurat_2">
+              <Form.Item label="Nama Kontak Darurat 2" name="nama_kontak_darurat_2" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan nama kontak darurat 2" />
               </Form.Item>
               <Form.Item label="Nomor Telepon Kontak Darurat 2" name="nomor_telepon_kontak_darurat_2">
                 <Input placeholder="Masukkan nomor telepon kontak darurat 2" />
               </Form.Item>
-              <Form.Item label="Hubungan Kontak Darurat 2" name="hubungan_kontak_darurat_2">
+              <Form.Item label="Hubungan Kontak Darurat 2" name="hubungan_kontak_darurat_2" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan hubungan kontak darurat 2" />
               </Form.Item>
               <Form.Item label="Alamat Kontak Darurat 2" name="alamat_kontak_darurat_2" className="lg:col-span-2">
@@ -453,10 +458,10 @@ function HrInfoTab({ data, dropdowns, onSave, employeeId }: HrInfoTabProps) {
             <h3 className="text-lg font-bold text-slate-900">POO / POH</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-              <Form.Item label="Point of Original" name="point_of_original">
+              <Form.Item label="Point of Original" name="point_of_original" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan point of original" />
               </Form.Item>
-              <Form.Item label="Point of Hire" name="point_of_hire">
+              <Form.Item label="Point of Hire" name="point_of_hire" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan point of hire" />
               </Form.Item>
             </div>

@@ -11,6 +11,7 @@ import {
 } from "../hooks/useKaryawan";
 
 const { Paragraph, Text, Title } = Typography;
+const KARYAWAN_TABLE_SCROLL_X = 1460;
 
 function getInitials(name: string) {
   return name
@@ -179,24 +180,24 @@ function KaryawanListPage() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Direktori Karyawan</h2>
-          <p className="text-slate-500 mt-1">Mengelola dan memantau data seluruh karyawan perusahaan.</p>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter">Direktori Karyawan</h2>
+          <p className="text-slate-500 font-medium mt-1">Mengelola dan memantau data seluruh karyawan perusahaan dengan sistem terpadu.</p>
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <button
             onClick={() => navigate("/hr/import")}
-            className="flex w-full sm:w-auto items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-bold px-4 py-3 border border-slate-200 rounded-lg shadow-sm transition-all cursor-pointer"
+            className="group flex w-full sm:w-auto items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 font-black text-xs uppercase tracking-widest px-5 py-3.5 border border-slate-200 rounded-xl shadow-sm transition-all cursor-pointer active:scale-95"
           >
-            <span className="material-symbols-outlined font-bold text-[18px]">file_upload</span>
+            <span className="material-symbols-outlined font-black text-[18px] transition-transform group-hover:-translate-y-0.5">file_upload</span>
             <span>Import Data</span>
           </button>
           <button
             onClick={() => navigate("/hr/karyawan/tambah")}
-            className="flex w-full sm:w-auto items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-sm shadow-primary/20 transition-all cursor-pointer"
+            className="group flex w-full sm:w-auto items-center justify-center gap-2 bg-primary hover:bg-yellow-500 text-slate-900 font-black text-xs uppercase tracking-widest px-6 py-3.5 rounded-xl shadow-lg shadow-primary/20 transition-all cursor-pointer active:scale-95"
           >
-            <span className="material-symbols-outlined font-bold text-[18px]">add</span>
+            <span className="material-symbols-outlined font-black text-[18px] transition-transform group-hover:scale-110">add</span>
             <span>Tambah Karyawan</span>
           </button>
         </div>
@@ -297,8 +298,9 @@ function KaryawanListPage() {
           columns={columns}
           dataSource={items}
           loading={isLoading}
-          scroll={{ x: 1200 }}
-          className="[&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-wider [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:!align-middle [&_.ant-table-tbody>tr>td]:!border-b [&_.ant-table-tbody>tr>td]:!border-slate-100"
+          scroll={{ x: KARYAWAN_TABLE_SCROLL_X }}
+          tableLayout="fixed"
+          className="karyawan-list-table [&_.ant-table]:!rounded-none [&_.ant-table-container]:!border-0 [&_.ant-table-thead>tr>th]:!bg-slate-50 [&_.ant-table-thead>tr>th]:!px-6 [&_.ant-table-thead>tr>th]:!py-4 [&_.ant-table-thead>tr>th]:!text-xs [&_.ant-table-thead>tr>th]:!font-bold [&_.ant-table-thead>tr>th]:!uppercase [&_.ant-table-thead>tr>th]:!tracking-wider [&_.ant-table-thead>tr>th]:!text-slate-500 [&_.ant-table-thead>tr>th]:!whitespace-nowrap [&_.ant-table-tbody>tr>td]:!px-6 [&_.ant-table-tbody>tr>td]:!py-4 [&_.ant-table-tbody>tr>td]:!align-middle [&_.ant-table-tbody>tr>td]:!border-b [&_.ant-table-tbody>tr>td]:!border-slate-100 [&_.ant-table-tbody>tr>td]:!whitespace-nowrap"
           pagination={{
             current: meta.page,
             pageSize: meta.limit,

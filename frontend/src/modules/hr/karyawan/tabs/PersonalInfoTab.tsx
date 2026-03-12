@@ -3,6 +3,7 @@ import dayjs, { type Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import api from "../../../../lib/axios";
 import type { KaryawanDetail } from "../../hooks/useKaryawan";
+import { toSelectiveTitleCase } from "../../utils/selectiveTitleCase";
 
 type PersonalInfoTabProps = {
   data: KaryawanDetail;
@@ -94,6 +95,10 @@ function toDayjs(value?: string | null) {
 
 function toIsoString(value?: Dayjs | null) {
   return value ? value.toISOString() : null;
+}
+
+function normalizeSelectiveTitleCase(value: unknown) {
+  return typeof value === "string" ? toSelectiveTitleCase(value) ?? value : value;
 }
 
 function mapDataToFormValues(data: KaryawanDetail): PersonalInfoFormValues {
@@ -209,7 +214,7 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
             <Form.Item label="Jenis Kelamin" name="jenis_kelamin" className="mb-0">
               <Select placeholder="Pilih jenis kelamin" options={GENDER_OPTIONS} {...SEARCHABLE_SELECT_PROPS} />
             </Form.Item>
-            <Form.Item label="Tempat Lahir" name="tempat_lahir" className="mb-0">
+            <Form.Item label="Tempat Lahir" name="tempat_lahir" className="mb-0" normalize={normalizeSelectiveTitleCase}>
               <Input placeholder="Masukkan tempat lahir" />
             </Form.Item>
             <Form.Item label="Tanggal Lahir" name="tanggal_lahir" className="mb-0">
@@ -263,10 +268,10 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
               <Input.TextArea rows={3} placeholder="Masukkan alamat KTP" />
             </Form.Item>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Form.Item label="Kota KTP" name="kota_ktp" className="mb-0">
+              <Form.Item label="Kota KTP" name="kota_ktp" className="mb-0" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan kota KTP" />
               </Form.Item>
-              <Form.Item label="Provinsi KTP" name="provinsi_ktp" className="mb-0">
+              <Form.Item label="Provinsi KTP" name="provinsi_ktp" className="mb-0" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan provinsi KTP" />
               </Form.Item>
             </div>
@@ -286,10 +291,10 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
               <Input.TextArea rows={3} placeholder="Masukkan alamat domisili" />
             </Form.Item>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Form.Item label="Kota Domisili" name="kota_domisili" className="mb-0">
+              <Form.Item label="Kota Domisili" name="kota_domisili" className="mb-0" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan kota domisili" />
               </Form.Item>
-              <Form.Item label="Provinsi Domisili" name="provinsi_domisili" className="mb-0">
+              <Form.Item label="Provinsi Domisili" name="provinsi_domisili" className="mb-0" normalize={normalizeSelectiveTitleCase}>
                 <Input placeholder="Masukkan provinsi domisili" />
               </Form.Item>
             </div>
@@ -387,13 +392,13 @@ function PersonalInfoTab({ data, onSave, employeeId }: PersonalInfoTabProps) {
             <Form.Item label="Nomor Rekening" name="nomor_rekening" className="mb-0">
               <Input placeholder="Masukkan nomor rekening" />
             </Form.Item>
-            <Form.Item label="Nama Pemegang Rekening" name="nama_pemegang_rekening" className="mb-0">
+            <Form.Item label="Nama Pemegang Rekening" name="nama_pemegang_rekening" className="mb-0" normalize={normalizeSelectiveTitleCase}>
               <Input placeholder="Masukkan nama pemegang" />
             </Form.Item>
-            <Form.Item label="Nama Bank" name="nama_bank" className="mb-0">
+            <Form.Item label="Nama Bank" name="nama_bank" className="mb-0" normalize={normalizeSelectiveTitleCase}>
               <Input placeholder="Masukkan nama bank" />
             </Form.Item>
-            <Form.Item label="Cabang Bank" name="cabang_bank" className="mb-0">
+            <Form.Item label="Cabang Bank" name="cabang_bank" className="mb-0" normalize={normalizeSelectiveTitleCase}>
               <Input placeholder="Masukkan cabang bank" />
             </Form.Item>
           </div>

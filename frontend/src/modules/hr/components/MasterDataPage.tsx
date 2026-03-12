@@ -48,6 +48,7 @@ export type MasterDataFormField = {
   colSpan?: number;
   readOnly?: boolean;
   disabled?: boolean;
+  normalize?: (value: unknown) => unknown;
   selectProps?: {
     loading?: boolean;
     showSearch?: boolean;
@@ -374,6 +375,7 @@ function MasterDataPage<
                   label={field.label}
                   rules={field.rules}
                   extra={field.extra}
+                  normalize={field.normalize}
                 >
                   {renderField(field)}
                 </Form.Item>

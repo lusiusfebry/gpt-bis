@@ -233,7 +233,8 @@ function KaryawanDetailPage() {
       </nav>
 
       {/* Employee Header Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-premium border border-slate-200 dark:border-slate-800 p-8 mb-8 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-400 to-primary/20"></div>
         <div className="flex flex-col xl:flex-row gap-8 items-start">
           {/* Photo & Basic Info */}
           <div className="flex flex-col sm:flex-row gap-6 flex-1 w-full">

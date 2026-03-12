@@ -39,33 +39,50 @@ function WelcomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative flex h-[500px] w-full items-center justify-center overflow-hidden">
+      <section className="relative flex h-[600px] w-full items-center justify-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] hover:scale-110"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(0, 0, 0, 0.5), rgba(34, 30, 16, 0.8)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1UjABo8PMOxziJoKAULKJe5RgsN1vHR4BTiz8yR5rUiHvnH4XAg0i_0KtAWDmyXCv4AwX4F6I1HYHkyJtT9mtxf36ysiKP0abUW12XqSRb4YSi1HDRBYvmzduXwMBjjQ4e3WxhBqwwoRLC7moGXPkqUboOkAi17rtApB9QRpeWmvAajzuZYKXfFXr9gqDgp7nska5Xrug34BOGrOcl2ZFjaufkYlj3SqIXqtROSp8YNfalyvpYSJyXahEzPN5uRHEB_RbsMtSr60")',
+              'linear-gradient(rgba(15, 23, 42, 0.4), rgba(34, 30, 16, 0.95)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1UjABo8PMOxziJoKAULKJe5RgsN1vHR4BTiz8yR5rUiHvnH4XAg0i_0KtAWDmyXCv4AwX4F6I1HYHkyJtT9mtxf36ysiKP0abUW12XqSRb4YSi1HDRBYvmzduXwMBjjQ4e3WxhBqwwoRLC7moGXPkqUboOkAi17rtApB9QRpeWmvAajzuZYKXfFXr9gqDgp7nska5Xrug34BOGrOcl2ZFjaufkYlj3SqIXqtROSp8YNfalyvpYSJyXahEzPN5uRHEB_RbsMtSr60")',
           }}
         />
-        <div className="relative z-10 max-w-4xl px-6 text-center">
-          <h1 className="mb-4 text-5xl font-black leading-tight tracking-tighter text-white md:text-7xl">
-            Bebang Sistem Informasi
+        
+        {/* Animated Particles/Accents Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(242,196,13,0.1),transparent_70%)]"></div>
+
+        <div className="relative z-10 max-w-5xl px-6 text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 backdrop-blur-md">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+            </span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+              Site Taliabu Live Operations
+            </span>
+          </div>
+          
+          <h1 className="mb-6 text-6xl font-black leading-[1.1] tracking-tighter text-white md:text-8xl">
+            Bebang <span className="text-primary italic">Sistem</span><br />Informasi
           </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg font-medium text-slate-200 md:text-xl">
-            Site Taliabu Operational Excellence Through Integrated Site Management
+          
+          <p className="mx-auto mb-10 max-w-2xl text-lg font-medium text-slate-300 md:text-xl leading-relaxed">
+            Operational Excellence Through Integrated Site Management. Streamlining HR, Logistics, and Site Security.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          
+          <div className="flex flex-wrap justify-center gap-6">
             <button
               onClick={() => primaryModule && navigate(primaryModule.path)}
               disabled={!primaryModule}
-              className="flex h-14 min-w-[160px] cursor-pointer items-center justify-center rounded-lg bg-primary px-8 text-base font-bold text-background-dark transition-transform hover:scale-105 disabled:opacity-75 disabled:hover:scale-100"
+              className="group relative flex h-16 min-w-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-primary px-8 text-base font-black text-background-dark transition-all hover:shadow-[0_0_20px_rgba(242,196,13,0.4)] active:scale-95 disabled:opacity-75"
             >
-              {primaryModule ? "Explore Dashboard" : "Waiting for modules"}
+              <span className="relative z-10">{primaryModule ? "Explore Dashboard" : "Waiting for modules"}</span>
             </button>
             <button
               onClick={() => navigate("/hr")}
-              className="flex h-14 min-w-[160px] cursor-pointer items-center justify-center rounded-lg border border-white/20 bg-white/10 px-8 text-base font-bold text-white backdrop-blur-md transition-all hover:bg-white/20"
+              className="group flex h-16 min-w-[200px] cursor-pointer items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 text-base font-black text-white backdrop-blur-xl transition-all hover:bg-white/10 active:scale-95"
             >
+              <span className="material-symbols-outlined mr-2 transition-transform group-hover:rotate-12">info</span>
               View Site Specs
             </button>
           </div>
@@ -73,13 +90,13 @@ function WelcomePage() {
       </section>
 
       {/* Navigation Modules */}
-      <section className="relative z-20 -mt-16 px-6 pb-12 md:px-20">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <section className="relative z-20 -mt-20 px-6 pb-16 md:px-20">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="flex flex-col items-start rounded-xl border border-slate-200 bg-white p-8 shadow-xl"
+                className="flex flex-col items-start rounded-2xl border border-slate-200 bg-white p-10 shadow-xl"
               >
                 <Skeleton active paragraph={{ rows: 3 }} />
               </div>
@@ -91,24 +108,29 @@ function WelcomePage() {
                 <div
                   key={module.id}
                   onClick={() => navigate(module.path)}
-                  className="group flex cursor-pointer flex-col items-start rounded-xl border border-slate-200 bg-white p-8 shadow-xl transition-all hover:border-primary"
+                  className="group relative flex cursor-pointer flex-col items-start overflow-hidden rounded-2xl border border-slate-200 bg-white p-10 shadow-premium transition-all hover:-translate-y-2 hover:border-primary/50"
                 >
-                  <div className="mb-6 flex size-14 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-background-dark">
+                  <div className="absolute -right-4 -top-4 size-32 rotate-12 bg-primary/5 transition-transform group-hover:scale-110"></div>
+                  
+                  <div className="mb-8 flex size-16 items-center justify-center rounded-2xl bg-slate-900 text-primary transition-all group-hover:bg-primary group-hover:text-background-dark group-hover:shadow-[0_8px_16px_rgba(242,196,13,0.3)]">
                     <div className="text-3xl font-bold flex"><Icon /></div>
                   </div>
-                  <h3 className="mb-2 text-2xl font-bold">{module.nama}</h3>
-                  <p className="mb-6 text-slate-500">{module.deskripsi || `Akses modul ${module.nama}`}</p>
-                  <div className="mt-auto flex items-center gap-2 font-bold text-primary">
-                    <span>Open Module</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  
+                  <h3 className="mb-3 text-2xl font-black tracking-tight text-slate-900">{module.nama}</h3>
+                  <p className="mb-8 text-slate-500 font-medium leading-relaxed">{module.deskripsi || `Akses modul komprehensif ${module.nama} untuk manajemen site.`}</p>
+                  
+                  <div className="mt-auto flex items-center gap-3 font-black uppercase tracking-widest text-[10px] text-primary">
+                    <span>Akses Modul</span>
+                    <span className="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
                   </div>
                 </div>
               );
             })
           ) : (
-            <div className="col-span-1 flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm md:col-span-3">
+            <div className="col-span-1 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white/50 p-16 text-center backdrop-blur-sm md:col-span-3">
+              <span className="material-symbols-outlined mb-4 text-5xl text-slate-400">inventory_2</span>
               <h3 className="mb-2 text-xl font-bold text-slate-900">Belum ada modul aktif</h3>
-              <p className="text-slate-500">
+              <p className="text-slate-500 font-medium">
                 Akun ini belum memiliki shortcut modul. Silakan hubungi administrator.
               </p>
             </div>
@@ -117,21 +139,24 @@ function WelcomePage() {
       </section>
 
       {/* Statistics Bar */}
-      <section className="mt-auto border-t border-slate-200 bg-white px-6 py-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-8 md:gap-4">
+      <section className="mt-auto bg-slate-900 px-6 py-12 text-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-12 md:grid-cols-4">
           {statisticItems.map((item) => (
-            <div key={item.label} className="flex min-w-[150px] flex-col">
-              <span className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">
+            <div key={item.label} className="group flex flex-col border-l border-white/10 pl-8 transition-colors hover:border-primary">
+              <span className="mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-primary">
                 {item.label}
               </span>
-              <div className="flex items-center gap-2">
-                <span className="line-clamp-1 text-3xl font-black text-slate-900">
+              <div className="flex items-center gap-3">
+                <span className="text-4xl font-black tracking-tighter text-white">
                   {item.value}
                 </span>
                 {item.accent === "Pulse" ? (
-                  <div className={`size-2 animate-pulse rounded-full ${item.accentClassName}`}></div>
+                  <div className="flex items-center gap-1.5 rounded-full bg-green-500/10 px-2 py-1 text-[10px] font-black text-green-500 border border-green-500/20">
+                    <div className="size-2 animate-pulse rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
+                    ONLINE
+                  </div>
                 ) : (
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${item.accentClassName}`}>
+                  <span className={`rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider ${item.accentClassName.replace('bg-primary/10', 'bg-primary/20')}`}>
                     {item.accent}
                   </span>
                 )}
