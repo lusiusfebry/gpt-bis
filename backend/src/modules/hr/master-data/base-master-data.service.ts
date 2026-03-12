@@ -136,6 +136,10 @@ export abstract class BaseMasterDataService<
     );
   }
 
+  protected getListOrderBy(): Array<Record<string, 'asc' | 'desc'>> {
+    return [{ nama: 'asc' }, { created_at: 'asc' }];
+  }
+
   async findAll(
     query: PaginationQueryDto,
   ): Promise<PaginatedResponseDto<Record<string, unknown>>> {
@@ -147,7 +151,7 @@ export abstract class BaseMasterDataService<
       this.model.count({ where }),
       this.model.findMany({
         where,
-        orderBy: { created_at: 'desc' },
+        orderBy: this.getListOrderBy(),
         skip: (page - 1) * limit,
         take: limit,
       }),

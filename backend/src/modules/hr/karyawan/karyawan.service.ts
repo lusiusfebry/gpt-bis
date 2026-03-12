@@ -978,7 +978,11 @@ export class KaryawanService {
       this.employeeModel.findMany({
         where,
         include: this.listInclude,
-        orderBy: { created_at: 'desc' },
+        orderBy: [
+          { nama_lengkap: 'asc' },
+          { nomor_induk_karyawan: 'asc' },
+          { created_at: 'asc' },
+        ],
         skip: (page - 1) * limit,
         take: limit,
       }),

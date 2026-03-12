@@ -208,12 +208,12 @@ function KaryawanDetailPage() {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-6 max-w-7xl mx-auto">
-      <div className="flex items-center gap-2 text-sm text-slate-500">
+    <div className="flex flex-1 flex-col overflow-y-auto bg-background-light dark:bg-background-dark p-6">
+      <nav className="flex text-sm text-slate-500 mb-6 gap-2 items-center">
         <button
           type="button"
           onClick={() => navigate("/hr")}
-          className="hover:text-primary transition-colors"
+          className="hover:text-primary transition-colors cursor-pointer"
         >
           Karyawan
         </button>
@@ -221,89 +221,149 @@ function KaryawanDetailPage() {
         <button
           type="button"
           onClick={() => navigate("/hr/karyawan")}
-          className="hover:text-primary transition-colors"
+          className="hover:text-primary transition-colors cursor-pointer"
         >
           Daftar Karyawan
         </button>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
         <span className="font-medium text-slate-900">{data?.nama_lengkap ?? "Profil Karyawan"}</span>
-      </div>
+      </nav>
 
-      <div className="flex w-full flex-col lg:flex-row lg:justify-between lg:items-center bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm mb-2 gap-6">
-        <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start lg:items-center">
-          <div className="relative shrink-0">
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/20 bg-slate-100 shadow-sm">
-              {photoUrl ? (
-                <img
-                  src={photoUrl}
-                  alt={data?.nama_lengkap ?? "Foto karyawan"}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-4xl font-semibold text-slate-300">
-                  {getInitials(data?.nama_lengkap ?? "Karyawan")}
-                </div>
-              )}
-            </div>
-            <Upload {...uploadProps}>
-              <button
-                type="button"
-                className="absolute bottom-0 right-0 bg-primary text-slate-900 rounded-full p-2 border-2 border-white shadow-md hover:brightness-95 transition-all flex items-center justify-center cursor-pointer"
-                aria-label="Upload foto karyawan"
-              >
-                <CameraOutlined className="text-sm" />
-              </button>
-            </Upload>
-          </div>
-          <div className="flex flex-col flex-1 text-center sm:text-left">
-            <h2 className="text-slate-900 text-2xl md:text-3xl font-extrabold leading-tight">
-              {data?.nama_lengkap ?? "Profil Karyawan"}
-            </h2>
-            <div className="flex flex-wrap justify-center sm:justify-start items-center gap-2 mt-2">
-              <span className="bg-primary/20 text-yellow-700 font-bold text-xs px-2.5 py-0.5 rounded border border-primary/30 uppercase tracking-wide">
-                {data?.posisi_jabatan?.nama ?? "Posisi belum diatur"}
-              </span>
-              <span className="text-slate-300 text-sm hidden sm:inline">•</span>
-              <span className="text-slate-500 text-sm font-medium">
-                {data?.department?.nama ?? "Departemen belum diatur"}
-              </span>
-            </div>
-            <div className="mt-3 flex flex-wrap justify-center sm:justify-start items-center gap-3 text-sm text-slate-500">
-              <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px]">badge</span>
-                <span className="font-medium text-slate-700">NIK: {data?.nomor_induk_karyawan ?? "-"}</span>
+      {/* Employee Header Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mb-6">
+        <div className="flex flex-col xl:flex-row gap-8 items-start">
+          {/* Photo & Basic Info */}
+          <div className="flex flex-col sm:flex-row gap-6 flex-1 w-full">
+            <div className="relative group mx-auto sm:mx-0 shrink-0">
+              <div className="size-32 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden border-4 border-white dark:border-slate-700 shadow-md">
+                {photoUrl ? (
+                  <img
+                    src={photoUrl}
+                    alt={data?.nama_lengkap ?? "Foto karyawan"}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-4xl font-semibold text-slate-400">
+                    {getInitials(data?.nama_lengkap ?? "Karyawan")}
+                  </div>
+                )}
               </div>
-              <span className="text-slate-300">|</span>
-              <span
-                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                  isActiveStatus
-                    ? "bg-green-100 text-green-700 border border-green-200"
-                    : "bg-slate-100 text-slate-500 border border-slate-200"
-                }`}
-              >
-                {statusLabel}
-              </span>
+              <Upload {...uploadProps}>
+                <button
+                  type="button"
+                  className="absolute -bottom-2 -right-2 bg-primary p-2 rounded-full shadow-lg text-slate-900 hover:brightness-95 transition-all flex items-center justify-center cursor-pointer border border-primary/50"
+                  aria-label="Upload foto karyawan"
+                >
+                  <span className="material-symbols-outlined text-sm">photo_camera</span>
+                </button>
+              </Upload>
+            </div>
+            
+            <div className="flex-1 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                    {data?.nama_lengkap ?? "Profil Karyawan"}
+                    <span
+                      className={`ml-2 px-2 py-0.5 text-xs font-semibold rounded-full ${
+                        isActiveStatus
+                          ? "bg-green-100 text-green-700"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      {statusLabel}
+                    </span>
+                  </h1>
+                  <p className="text-slate-500 font-medium">
+                    NIK: {data?.nomor_induk_karyawan ?? "-"} • {data?.posisi_jabatan?.nama ?? "Posisi belum diatur"}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={handleOpenQrModal} className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm cursor-pointer whitespace-nowrap">
+                    Cetak QR
+                  </button>
+                  <button onClick={handleScrollToForm} className="px-4 py-2 bg-primary text-slate-900 rounded-lg text-sm font-bold hover:brightness-95 transition-all shadow-sm cursor-pointer whitespace-nowrap">
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-6 text-sm">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-slate-400 text-lg">corporate_fare</span>
+                  <div>
+                    <p className="text-xs text-slate-400">Division / Dept</p>
+                    <p className="font-medium text-slate-900 dark:text-slate-100">
+                      {data?.divisi?.nama ?? "-"} / {data?.department?.nama ?? "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-slate-400 text-lg">person_pin</span>
+                  <div>
+                    <p className="text-xs text-slate-400">Manager / Supervisor</p>
+                    <p className="font-medium text-slate-900 dark:text-slate-100">
+                      {data?.manager?.nama ?? "-"} / {data?.atasan_langsung?.nama ?? "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-slate-400 text-lg">mail</span>
+                  <div>
+                    <p className="text-xs text-slate-400">Company Email</p>
+                    <p className="font-medium text-slate-900 dark:text-slate-100">{data?.email_perusahaan ?? "-"}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-slate-400 text-lg">call</span>
+                  <div>
+                    <p className="text-xs text-slate-400">Phone</p>
+                    <p className="font-medium text-slate-900 dark:text-slate-100">{data?.nomor_handphone ?? "-"}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-slate-400 text-lg">location_on</span>
+                  <div>
+                    <p className="text-xs text-slate-400">Work Location</p>
+                    <p className="font-medium text-primary underline decoration-dotted">{data?.lokasi_kerja?.nama ?? "-"}</p>
+                  </div>
+                </div>
+                {data?.tag && (
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-slate-400 text-lg">sell</span>
+                    <div className="flex gap-1 flex-wrap">
+                      <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-700 dark:text-slate-300">
+                        {data.tag.nama}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-wrap justify-center lg:justify-end gap-3 w-full lg:w-auto mt-2 lg:mt-0 lg:shrink-0">
-          <button
-            type="button"
-            onClick={handleScrollToForm}
-            className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-sm transition-all border border-slate-200 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[18px]">edit</span>
-            Edit Data
-          </button>
-          <button
-            type="button"
-            onClick={handleOpenQrModal}
-            className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-yellow-500 text-slate-900 font-bold rounded-lg text-sm shadow-sm transition-all cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[18px]">qr_code_2</span>
-            Cetak QR
-          </button>
+          {/* QR Code Section */}
+          <div className="xl:border-l xl:border-slate-200 dark:xl:border-slate-800 xl:pl-8 flex flex-col items-center justify-center w-full xl:w-auto cursor-pointer" onClick={handleOpenQrModal}>
+            <div className="p-3 bg-white border-2 border-slate-100 rounded-lg shadow-sm mb-2 hover:border-primary/50 transition-colors">
+              <div className="size-24 bg-slate-100 flex items-center justify-center relative overflow-hidden">
+                {isQrLoading ? (
+                  <Spin size="small" />
+                ) : qrCode ? (
+                  <img src={qrCode} alt="QR Code Khusus" className="w-full h-full object-contain" />
+                ) : (
+                  <div className="grid grid-cols-4 gap-1">
+                    <div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-300"></div><div className="size-4 bg-slate-900"></div>
+                    <div className="size-4 bg-slate-300"></div><div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-300"></div>
+                     <div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-300"></div><div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-900"></div>
+                     <div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-900"></div><div className="size-4 bg-slate-300"></div><div className="size-4 bg-slate-900"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+              Employee QR ({data?.nomor_induk_karyawan ?? "-"})
+            </p>
+          </div>
         </div>
       </div>
 
@@ -448,45 +508,34 @@ function KaryawanDetailPage() {
         </Form>
       </div>
 
-      <div className="bg-transparent mb-6">
+      <div className="mb-6">
         {data ? (
           <>
-            <div className="border-b border-slate-200 mb-6 px-1">
-              <div className="flex gap-8 overflow-x-auto whitespace-nowrap" role="tablist" aria-label="Detail informasi karyawan">
-                {tabs.map((tab) => {
-                  const isActive = activeTab === tab.key;
-                  const tabId = `${tab.key}-tab`;
-                  const panelId = `${tab.key}-panel`;
+            <div className="border-b border-slate-200 dark:border-slate-800 mb-6 flex overflow-x-auto gap-8" role="tablist" aria-label="Detail informasi karyawan">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab.key;
+                const tabId = `${tab.key}-tab`;
+                const panelId = `${tab.key}-panel`;
 
-                  // Tentukan icon berdasarkan key tab
-                  let icon = "info";
-                  if (tab.key === "personal-information") icon = "person";
-                  if (tab.key === "informasi-hr") icon = "work";
-                  if (tab.key === "informasi-keluarga") icon = "family_restroom";
-
-                  return (
-                    <button
-                      key={tab.key}
-                      id={tabId}
-                      type="button"
-                      role="tab"
-                      aria-selected={isActive}
-                      aria-controls={panelId}
-                      onClick={() => setActiveTab(tab.key)}
-                      className={`flex items-center gap-2 pb-3 px-1 text-sm font-bold border-b-2 transition-colors cursor-pointer ${
-                        isActive
-                          ? "border-primary text-slate-900"
-                          : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
-                      }`}
-                    >
-                      <span className={`material-symbols-outlined text-lg ${isActive ? 'text-primary' : 'text-slate-400'}`} style={isActive ? {fontVariationSettings: "'FILL' 1"} : {}}>
-                        {icon}
-                      </span>
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </div>
+                return (
+                  <button
+                    key={tab.key}
+                    id={tabId}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={panelId}
+                    onClick={() => setActiveTab(tab.key)}
+                    className={`pb-3 px-1 text-sm font-bold whitespace-nowrap transition-colors cursor-pointer border-b-2 ${
+                      isActive
+                        ? "text-primary border-primary"
+                        : "text-slate-500 border-transparent hover:text-slate-800 dark:hover:text-slate-200"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
             </div>
 
             <div>

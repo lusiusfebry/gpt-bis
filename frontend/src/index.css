@@ -41,3 +41,24 @@ body {
 .ant-layout {
   background: #f8f8f5;
 }
+
+button:not(:disabled),
+a[href],
+[role="button"]:not([aria-disabled="true"]),
+.ant-btn:not(:disabled),
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title,
+.ant-pagination-item,
+.ant-pagination-prev,
+.ant-pagination-next,
+.ant-select-selector,
+.ant-picker,
+.ant-upload,
+.ant-menu-item,
+.ant-menu-submenu-title,
+.ant-tabs-tab-btn,
+.ant-collapse-header,
+.ant-list-item-action a,
+.ant-list-item-action button {
+  cursor: pointer;
+}

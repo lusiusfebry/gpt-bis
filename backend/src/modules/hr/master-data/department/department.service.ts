@@ -78,7 +78,7 @@ export class DepartmentService extends BaseMasterDataService<
       this.prisma.department.findMany({
         where,
         include: this.relationInclude,
-        orderBy: { created_at: 'desc' },
+        orderBy: this.getListOrderBy(),
         skip: (page - 1) * limit,
         take: limit,
       }),

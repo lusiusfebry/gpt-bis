@@ -64,7 +64,7 @@ export class PosisiJabatanService extends BaseMasterDataService<
       this.prisma.posisiJabatan.findMany({
         where,
         include: this.relationInclude,
-        orderBy: { created_at: 'desc' },
+        orderBy: this.getListOrderBy(),
         skip: (page - 1) * limit,
         take: limit,
       }),
